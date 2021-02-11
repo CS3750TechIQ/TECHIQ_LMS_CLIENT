@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 const SignUpStyles = styled.div`
   input[type='text'],
+  input[type='password']
   button {
     -webkit-appearance: none;
   }
@@ -10,7 +11,8 @@ const SignUpStyles = styled.div`
     transform: scale(1.4);
   }
 
-  input[type='text'] {
+  input[type='text'],
+  input[type='password'] {
     border: 1px solid #A0A0A0;
     height: 1.5rem;
   }
@@ -97,11 +99,11 @@ export default function SignUp(){
           </div>
           <div className="textBoxBlock">
             <div>Password</div>
-            <input type="text" />
+            <input type="password" />
           </div>
           <div className="textBoxBlock">
             <div>Confirm Password</div>
-            <input type="text" />
+            <input type="password" />
           </div>
           <div className="radioBlock">
             <label>Instructor</label>
