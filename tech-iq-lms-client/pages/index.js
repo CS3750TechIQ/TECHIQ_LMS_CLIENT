@@ -9,6 +9,25 @@ const HomeStyles = styled.div`
     }
 `;
 
+export const getServerSideProps = () => {
+  // Get the user's session based on the request
+  //const user = req.session.get('user')
+  const user = false;
+
+  if (!user) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+
+  return {
+    props: { user },
+  }
+}
+
 export default function Home() {
   return (
     <HomeStyles>

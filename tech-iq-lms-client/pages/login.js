@@ -4,7 +4,7 @@ const LoginStyles = styled.div`
 
 `
 
-export default Login() {
+export default function Login() {
   return(
     <LoginStyles>
       <h1>Login Page</h1>
