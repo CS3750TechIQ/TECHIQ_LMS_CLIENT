@@ -35,7 +35,7 @@ const SignUpStyles = styled.div`
     display: flex;
     flex-wrap: wrap;
     justify-content: left;
-    padding: 1.5rem;
+    padding: 1rem;
   }
 
   .textBoxBlock {
