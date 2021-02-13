@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+import React, { useState } from 'react';
+import axios from 'axios'
+import { Router, useRouter } from 'next/router';
 
 const LoginStyles = styled.div`
 
@@ -43,7 +46,7 @@ const LoginStyles = styled.div`
     box-shadow: .25px .25px 1px #A0A0A0;  
   }
 
-  .signUpForm {
+  .logInForm {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -54,13 +57,11 @@ const LoginStyles = styled.div`
     color: #A0A0A0;
     margin: 1rem;
     font-size: 1.5rem;
-    padding-left: 12.5%;
   }
 
   .buttonContainer {
     width: 100%;
     text-align: center;
-    padding-left: 12.5%;
   }
 
   .submitButton {
@@ -82,28 +83,66 @@ const LoginStyles = styled.div`
 `
 
 export default function Login() {
+
+  // create instance of router
+  const router = useRouter();
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  //function that will send a Post request to the server
+  const logInAccount = async () => {
+    
+    try{
+      const res = await axios.post('test',
+      {
+        email,
+        password
+      })
+      if(res.status === 200)
+        router.reload();
+    }
+    catch(e)
+    {
+      alert(e)
+    }
+  }
+
   return(
     <LoginStyles>
       <h1>Log In</h1>
         <div className="logInContainer">
-          <form className="signUpform">
+          <form 
+            className="logInForm"
+            onSubmit={e =>{
+              e.preventDefault()
+              logInAccount()
+            }}>
             <div className="textBoxBlock">
-              <input placeholder="Username" type= "text" />
+              <input 
+                placeholder="Email" 
+                type= "text"
+                onChange={e => setEmail(e.target.value)}
+              />
             </div>
             <div className="textBoxBlock">
-              <input placeholder="Password" type="password" />
+              <input 
+                placeholder="Password" 
+                type="password"
+                onChange={e => setPassword(e.target.value)}
+              />
             </div>
             <div className="buttonContainer">
               <button
                 className="submitButton"
                 type="submit"
-                >
+              >
                   Sign In
-                </button>
+              </button>
             </div>
           </form>
         </div>
-        <h2>Need an account? <a href="http://localhost:3000/signup">Sign up here</a></h2>
+        <h2>Don't have an account? <a href="http://localhost:3000/signup">Sign up here</a></h2>
     </LoginStyles>
   )
 }
