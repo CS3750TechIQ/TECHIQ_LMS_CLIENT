@@ -119,7 +119,7 @@ export default function Login() {
             <div className="textBoxBlock">
               <input 
                 placeholder="Email" 
-                type= "text"
+                type= "email"
                 onChange={e => setEmail(e.target.value)}
               />
             </div>

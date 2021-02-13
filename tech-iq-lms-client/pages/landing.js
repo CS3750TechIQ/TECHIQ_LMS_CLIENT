@@ -8,15 +8,12 @@ const LandingStyles = styled.div`
 
 `;
 
-
-
 export default function Landing(){
 
     return(
         <LandingStyles>
             <h1>You have successfully logged in.</h1> 
-        </LandingStyles>
-                  
+        </LandingStyles>              
     )
     
 }
