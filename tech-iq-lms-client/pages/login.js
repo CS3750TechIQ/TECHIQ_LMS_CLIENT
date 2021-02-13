@@ -78,8 +78,6 @@ const LoginStyles = styled.div`
       transform: scale(1.1);
     }
   }
-
-
 `
 
 export default function Login() {
