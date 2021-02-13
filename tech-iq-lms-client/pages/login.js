@@ -24,7 +24,7 @@ const LoginStyles = styled.div`
 
 
   a:hover{
-    font-size: 1.1rem;
+    transform: scale(1.1);
   }
 
   h1 {
@@ -76,6 +76,16 @@ const LoginStyles = styled.div`
 
     :hover {
       transform: scale(1.1);
+    }
+  }
+
+  .createAccount {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    h2 {
+      padding: .5rem;
     }
   }
 `
@@ -140,7 +150,10 @@ export default function Login() {
             </div>
           </form>
         </div>
-        <h2>Don't have an account? <a href="http://localhost:3000/signup">Sign up here</a></h2>
+        <div className="createAccount">
+          <h2>Don't have an account?</h2>
+          <a href="/signup">Sign up here</a>      
+        </div>
     </LoginStyles>
   )
 }
