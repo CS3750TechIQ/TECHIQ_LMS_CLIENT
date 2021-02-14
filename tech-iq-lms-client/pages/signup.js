@@ -90,20 +90,30 @@ export default function SignUp(){
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [userType, setUserType] = useState('');
+  const [blankFields, setBlankFields] = useState(false);
 
   //function that will send a Post request to the server
   const createAccount = async () => {
-    
-    try{
-      const res = await axios.post('test',
+    if(firstName === null || firstName === "")
+    {
+      setBlankFields(true);
+      return;
+    }
+    if(password != confirmPassword)
       {
-        firstName,
-        lastName,
-        email,
-        birthdate,
-        password,
-        confirmPassword,
-        userType
+        alert("Passwords do not match");
+        return;
+      }
+
+    try{
+      console.log(password)
+      const res = await axios.put('http://localhost:50058/Account/addUser',
+      {
+        "password": password,
+        "firstName": firstName,
+        "lastName": lastName,
+        "birthDate": birthdate,
+        "username": email
       })
       if(res.status === 200)
         router.reload();
@@ -180,6 +190,9 @@ export default function SignUp(){
               id="student"
               name="userType" />
           </div> 
+          {blankFields === true ? 
+            <div className="missingFields">Missing required fields</div>
+            : null }
           <div className="buttonContainer">
             <button 
               className="submitButton" 
