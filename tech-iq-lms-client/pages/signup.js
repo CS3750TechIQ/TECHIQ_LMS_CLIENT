@@ -76,6 +76,32 @@ const SignUpStyles = styled.div`
       transform: scale(1.1);
     }
   }
+
+  .missingFields{
+    color: red;
+    text-align: center;  
+    transform: scale(1);
+    animation: pulse 2s infinite;
+
+    @keyframes pulse {
+      0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+      }
+
+      70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+      }
+
+      100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+      }
+  }
+
+
+}
 `;
 
 export default function SignUp(){
@@ -94,11 +120,36 @@ export default function SignUp(){
 
   //function that will send a Post request to the server
   const createAccount = async () => {
+
+    //#region input verification
     if(firstName === null || firstName === "")
     {
       setBlankFields(true);
       return;
     }
+    else if(lastName === null || lastName === "")
+    {
+      setBlankFields(true);
+      return;
+    }
+    else if(email === null || email === "")
+    {
+      setBlankFields(true);
+      return;
+    }
+    else if(birthdate === null || birthdate === "")
+    {
+      setBlankFields(true);
+      return;
+    }
+    else if(password === null || password === "")
+    {
+      setBlankFields(true);
+      return;
+    }
+    //#endregion input verification
+
+
     if(password != confirmPassword)
       {
         alert("Passwords do not match");
