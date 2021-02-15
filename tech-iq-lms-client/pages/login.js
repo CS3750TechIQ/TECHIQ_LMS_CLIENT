@@ -108,8 +108,7 @@ export default function Login() {
       {  
         console.log("redirecting")
         router.push({
-          pathname: "/",
-          query: { user: true }
+          pathname: "/landing"
         });
       }
     }
