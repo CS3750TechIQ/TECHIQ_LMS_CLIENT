@@ -98,17 +98,20 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  //function that will send a Post request to the server
+  //function that will send a GET request to the server
   const logInAccount = async () => {
     
     try{
-      const res = await axios.post('test',
-      {
-        email,
-        password
-      })
+      const res = await axios.get('http://localhost:50058/Account/' + email + '/getUser');
+      console.log(res);
       if(res.status === 200)
-        router.reload();
+      {  
+        console.log("redirecting")
+        router.push({
+          pathname: "/",
+          query: { user: true }
+        });
+      }
     }
     catch(e)
     {

@@ -1,6 +1,10 @@
 import styled from "styled-components";
 import Nav from "../components/navBar";
 import Button from "../components/button";
+//
+import React, { useState } from 'react';
+import { Router, useRouter, withRouter } from 'next/router';
+
 
 const HomeStyles = styled.div`
     color: red;
@@ -9,10 +13,12 @@ const HomeStyles = styled.div`
     }
 `;
 
-export const getServerSideProps = () => {
+export const getServerSideProps = ({router}) => {
   // Get the user's session based on the request
   //const user = req.session.get('user')
-  const user = false;
+  const [user, setUser] = useState(router);
+  if(user === null)
+    setUser(false);
 
   if (!user) {
     return {
@@ -28,7 +34,7 @@ export const getServerSideProps = () => {
   }
 }
 
-export default function Home() {
+export default function Home(props) {
   return (
     <HomeStyles>
       <Nav />
