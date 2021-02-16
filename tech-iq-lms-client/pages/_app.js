@@ -1,11 +1,12 @@
 import { createGlobalStyle } from "styled-components";
+import { Auth } from "../components/auth";
 
 const Styles = createGlobalStyle`    
     html, body {
         font-family: "Rubik", sans-serif;
         width: 100%;
-        background-color: #f3f2ef
-;
+        background-color: #f3f2ef;
+        
     }
 
     body {
@@ -13,12 +14,16 @@ const Styles = createGlobalStyle`
         overflow-y: visible;
     }
 `;
+
 function MyApp({ Component, pageProps }) {
+
   return(
-  <>
-    <Styles />
-    <Component {...pageProps} />
-  </>
+
+      <Auth>
+        <Styles />
+        <Component {...pageProps} />
+      </Auth>     
+
   )}
 
 export default MyApp
