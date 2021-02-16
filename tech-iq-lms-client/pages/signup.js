@@ -2,6 +2,7 @@ import styled from "styled-components";
 import React, { useState } from 'react';
 import axios from 'axios'
 import { Router, useRouter } from 'next/router';
+import { redirect } from "next/dist/next-server/server/api-utils";
 
 const SignUpStyles = styled.div`
   input[type='text'],
@@ -175,6 +176,7 @@ export default function SignUp(){
     }
   }
 
+
   return(
     <SignUpStyles>
       <h1>New Account</h1>
@@ -250,7 +252,7 @@ export default function SignUp(){
               type="submit"
             >
               Create Account
-            </button>
+            </button>            
           </div>
         </form>
       </div>
