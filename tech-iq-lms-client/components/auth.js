@@ -1,25 +1,41 @@
-import { createContext, useState, useContext, useEffect } from 'react';
+import { createContext, useState, useContext } from 'react';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import styled from 'styled-components';
+import { useRouter } from 'next/router';
+
 
 
 const AuthContext = createContext({})
 
 const LoginStyles = styled.div`
   font-family: "Rubik", sans-serif;
+  margin-top: 10rem;
 
-  input[type='text'],
-  input[type='password']
-  button {
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    appearance: none;
     -webkit-appearance: none;
-  }
+    color: #95a5a6;
+    font-family: "Helvetica", arial, sans-serif;
+    font-size: 18px;
+    border:1px solid #ecf0f1;
+    background:#ecf0f1;
+    margin: 6px;
+    padding: 8px;;
+    display: inline-block !important;
+    visibility: visible !important;
+}
 
-  input[type='text'],
-  input[type='password'] {
-    border: 1px solid #A0A0A0;
-    height: 1.5rem;
-  }
+input[type="text"],
+input[type="email"],
+input[type="password"], focus {
+    color: #95a5a6;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+}
 
   a:link{
     text-decoration: none;
@@ -57,12 +73,6 @@ const LoginStyles = styled.div`
     padding: 1rem;
   }
 
-  .textBoxBlock {
-    color: #A0A0A0;
-    margin: 1rem;
-    font-size: 1.5rem;
-  }
-
   .buttonContainer {
     width: 100%;
     text-align: center;
@@ -93,14 +103,130 @@ const LoginStyles = styled.div`
     }
   }
 `
+const SignUpStyles = styled.div`
+  position: absolute;
+  top: 0;
+  width: 100%;
+  margin: auto;
 
+input[type='radio'] {
+    transform: scale(1.4);
+  }
+  
+input[type="date"],
+input[type="text"],
+input[type="password"] {
+    appearance: none;
+    -webkit-appearance: none;
+    color: #95a5a6;
+    font-family: "Helvetica", arial, sans-serif;
+    font-size: 18px;
+    border:1px solid #ecf0f1;
+    background:#ecf0f1;
+    padding:8px;
+    display: inline-block !important;
+    visibility: visible !important;
+}
+
+input[type="date"],
+input[type="text"],
+input[type="password"], focus {
+    color: #95a5a6;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+}
+
+  h1 {
+    text-align: center;
+    font-size: 4rem;
+  }
+
+  .logInContainer {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: white;
+    justify-content: center;
+    width: 700px;
+    margin: auto;
+    border-radius: .5rem;
+    box-shadow: .25px .25px 1px #A0A0A0;
+  }
+
+  .signUpForm {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+    width: 80%;
+    justify-content: space-between;
+    padding: 1rem;
+  }
+
+  .radioBlock {
+    font-size: 1.2rem;
+    width: 100%;
+    text-align: center;
+  }
+
+  .radio {
+    padding: .4rem;
+    margin: 2rem;
+  }
+
+  .buttonContainer {
+    width: 100%;
+    text-align: center;
+  }
+
+  .submitButton {
+    font-size: 1.2rem;
+    margin: 1rem;
+    width: 200px;
+    padding: .75rem;
+    color: white;
+    border: 1px solid #A0A0A0;
+    border-radius: 1rem;
+    background-color: #0a66c2;
+
+    :hover {
+      transform: scale(1.1);
+    }
+  }
+
+  .missingFields{
+    color: red;
+    text-align: center;  
+    transform: scale(1);
+    animation: pulse 2s infinite;
+
+    @keyframes pulse {
+      0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+      }
+
+      70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+      }
+
+      100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+      }
+  }
+
+
+}
+`;
 function Auth({ children }) {
   // create instance of router
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [user, setUser] = useState([])
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [showSignUp, setShowSignUp] = useState(false)
 
     const updateEmail = async (newEmail) => {
         setEmail(newEmail)
@@ -142,20 +268,16 @@ function Auth({ children }) {
                         e.preventDefault()
                         logInAccount()
                         }}>
-                        <div className="textBoxBlock">
                         <input 
                             placeholder="Email" 
                             type= "email"
                             onChange={e => setEmail(e.target.value)}
                         />
-                        </div>
-                        <div className="textBoxBlock">
                         <input 
                             placeholder="Password" 
                             type="password"
                             onChange={e => setPassword(e.target.value)}
                         />
-                        </div>
                         <div className="buttonContainer">
                         <button
                             className="submitButton"
@@ -168,8 +290,12 @@ function Auth({ children }) {
                 </div>
                 <div className="createAccount">
                     <h2>Don't have an account?</h2>
-                    <a href="/signup">Sign up here</a>      
+                    <a onClick={() => {setShowSignUp(true)}}>Sign up here</a>      
                 </div>
+                {
+                  showSignUp ? 
+                  <SignUp /> : null
+                }
             </LoginStyles> 
             : children}
        </AuthContext.Provider>
@@ -184,6 +310,147 @@ const useAuthState = () => {
         throw new Error('useAuthState must be used within an AuthProvider')
     }
     return context
+}
+
+function SignUp(){
+  //create instance of router
+  const router = useRouter();
+
+  //Create state objects that will hold the user info
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [birthdate, setBirthdate] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [userType, setUserType] = useState('');
+  const [blankFields, setBlankFields] = useState(false);
+
+  //function that will send a Post request to the server
+  const createAccount = async () => {
+
+    //#region input verification
+    if(firstName === null || firstName === "")
+    {
+      setBlankFields(true);
+      return;
+    }
+    else if(lastName === null || lastName === "")
+    {
+      setBlankFields(true);
+      return;
+    }
+    else if(email === null || email === "")
+    {
+      setBlankFields(true);
+      return;
+    }
+    else if(birthdate === null || birthdate === "")
+    {
+      setBlankFields(true);
+      return;
+    }
+    else if(password === null || password === "")
+    {
+      setBlankFields(true);
+      return;
+    }
+    //#endregion input verification
+
+
+    if(password != confirmPassword)
+      {
+        alert("Passwords do not match");
+        return;
+      }
+
+    try{
+      console.log(password)
+      const res = await axios.put('http://localhost:50058/Account/addUser',
+      {
+        "password": password,
+        "firstName": firstName,
+        "lastName": lastName,
+        "birthDate": birthdate,
+        "username": email
+      })
+      if(res.status === 200)
+        router.reload();
+    }
+    catch(e)
+    {
+      alert(e)
+    }
+  }
+
+  return(
+    <SignUpStyles>
+      <h1>New Account</h1>
+      <div className="logInContainer">
+        <form 
+          className="signUpForm"
+          onSubmit={e =>{
+            e.preventDefault()
+            createAccount()
+          }}>
+            <input 
+              placeholder="First Name"
+              type="text"
+              onChange={e => setFirstName(e.target.value)}                 
+            />
+            <input 
+              placeholder="Last Name"
+              type="text"
+              onChange={e => setLastName(e.target.value)}                 
+            />
+            <input 
+              placeholder="Email"
+              type="text"
+              onChange={e => setEmail(e.target.value)} 
+            />
+            <input 
+              type="date" 
+              onChange={e => setBirthdate(e.target.value)}
+            />
+            <input 
+              placeholder="Password"
+              type="password" 
+              onChange={e => setPassword(e.target.value)}
+            />
+            <input 
+              placeholder="Confirm Password"
+              type="password"
+              onChange={e => setConfirmPassword(e.target.value)}  
+            />
+          <div className="radioBlock">
+            <label>Instructor</label>
+            <input 
+              className="radio"
+              type="radio" 
+              id="instructor"
+              name="userType" />
+            <label>Student</label>
+            <input 
+              className="radio"
+              type="radio" 
+              id="student"
+              name="userType" />
+          </div> 
+          {blankFields === true ? 
+            <div className="missingFields">Missing required fields</div>
+            : null }
+          <div className="buttonContainer">
+            <button 
+              className="submitButton" 
+              type="submit"
+            >
+              Create Account
+            </button>
+          </div>
+        </form>
+      </div>
+    </SignUpStyles>
+  )
 }
 
 export { Auth, useAuthState }
