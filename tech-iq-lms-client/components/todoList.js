@@ -15,7 +15,6 @@ const TodoListStyles = styled.div`
 .listContainer{
     border: 2px solid gray;
     color: gray;
-    width: 25%;
     max-height: 150px;
     overflow-y: auto;
     border-radius: 5px;

@@ -7,39 +7,40 @@ import CourseCards from "../components/courseCards";
 import { useState } from 'react';
 
 const HomeStyles = styled.div`
-    color: red;
-    .hello{
-      font-size: 12rem;
-    }
+
+  .rightSideBar {
+    position: absolute;
+    display: flex;
+    top: 68px;
+    right: 0;
+    width: 20%;
+    padding: 1rem;
+    height: 100%;
+    border-left: 1px solid #58CCED;
+  }
+
+  .courseCardLayout {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 1rem;
+    width: 70%;
+    justify-content: space-between;
+  }
 `;
-
-// export const getServerSideProps = ({router}) => {
-//   // Get the user's session based on the request
-//   //const user = req.session.get('user')
-//   const user = false;
-
-//   if (!user) {
-//     return {
-//       redirect: {
-//         destination: '/login',
-//         permanent: false,
-//       },
-//     }
-//   }
-
-//   return {
-//     props: { user },
-//   }
-// }
 
 export default function Home(props) {
   return (
     <HomeStyles>
       <Nav />
-      <h1>Home Page</h1>
-      <Button />
-      <List />
-      <CourseCards />
+      <div className="rightSideBar">
+        <List />
+      </div>
+      <div className="courseCardLayout">
+        <CourseCards />
+        <CourseCards />
+        <CourseCards />
+        <CourseCards />
+      </div>
     </HomeStyles>
   )
 }
