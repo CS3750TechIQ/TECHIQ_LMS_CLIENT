@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Nav from "../components/navBar";
 import Button from "../components/button";
 import List from "../components/todolist";
+import CourseCards from "../components/courseCards";
 //
 import { useState } from 'react';
 
@@ -38,6 +39,7 @@ export default function Home(props) {
       <h1>Home Page</h1>
       <Button />
       <List />
+      <CourseCards />
     </HomeStyles>
   )
 }
