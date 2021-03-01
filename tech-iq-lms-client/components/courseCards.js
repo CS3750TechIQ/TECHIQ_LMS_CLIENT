@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import BellIcon from 'react-bell-icon';
 
 const CardStyles = styled.div `
 
@@ -70,6 +71,7 @@ export default function CourseCards() {
           </p>
       </div>
       <div class="center" >
+        <a href="/notifications"><BellIcon color="#072F5F" width="25"/></a>
         <button class="viewButton courseButton">View</button> 
         <button class="dropButton courseButton">Drop</button>
       </div>

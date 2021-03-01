@@ -1,5 +1,6 @@
 import styled from "styled-components";
 
+
 const NavStyles = styled.div`
   a {
     color: inherit;
@@ -33,6 +34,7 @@ const NavStyles = styled.div`
   }
 
 `;
+
 
 export default function Nav(){
   return(
