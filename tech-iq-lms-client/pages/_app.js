@@ -1,9 +1,5 @@
 import { createGlobalStyle } from "styled-components";
 import { Auth } from "../components/auth";
-//FullCalendar
-import '@fullcalendar/common/main.css'
-import '@fullcalendar/daygrid/main.css'
-import '@fullcalendar/timegrid/main.css'
 
 const Styles = createGlobalStyle`    
     html, body {
