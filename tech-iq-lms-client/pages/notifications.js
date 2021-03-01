@@ -1,18 +1,14 @@
 import styled from "styled-components";
-import Nav from '../components/navBar'
-import Notification from '../components/notificationCards'
+import Nav from "../components/navBar";
+import Notification from "../components/notificationCards";
 
-
-
-export default function Notifications () {
-    return(
-
-        <notificationStyles>
-            <Nav/>
-            <Notification/>
-            <Notification/>
-            <Notification/>
-        </notificationStyles>
-    )
-
+export default function Notifications() {
+  return (
+    <notificationStyles>
+      <Nav />
+      <Notification />
+      <Notification />
+      <Notification />
+    </notificationStyles>
+  );
 }

@@ -1,6 +1,5 @@
 import styled from "styled-components";
 
-
 const NavStyles = styled.div`
   a {
     color: inherit;
@@ -11,7 +10,7 @@ const NavStyles = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #072F5F;
+    background-color: #072f5f;
     color: white;
   }
 
@@ -21,7 +20,7 @@ const NavStyles = styled.div`
     padding: 1rem;
   }
 
-  .pageLinks{
+  .pageLinks {
     padding: 1rem;
 
     a {
@@ -29,19 +28,17 @@ const NavStyles = styled.div`
     }
 
     a:hover {
-      color: #58CCED;
+      color: #58cced;
     }
   }
-
 `;
 
-
-export default function Nav(){
-  return(
+export default function Nav() {
+  return (
     <NavStyles>
       <div className="navContainer">
         <div className="title">
-          <a href='/'>Canvas</a>
+          <a href="/">Canvas</a>
         </div>
         <div className="pageLinks">
           <a href="#">Account</a>
@@ -51,5 +48,5 @@ export default function Nav(){
         </div>
       </div>
     </NavStyles>
-  )
+  );
 }
