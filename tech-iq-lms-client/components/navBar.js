@@ -47,7 +47,7 @@ export default function Nav(){
           <a href="#">Account</a>
           <a href="#">Dashboard</a>
           <a href="#">Courses</a>
-          <a href="#">Calendar</a>
+          <a href="/calendar">Calendar</a>
         </div>
       </div>
     </NavStyles>
