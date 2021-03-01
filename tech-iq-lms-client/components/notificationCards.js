@@ -6,9 +6,7 @@ const classNotificationStyles = styled.div`
     .notificationHeader{
         text-align: left;
         text-decoration: underline;
-    }
-    .courseName {
-        text-align: left;   
+        color: red;
     }
 
     .notificationDesc {
@@ -21,12 +19,12 @@ const classNotificationStyles = styled.div`
 export default function notificationCards() {
     return(
         <classNotificationStyles>
-            <div class="card">
-                <h3 class="notificationHeader">Notification Title</h3>
-                <p class="notificationDesc">Notification Description</p>
-                <p class="notificationDate">Date announced: 01/12/2021</p>
+
+                <h3 className="notificationHeader">Notification Title</h3>
+                <p className="notificationDesc">Notification Description</p>
+                <p>Date announced: 01/12/2021</p>
                 <hr/>
-            </div>
+
         </classNotificationStyles>  
     )
 
