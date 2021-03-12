@@ -41,10 +41,10 @@ export default function Nav() {
           <a href="/">Canvas</a>
         </div>
         <div className="pageLinks">
-          <a href="#">Account</a>
+          <a href="/account">Account</a>
           <a href="#">Dashboard</a>
           <a href="#">Courses</a>
-          <a href="/calendar">Calendar</a>
+          <a href="/calendar">Calendar</a> 
         </div>
       </div>
     </NavStyles>
