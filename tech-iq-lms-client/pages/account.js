@@ -45,6 +45,7 @@ const AccountStyles = styled.div`
     .iconContainer{
         display: flex;
         justify-content: center;
+        align-content: space-between;
         width:750px; 
         padding: 2px;   
     }
@@ -63,7 +64,6 @@ export default function Account(){
                 <h1>First name Last name</h1>
                     <p>Phone number</p>
                     <p>Email</p>
-                    <p>Phone number</p>
                 </div>
                 <div className="iconContainer">
                     <SocialIcon url="https://github.com/"></SocialIcon>
