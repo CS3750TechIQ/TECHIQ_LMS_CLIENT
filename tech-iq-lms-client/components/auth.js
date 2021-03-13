@@ -3,9 +3,9 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import styled from "styled-components";
 import { useRouter } from "next/router";
+import { useQuery, useQueryClient } from "react-query";
 
 const AuthContext = createContext({});
-
 const LoginStyles = styled.div`
   font-family: "Rubik", sans-serif;
   margin-top: 10rem;
@@ -217,34 +217,36 @@ const SignUpStyles = styled.div`
   }
 `;
 function Auth({ children }) {
-  // create instance of router
+  const [enabled, setEnabled] = useState(false)
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [user, setUser] = useState({})
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [showSignUp, setShowSignUp] = useState(false)
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [user, setUser] = useState([]);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [showSignUp, setShowSignUp] = useState(false);
+  const attemptLogIn = () => {
+    refetch();
+
+    if (isSuccess) {
+      setUser(data);
+      setIsAuthenticated(true);
+    } else if (isError) {
+      alert("something went wrong");
+    }
+  }
+
+  //function that will send a GET request to the server and save response to the cache
+  const { data, refetch, isSuccess, status, isLoading, isError, error } = useQuery(
+    "userData",
+    () => axios.get("http://localhost:50058/Account/" + email + "/getUser"),
+    {
+      refetchOnWindowFocus: false,
+      enabled: enabled,
+    }
+  );
 
   const updateEmail = async (newEmail) => {
     setEmail(newEmail);
-  };
-
-  //function that will send a GET request to the server
-  const logInAccount = async () => {
-    updateEmail(email);
-    try {
-      const res = await axios.get(
-        "http://localhost:50058/Account/" + email + "/getUser"
-      );
-      console.log(res);
-      if (res.status === 200) {
-        setUser(res);
-        console.log("User found", user);
-        setIsAuthenticated(true);
-      }
-    } catch (e) {
-      alert(e);
-    }
   };
 
   return (
@@ -264,7 +266,8 @@ function Auth({ children }) {
               className="logInForm"
               onSubmit={(e) => {
                 e.preventDefault();
-                logInAccount();
+                setEnabled(true)
+                attemptLogIn();
               }}
             >
               <input

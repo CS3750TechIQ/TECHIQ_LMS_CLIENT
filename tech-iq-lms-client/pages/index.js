@@ -3,8 +3,8 @@ import Nav from "../components/navBar";
 import Button from "../components/button";
 import List from "../components/todolist";
 import CourseCards from "../components/courseCards";
-
-//
+import { useQueryClient, QueryCache } from "react-query";
+import axios from "axios";
 import { useState } from 'react';
 
 const HomeStyles = styled.div`
@@ -30,9 +30,12 @@ const HomeStyles = styled.div`
 `;
 
 export default function Home(props) {
+  const queryClient = useQueryClient()
+  const data = queryClient.getQueryData('userData')
   return (
     <HomeStyles>
       <Nav />
+      <h1>Hello {data.data.firstName}</h1>
       <div className="rightSideBar">
         <List />
       </div>

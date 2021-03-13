@@ -58,22 +58,22 @@ const CardStyles = styled.div`
 export default function CourseCards() {
   return (
     <CardStyles>
-      <div class="card">
-        <div class="courseColor"></div>
+      <div className="card">
+        <div className="courseColor"></div>
         <div>
-          <h3 class="courseName">Course Name</h3>
-          <p class="courseDesc">
+          <h3 className="courseName">Course Name</h3>
+          <p className="courseDesc">
             {" "}
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sed
             lorem dui. Pellentesque eget ante mauris.
           </p>
         </div>
-        <div class="center">
+        <div className="center">
           <a href="/notifications">
             <BellIcon color="#072F5F" width="25" />
           </a>
-          <button class="viewButton courseButton">View</button>
-          <button class="dropButton courseButton">Drop</button>
+          <button className="viewButton courseButton">View</button>
+          <button className="dropButton courseButton">Drop</button>
         </div>
       </div>
     </CardStyles>

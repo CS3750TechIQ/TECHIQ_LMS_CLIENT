@@ -1,9 +1,11 @@
-import { createGlobalStyle } from "styled-components";
-import { Auth } from "../components/auth";
+import { createGlobalStyle } from "styled-components"
+import { Auth } from "../components/auth"
+import { QueryClient, QueryClientProvider } from "react-query"
+import { ReactQueryDevtools } from 'react-query/devtools'
 //FullCalendar
-import '@fullcalendar/common/main.css';
-import '@fullcalendar/daygrid/main.css';
-import '@fullcalendar/timegrid/main.css';
+import '@fullcalendar/common/main.css'
+import '@fullcalendar/daygrid/main.css'
+import '@fullcalendar/timegrid/main.css'
 
 const Styles = createGlobalStyle`    
     html, body {
@@ -20,13 +22,15 @@ const Styles = createGlobalStyle`
 `;
 
 function MyApp({ Component, pageProps }) {
-
+  const queryClient = new QueryClient()
   return(
-
-      <Auth>
-        <Styles />
-        <Component {...pageProps} />
-      </Auth>     
+      <QueryClientProvider client={queryClient}>
+        <Auth>
+          <Styles />
+          <Component {...pageProps} />
+        </Auth>    
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
 
   )}
 

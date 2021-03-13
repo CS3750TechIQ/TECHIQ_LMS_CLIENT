@@ -8,15 +8,17 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 
 const CalendarStyles = styled.div``;
 
-export default () => (
-  <CalendarStyles>
-    <Nav />
-    <FullCalendar
-      plugins={[interactionPlugin, timeGridPlugin]}
-      initialView="timeGridWeek"
-      nowIndicator={true}
-      editable={true}
-      initialEvents={[{ title: "nice event", start: new Date() }]}
-    />
-  </CalendarStyles>
-);
+export default function Calendar(){
+  return (
+    <CalendarStyles>
+      <Nav />
+      <FullCalendar
+        plugins={[interactionPlugin, timeGridPlugin]}
+        initialView="timeGridWeek"
+        nowIndicator={true}
+        editable={true}
+        initialEvents={[{ title: "nice event", start: new Date() }]}
+      />
+    </CalendarStyles>
+  )
+}
