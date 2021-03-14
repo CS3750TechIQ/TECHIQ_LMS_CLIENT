@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { SocialIcon } from "react-social-icons";
+import { useState } from 'react';
 import Nav from "../components/navBar";
 import { useQuery, useQueryClient } from "react-query";
 
@@ -51,18 +52,26 @@ const AccountStyles = styled.div`
 `;
 
 export default function Account() {
-  const queryClient = useQueryClient();
-  const userData = queryClient.getQueryData("userData");
   const [isEditing, setIsEditing] = useState(false);
 
-  !isEditing ? <ViewingAccount /> : <EditingAccount />  
+  return (
+    <div>
+        <Nav/>
+        {
+          isEditing ? 
+          <button onClick={() => {setIsEditing(true)}}>Edit</button> :
+          <button onClick={() => {setIsEditing(false)}}>Save</button>         
+        }
+        {!isEditing ? <ViewingAccount /> : <EditingAccount />}
+    </div>
+  ) 
 }
 
 function ViewingAccount() {
+  const queryClient = useQueryClient();
+  const userData = queryClient.getQueryData('userData');
   return (
     <AccountStyles>
-      <Nav />
-
       <div className="accountContainer">
         <div className="userImage one" />
 
@@ -78,15 +87,7 @@ function ViewingAccount() {
         </div>
         <h4>Bio</h4>
         <div className="bioContainer">
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
-          </p>
+          <p>{userData.data.userBio}</p>
         </div>
       </div>
     </AccountStyles>
@@ -94,18 +95,26 @@ function ViewingAccount() {
 }
 
 function EditingAccount() {
+  const queryClient = useQueryClient();
+  const userData = queryClient.getQueryData('userData');
+
+  const [userPhone, setUserPhone] = useState('');
+  const [userBio, setUserBio] = useState('');
+
   return (
     <AccountStyles>
-      <Nav />
-
       <div className="accountContainer">
         <div className="userImage one" />
 
         <div className="canvasInfo">
           <h1>{userData.data.firstName + " " + userData.data.lastName}</h1>
-          <input type="text" value={userData.data.phoneNumber} />
+          <input 
+            type="text" 
+            onChange={(e) => setUserPhone(e.target.value)}
+          />
           <p>{userData.data.username}</p>
         </div>
+        
         <div className="iconContainer">
           <SocialIcon url="https://github.com/" />
           <SocialIcon url="https://www.linkedin.com/" />
@@ -113,15 +122,12 @@ function EditingAccount() {
         </div>
         <h4>Bio</h4>
         <div className="bioContainer">
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
-          </p>
+        <form>
+          <input 
+            type="text" 
+            onChange={(e) => setUserBio(e.target.value)}
+          />
+        </form>
         </div>
       </div>
     </AccountStyles>

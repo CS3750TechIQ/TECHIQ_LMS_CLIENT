@@ -43,7 +43,6 @@ export default function Home(props) {
   return (
     <HomeStyles>
       <Nav />
-      <h1>Hello {data.data.firstName}</h1>
       <div className="rightSideBar">
         <List />
       </div>
