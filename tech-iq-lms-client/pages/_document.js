@@ -1,6 +1,6 @@
-import Document, { Head, Main, NextScript } from "next/document";
+import Document, { Head, Main, NextScript } from 'next/document';
 // Import styled components ServerStyleSheet
-import { ServerStyleSheet } from "styled-components";
+import { ServerStyleSheet } from 'styled-components';
 
 export default class MyDocument extends Document {
   static getInitialProps({ renderPage }) {
@@ -8,9 +8,8 @@ export default class MyDocument extends Document {
     const sheet = new ServerStyleSheet();
 
     // Step 2: Retrieve styles from components in the page
-    const page = renderPage((App) => (props) =>
-      sheet.collectStyles(<App {...props} />)
-    );
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    const page = renderPage((App) => (props) => sheet.collectStyles(<App {...props} />));
 
     // Step 3: Extract the styles as <style> tags
     const styleTags = sheet.getStyleElement();
@@ -21,6 +20,7 @@ export default class MyDocument extends Document {
 
   render() {
     return (
+      // eslint-disable-next-line jsx-a11y/html-has-lang
       <html>
         <Head>
           <title>CS 3750 Project</title>
@@ -34,12 +34,12 @@ export default class MyDocument extends Document {
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
             integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU="
-            crossorigin="anonymous"
+            crossOrigin="anonymous"
           />
           <meta
             name="viewport"
             content="width=device-width, initial-scale=1.0"
-          ></meta>
+          />
         </Head>
         <body>
           <Main />

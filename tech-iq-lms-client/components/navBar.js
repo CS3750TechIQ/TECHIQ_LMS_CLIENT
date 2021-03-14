@@ -1,4 +1,6 @@
-import styled from "styled-components";
+import styled from 'styled-components';
+import { useState } from 'react';
+import { useQueryClient } from 'react-query';
 
 const NavStyles = styled.div`
   a {
@@ -34,6 +36,9 @@ const NavStyles = styled.div`
 `;
 
 export default function Nav() {
+  const queryClient = useQueryClient();
+  const data = queryClient.getQueryData('userData')
+  const [userType, setUserType] = useState(data.data.userType);
   return (
     <NavStyles>
       <div className="navContainer">
@@ -42,9 +47,13 @@ export default function Nav() {
         </div>
         <div className="pageLinks">
           <a href="/account">Account</a>
-          <a href="#">Dashboard</a>
-          <a href="#">Courses</a>
-          <a href="/calendar">Calendar</a> 
+          <a href="/dashboard">Dashboard</a>
+          {
+            userType ==='Instuctor' ? 
+            <a href="/courses">Courses</a> : 
+            <a href="/registration">Registration</a>
+          }
+          <a href="/calendar">Calendar</a>
         </div>
       </div>
     </NavStyles>

@@ -1,9 +1,16 @@
-import { createContext, useState, useContext } from "react";
-import Cookies from "js-cookie";
-import axios from "axios";
-import styled from "styled-components";
-import { useRouter } from "next/router";
-import { useQuery, useQueryClient } from "react-query";
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable no-console */
+/* eslint-disable no-alert */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+import { createContext, useState, useContext } from 'react';
+import Cookies from 'js-cookie';
+import axios from 'axios';
+import styled from 'styled-components';
+import { useRouter } from 'next/router';
+import { useQuery } from "react-query"
+
 
 const AuthContext = createContext({});
 const LoginStyles = styled.div`
@@ -309,59 +316,64 @@ function Auth({ children }) {
 const useAuthState = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error("useAuthState must be used within an AuthProvider");
+    throw new Error('useAuthState must be used within an AuthProvider');
   }
   return context;
 };
 
 function SignUp() {
-  //create instance of router
+  // create instance of router
   const router = useRouter();
 
-  //Create state objects that will hold the user info
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [birthdate, setBirthdate] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [userType, setUserType] = useState("");
+  // Create state objects that will hold the user info
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [birthdate, setBirthdate] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [userType, setUserType] = useState('');
   const [blankFields, setBlankFields] = useState(false);
 
-  //function that will send a Post request to the server
+  // function that will send a Post request to the server
   const createAccount = async () => {
-    //#region input verification
-    if (firstName === null || firstName === "") {
+    // #region input verification
+    if (firstName === null || firstName === '') {
       setBlankFields(true);
       return;
-    } else if (lastName === null || lastName === "") {
+    } if (lastName === null || lastName === '') {
       setBlankFields(true);
       return;
-    } else if (email === null || email === "") {
+    } if (email === null || email === '') {
       setBlankFields(true);
       return;
-    } else if (birthdate === null || birthdate === "") {
+    } if (birthdate === null || birthdate === '') {
       setBlankFields(true);
       return;
-    } else if (password === null || password === "") {
+    } if (password === null || password === '') {
+      setBlankFields(true);
+      return;
+    } if (userType === null) {
       setBlankFields(true);
       return;
     }
-    //#endregion input verification
 
-    if (password != confirmPassword) {
-      alert("Passwords do not match");
+    // #endregion input verification
+
+    if (password !== confirmPassword) {
+      alert('Passwords do not match');
       return;
     }
 
     try {
       console.log(password);
-      const res = await axios.put("http://localhost:50058/Account/addUser", {
-        password: password,
-        firstName: firstName,
-        lastName: lastName,
+      const res = await axios.put('http://localhost:50058/Account/addUser', {
+        password,
+        firstName,
+        lastName,
         birthDate: birthdate,
         username: email,
+        userType,
       });
       if (res.status === 200) router.reload();
     } catch (e) {
@@ -378,6 +390,7 @@ function SignUp() {
           onSubmit={(e) => {
             e.preventDefault();
             createAccount();
+            console.log(userType);
           }}
         >
           <input
@@ -413,6 +426,7 @@ function SignUp() {
               type="radio"
               id="instructor"
               name="userType"
+              onChange={(e) => setUserType('Instructor')}
             />
             <label>Student</label>
             <input
@@ -420,6 +434,7 @@ function SignUp() {
               type="radio"
               id="student"
               name="userType"
+              onChange={(e) => setUserType('Student')}
             />
           </div>
           {blankFields === true ? (

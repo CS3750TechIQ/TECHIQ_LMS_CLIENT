@@ -31,7 +31,5 @@ function MyApp({ Component, pageProps }) {
         </Auth>    
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
-
   )}
-
-export default MyApp
+export default MyApp;
