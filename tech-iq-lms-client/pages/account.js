@@ -1,7 +1,7 @@
-import styled from 'styled-components';
-import { SocialIcon } from 'react-social-icons';
-import Nav from '../components/navBar';
-import { useQuery, useQueryClient } from 'react-query';
+import styled from "styled-components";
+import { SocialIcon } from "react-social-icons";
+import Nav from "../components/navBar";
+import { useQuery, useQueryClient } from "react-query";
 
 const AccountStyles = styled.div`
   .accountContainer {
@@ -52,73 +52,78 @@ const AccountStyles = styled.div`
 
 export default function Account() {
   const queryClient = useQueryClient();
-  const userData = queryClient.getQueryData('userData');
+  const userData = queryClient.getQueryData("userData");
   const [isEditing, setIsEditing] = useState(false);
 
+  !isEditing ? <ViewingAccount /> : <EditingAccount />  
+}
+
+function ViewingAccount() {
   return (
-    
-    {isEditing ? (
     <AccountStyles>
       <Nav />
-        
-          <div className="accountContainer">
-            <div className="userImage one" />
 
-            <div className="canvasInfo">
-              <h1>{userData.data.firstName + ' ' + userData.data.lastName}</h1>
-              <p>{userData.data.phoneNumber}</p>
-              <p>{userData.data.username}</p>
-            </div>
-            <div className="iconContainer">
-              <SocialIcon url="https://github.com/" />
-              <SocialIcon url="https://www.linkedin.com/" />
-              <SocialIcon url="https://twitter.com" />
-            </div>
-            <h4>Bio</h4>
-            <div className="bioContainer">
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-                ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                aliquip ex ea commodo consequat. Duis aute irure dolor in
-                reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                culpa qui officia deserunt mollit anim id est laborum.
-              </p>
-            </div>
-          </div>
+      <div className="accountContainer">
+        <div className="userImage one" />
+
+        <div className="canvasInfo">
+          <h1>{userData.data.firstName + " " + userData.data.lastName}</h1>
+          <p>{userData.data.phoneNumber}</p>
+          <p>{userData.data.username}</p>
+        </div>
+        <div className="iconContainer">
+          <SocialIcon url="https://github.com/" />
+          <SocialIcon url="https://www.linkedin.com/" />
+          <SocialIcon url="https://twitter.com" />
+        </div>
+        <h4>Bio</h4>
+        <div className="bioContainer">
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat. Duis aute irure dolor in
+            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+            culpa qui officia deserunt mollit anim id est laborum.
+          </p>
+        </div>
+      </div>
     </AccountStyles>
-   ) : ( 
+  );
+}
+
+function EditingAccount() {
+  return (
     <AccountStyles>
       <Nav />
-        
-          <div className="accountContainer">
-            <div className="userImage one" />
 
-            <div className="canvasInfo">
-              <h1>{userData.data.firstName + ' ' + userData.data.lastName}</h1>
-              <p>{userData.data.phoneNumber}</p>
-              <p>{userData.data.username}</p>
-            </div>
-            <div className="iconContainer">
-              <SocialIcon url="https://github.com/" />
-              <SocialIcon url="https://www.linkedin.com/" />
-              <SocialIcon url="https://twitter.com" />
-            </div>
-            <h4>Bio</h4>
-            <div className="bioContainer">
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-                ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                aliquip ex ea commodo consequat. Duis aute irure dolor in
-                reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                culpa qui officia deserunt mollit anim id est laborum.
-              </p>
-            </div>
-          </div>
+      <div className="accountContainer">
+        <div className="userImage one" />
+
+        <div className="canvasInfo">
+          <h1>{userData.data.firstName + " " + userData.data.lastName}</h1>
+          <input type="text" value={userData.data.phoneNumber} />
+          <p>{userData.data.username}</p>
+        </div>
+        <div className="iconContainer">
+          <SocialIcon url="https://github.com/" />
+          <SocialIcon url="https://www.linkedin.com/" />
+          <SocialIcon url="https://twitter.com" />
+        </div>
+        <h4>Bio</h4>
+        <div className="bioContainer">
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat. Duis aute irure dolor in
+            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+            culpa qui officia deserunt mollit anim id est laborum.
+          </p>
+        </div>
+      </div>
     </AccountStyles>
-   )}
   );
 }

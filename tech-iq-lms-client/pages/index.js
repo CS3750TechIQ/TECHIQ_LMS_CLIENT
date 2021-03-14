@@ -1,11 +1,11 @@
 import styled from "styled-components";
+import { useQueryClient } from "react-query";
+import axios from "axios";
+import { useState, Component } from 'react';
 import Nav from "../components/navBar";
 import Button from "../components/button";
 import List from "../components/todolist";
 import CourseCards from "../components/courseCards";
-import { useQueryClient, QueryCache } from "react-query";
-import axios from "axios";
-import { useState } from 'react';
 
 const HomeStyles = styled.div`
 
@@ -32,6 +32,14 @@ const HomeStyles = styled.div`
 export default function Home(props) {
   const queryClient = useQueryClient()
   const data = queryClient.getQueryData('userData')
+
+  // componentDidUpdate(){
+  //   localStorage.setItem('_username', JSON.stringify(data))
+  // }
+
+  // componentDidMount() {
+
+  // }
   return (
     <HomeStyles>
       <Nav />
