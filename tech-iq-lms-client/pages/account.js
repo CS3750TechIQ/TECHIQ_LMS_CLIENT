@@ -3,6 +3,7 @@ import { SocialIcon } from "react-social-icons";
 import { useState } from 'react';
 import Nav from "../components/navBar";
 import { useQuery, useQueryClient } from "react-query";
+import axios from "axios";
 
 const AccountStyles = styled.div`
   .accountContainer {
@@ -60,7 +61,7 @@ export default function Account() {
         {
           isEditing ? 
           <button onClick={() => {setIsEditing(true)}}>Edit</button> :
-          <button onClick={() => {setIsEditing(false)}}>Save</button>         
+          <button type="submit" onClick={() => {setIsEditing(false)}}>Save</button>         
         }
         {!isEditing ? <ViewingAccount /> : <EditingAccount />}
     </div>
@@ -94,12 +95,26 @@ function ViewingAccount() {
   );
 }
 
+const updateUserBio = async () => {
+  const [userPhone, setUserPhone] = useState('');
+  const [userBio, setUserBio] = useState('');
+  const username = userData.data.username;
+
+  try {
+    const res = await axios.put('http://localhost:50058/Account/UpdateUserBio', {
+      userBio,
+      userPhone,
+      username,
+    });
+  }catch(e) {
+    alert(e);
+  }
+}
 function EditingAccount() {
   const queryClient = useQueryClient();
   const userData = queryClient.getQueryData('userData');
 
-  const [userPhone, setUserPhone] = useState('');
-  const [userBio, setUserBio] = useState('');
+
 
   return (
     <AccountStyles>
