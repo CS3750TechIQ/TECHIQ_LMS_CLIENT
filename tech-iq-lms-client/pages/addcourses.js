@@ -47,6 +47,7 @@ const AddCoursesStyles = styled.div`
         color: #072f60;
         margin: 20px; 
         padding: 10px;
+        font-weight: bold;
     }
 
     label {

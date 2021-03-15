@@ -45,6 +45,9 @@ const CourseStyles = styled.div`
     .courseListButtonsD {
         background-color: #ca2e2f;
     }
+    .courseReturn {
+        font-weight: bold;
+    }
 
 
     table{       
@@ -119,7 +122,9 @@ export default function Courses() {
                                 </td>
                             </tr>                         
                     </table>
+                    
                 </div>
+                <a className="courseTitle courseReturn" href="/">Return to Dashboard</a>
             </div> 
 
         </CourseStyles>
