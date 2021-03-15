@@ -3,14 +3,12 @@ import { SocialIcon } from "react-social-icons";
 import { useState } from 'react';
 import Nav from "../components/navBar";
 import { useQuery, useQueryClient } from "react-query";
-import axios from "axios";
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const AccountStyles = styled.div`
-  .accountContainer {
     display: flex;
     flex-wrap: wrap;
     padding: 5px;
-    width: 700px;
+    width: 750px;
     margin: auto;
     margin-top: 50px;
     box-shadow: 0.25px 0.25px 1px #a0a0a0;
@@ -26,14 +24,22 @@ const AccountStyles = styled.div`
     background-size: cover;
   }
 
+  .inputFile{
+    margin: 2px;
+  }
+
   .one {
-    background-image: url("http://placehold.it/400x200");
+    background-image: url("https://lh3.googleusercontent.com/proxy/CQrbom5H7ldcxHPzgrbcedYPJa8q3RESpTdBEPtiWgYD6aX-YEzHUek4M2XoNaCvFA5ZjAoVvu-xnYIBL6_DUkKowzEdlSckP2M");
   }
 
   .canvasInfo {
     color: grey;
     font-size: 18px;
     padding: 1rem;
+  }
+
+  #file[type = "file"]{
+    display: none;
   }
 
   .bioContainer {
@@ -50,11 +56,19 @@ const AccountStyles = styled.div`
     width: 700px;
     padding: 2px;
   }
+  .inputLabel{
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    border: none;
+    background-color: Transparent;
+    outline:none;
+  }
 `;
 
 export default function Account() {
   const [isEditing, setIsEditing] = useState(false);
-
+  
   return (
     <div>
         <Nav/>
@@ -69,12 +83,34 @@ export default function Account() {
 }
 
 function ViewingAccount() {
+
+  const [profileImage, setProfileImage] = useState('https://lh3.googleusercontent.com/proxy/CQrbom5H7ldcxHPzgrbcedYPJa8q3RESpTdBEPtiWgYD6aX-YEzHUek4M2XoNaCvFA5ZjAoVvu-xnYIBL6_DUkKowzEdlSckP2M')
+
+  const imageHandler = (e) =>{
+    const reader = new FileReader();
+    reader.onload = () => {
+      if(reader.readyState === 2){
+        debugger;
+        setProfileImage(reader.result);
+      }
+    }
+   reader.readAsDataURL(e.target.files[0])
+  }
+
   const queryClient = useQueryClient();
   const userData = queryClient.getQueryData('userData');
   return (
     <AccountStyles>
       <div className="accountContainer">
-        <div className="userImage one" />
+        <div>
+          <div className="userImage">
+             <img src={profileImage} alt="" id="img" className="userImage"/>
+          </div>
+          <div>
+          <span><input class="inputFile" type='file' id='file' name="image" accept="*" onChange={imageHandler}/></span>
+          <label class="inputLabel" htmlFor="file"><FontAwesomeIcon icon= "upload" size="xl"/> Upload Image</label>
+          </div>
+        </div>
 
         <div className="canvasInfo">
           <h1>{userData.data.firstName + " " + userData.data.lastName}</h1>
@@ -135,8 +171,8 @@ function EditingAccount() {
           <SocialIcon url="https://www.linkedin.com/" />
           <SocialIcon url="https://twitter.com" />
         </div>
-        <h4>Bio</h4>
         <div className="bioContainer">
+        <h4>Bio</h4>
         <form>
           <input 
             type="text" 

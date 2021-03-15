@@ -1,11 +1,12 @@
 import styled from "styled-components";
 import { useQueryClient } from "react-query";
 import axios from "axios";
-import { useState, Component } from 'react';
+import React, { useState, Component } from 'react';
 import Nav from "../components/navBar";
 import Button from "../components/button";
 import List from "../components/todolist";
 import CourseCards from "../components/courseCards";
+
 
 const HomeStyles = styled.div`
 
@@ -28,6 +29,7 @@ const HomeStyles = styled.div`
     justify-content: space-between;
   }
 `;
+
 
 export default function Home(props) {
   const queryClient = useQueryClient()
