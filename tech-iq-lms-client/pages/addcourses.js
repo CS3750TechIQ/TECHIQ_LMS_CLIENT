@@ -77,7 +77,6 @@ export default function AddCourses() {
                         <label className="addCoursesLabel" for="name">Course name: </label>
                         <input id="name"></input>
                     </div>
-
                     <div className="addFormItems">
                         <input className="addCoursesLabel" type="checkbox" id="Monday" ></input>
                         <label className="addCoursesLabel" for="Monday">Monday</label>
