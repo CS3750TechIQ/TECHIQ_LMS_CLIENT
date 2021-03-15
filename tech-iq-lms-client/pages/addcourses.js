@@ -49,6 +49,9 @@ const AddCoursesStyles = styled.div`
         padding: 10px;
     }
 
+    label {
+        font-weight: bold;
+    }
 
 `;
 

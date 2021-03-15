@@ -32,6 +32,7 @@ const CourseStyles = styled.div`
         background-color: #072f60;
         color: #ffffff;
         margin: 20px;
+        padding: 5px;
     }
 
     .courseListButtonsP {
@@ -49,8 +50,9 @@ const CourseStyles = styled.div`
     table{       
         border-collapse: collapse;
         width: 80%;
+        
     }
-
+    
     th{
         padding-top: 8px;
         padding-bottom: 8px;
@@ -69,7 +71,7 @@ export default function Courses() {
         <CourseStyles>
             <Nav />       
             <div className="addCourseContainer">
-                <h1 className= "courseTitle" >Add Courses</h1>
+                <h1 className= "courseTitle" >Course list</h1>
                 
                 <div className="buttonContainerCourse">
                     <button type="button" className="courseButton" >Edit Course list</button>
