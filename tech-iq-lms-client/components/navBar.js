@@ -49,7 +49,7 @@ export default function Nav() {
           <a href="/account">Account</a>
           <a href="/dashboard">Dashboard</a>
           {
-            userType ==='Instuctor' ? 
+            userType ==='Instructor' ? 
             <a href="/courses">Courses</a> : 
             <a href="/registration">Registration</a>
           }
