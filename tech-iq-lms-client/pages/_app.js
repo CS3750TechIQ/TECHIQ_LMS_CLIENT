@@ -6,6 +6,18 @@ import { ReactQueryDevtools } from 'react-query/devtools'
 import '@fullcalendar/common/main.css'
 import '@fullcalendar/daygrid/main.css'
 import '@fullcalendar/timegrid/main.css'
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { 
+  faEdit ,
+  faUpload
+} from '@fortawesome/free-solid-svg-icons';
+
+library.add(
+  faEdit,
+  faUpload
+);
+
+//React.component('font-awesome-icon', FontAwesomeIcon);
 
 const Styles = createGlobalStyle`    
     html, body {
