@@ -14,8 +14,9 @@ const CourseStyles = styled.div`
     .buttonContainerCourse{
         display: flex;
         flex-direction: row;
-        justify-content: center;
-        padding: 5px;
+        justify-content: space-evenly;
+        
+        
     }
     .courseListContainer{
         display: flex;
@@ -29,16 +30,30 @@ const CourseStyles = styled.div`
     .courseButton {
         background-color: #072f60;
         color: #ffffff;
+        margin: 20px;
 
     }
 
-    table, th, td {
-        border: 1px solid #072f60;
-        padding: 5px;
+
+    table{       
+        border-collapse: collapse;
+        width: 80%;
+    }
+
+    th{
+        padding-top: 8px;
+        padding-bottom: 8px;
+        background-color: #072f60;
+        color: #ffffff;
+        text-align: left;
+    }
+
+    td{
+
     }
 `;
 
-export default function registration() {
+export default function Courses() {
     return(
         <CourseStyles>
             <Nav />       
@@ -47,32 +62,33 @@ export default function registration() {
                 
                 <div className="buttonContainerCourse">
                     <button type="button" className="courseButton" >Edit Course list</button>
-                    <button type="button" className="courseButton" >Create new course</button>
+                    <form action="/addcourses">
+                        <button type="submit" className="courseButton" >Create new course</button>
+                    </form>
                 </div>
 
                 <div className="courseListContainer">
-                    <table>
-                        <tr>
-                            <th>Course subject</th>
-                            <th>Course number</th>
-                            <th>Course name</th>
-                            <th>Meeting time</th>
-                            <th>Location</th>
-                            <th>Days</th>
-                            <th>Enrollment</th>
-                        </tr>
-                        <tr>
-                            <td>CS</td>
-                            <td>3550</td>
-                            <td>Adv. Database</td>
-                            <td>11:30 - 1:30</td>
-                            <td>Online</td>
-                            <td>MW</td>
-                            <td>50</td>
-                            <td>**place holder for Button**</td>
-
-
-                        </tr>
+                    <table>                      
+                            <tr>
+                                <th>Course subject</th>
+                                <th>Course number</th>
+                                <th>Course name</th>
+                                <th>Meeting time</th>
+                                <th>Location</th>
+                                <th>Days</th>
+                                <th>Max. capacity</th>
+                                <th>  </th>
+                            </tr>                       
+                            <tr>
+                                <td>CS</td>
+                                <td>3550</td>
+                                <td>Adv. Database</td>
+                                <td>11:30 - 1:30</td>
+                                <td>Online</td>
+                                <td>MW</td>
+                                <td>50</td>
+                                <td>**place holder for Button**</td>
+                            </tr>                        
                     </table>
                 </div>
             </div> 
