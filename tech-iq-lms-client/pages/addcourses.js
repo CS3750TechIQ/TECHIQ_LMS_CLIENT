@@ -5,13 +5,15 @@ import styled from "styled-components";
 const AddCoursesStyles = styled.div`
     .addCoursesLabel {
         color: #072f60;
+        margin: 8px;
+        padding: 5px;
     }
 
     .addFormContainer {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        width: 350px;
+        width: 380px;
         margin: 0 auto;
         padding: 5px;
 
@@ -20,12 +22,32 @@ const AddCoursesStyles = styled.div`
     .addFormItems {
         display: flex;
         flex-direction: row;
-        justify-content: space-evenly;
-        margin: 8px;
-        padding: 5px;
+        justify-content: left;
+        margin: 3px;
+        padding: 1px;
     }
 
-    
+    .courseButton {
+        background-color: #072f60;
+        color: #ffffff;
+        margin: 20px; 
+        padding: 10px; 
+    }
+
+    .addButtonItem {
+        display: flex;
+        justify-content: center;
+    }
+
+    .addHeading {
+        color: #072f60;
+    }
+
+    .courseReturn {
+        color: #072f60;
+        margin: 20px; 
+        padding: 10px;
+    }
 
 
 `;
@@ -36,6 +58,9 @@ export default function AddCourses() {
             <Nav /> 
             <form>
                 <div className="addFormContainer">
+                    <div className="addButtonItem">
+                        <h1 className="addHeading" >Create Class</h1>
+                    </div>                
                     <div className="addFormItems">
                         <label className="addCoursesLabel" for="subject">Course subject: </label>
                         <input id="subject"></input>
@@ -50,39 +75,40 @@ export default function AddCourses() {
                     </div>
 
                     <div className="addFormItems">
-                        <input type="checkbox" id="Monday" ></input>
-                        <label for="Monday">Monday</label>
+                        <input className="addCoursesLabel" type="checkbox" id="Monday" ></input>
+                        <label className="addCoursesLabel" for="Monday">Monday</label>
                     </div>
                     <div className="addFormItems">
-                        <input type="checkbox" id="Tuesday" ></input>
-                        <label for="Tuesday">Tuesday</label>
+                        <input className="addCoursesLabel" type="checkbox" id="Tuesday" ></input>
+                        <label className="addCoursesLabel" for="Tuesday">Tuesday</label>
                     </div>
                     <div className="addFormItems">
-                        <input type="checkbox" id="Wednesday" ></input>
-                        <label for="Wednesday">Wednesday</label>
+                        <input className="addCoursesLabel" type="checkbox" id="Wednesday" ></input>
+                        <label className="addCoursesLabel" for="Wednesday">Wednesday</label>
                     </div>
                     <div className="addFormItems">    
-                        <input type="checkbox" id="Thursday" ></input>
-                        <label for="Thursday">Thursday</label>
+                        <input className="addCoursesLabel" type="checkbox" id="Thursday" ></input>
+                        <label className="addCoursesLabel" for="Thursday">Thursday</label>
                     </div>
                     <div className="addFormItems">
-                        <input type="checkbox" id="Friday" ></input>
-                        <label for="Friday">Friday</label>
+                        <input className="addCoursesLabel" type="checkbox" id="Friday" ></input>
+                        <label className="addCoursesLabel" for="Friday">Friday</label>
                     </div>
                     <div className="addFormItems">
-                        <label for="stTime" > Start Time: </label>
-                        <input type="time" id="stTime" name="stTime"></input>
+                        <label className="addCoursesLabel" for="stTime" > Start Time: </label>
+                        <input className="addCoursesLabel" type="time" id="stTime" name="stTime"></input>
                     </div>
                     <div className="addFormItems">
-                        <label for="edTime" > End Time: </label>
-                        <input type="time" id="edTime" name="edTime"></input>
+                        <label className="addCoursesLabel" for="edTime" > End Time: </label>
+                        <input className="addCoursesLabel" type="time" id="edTime" name="edTime"></input>
                     </div>  
                     <div className="addFormItems">
                         <label className="addCoursesLabel" for="capacity">Max. capacity</label>
-                        <input id="name"></input>
-                    </div>
-                    <div className="addFormItems">
-                        <input type="submit" value="Submit"></input>
+                        <input id="capacity"></input>
+                    </div>    
+                    <div className="addButtonItem">
+                        <input className="courseButton" type="submit" value="Create"></input>
+                        <a className="courseReturn" href="/courses"> Return to courses</a>
                     </div>
                 </div>
             </form>

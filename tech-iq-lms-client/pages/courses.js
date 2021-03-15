@@ -25,13 +25,24 @@ const CourseStyles = styled.div`
 
     .courseTitle {
         text-align: center;
+        color: #072f60;
 
     }
     .courseButton {
         background-color: #072f60;
         color: #ffffff;
         margin: 20px;
+    }
 
+    .courseListButtonsP {
+        display: flex;
+        justify-content: space-evenly;
+    }
+    .courseListButtonsE {
+        background-color: #44a04b; 
+    }
+    .courseListButtonsD {
+        background-color: #ca2e2f;
     }
 
 
@@ -87,8 +98,24 @@ export default function Courses() {
                                 <td>Online</td>
                                 <td>MW</td>
                                 <td>50</td>
-                                <td>**place holder for Button**</td>
-                            </tr>                        
+                                <td className="courseListButtonsP">
+                                    <button type="button" className="courseListButtonsE">Edit</button>
+                                    <button type="button" className="courseListButtonsD">Delete</button>
+                                </td>
+                            </tr> 
+                            <tr>
+                                <td>CS</td>
+                                <td>2420</td>
+                                <td>Data Structures & Algorithms</td>
+                                <td>2:30 - 3:30</td>
+                                <td>Online</td>
+                                <td>MW</td>
+                                <td>50</td>
+                                <td className="courseListButtonsP">
+                                    <button type="button" className="courseListButtonsE">Edit</button>
+                                    <button type="button" className="courseListButtonsD">Delete</button>
+                                </td>
+                            </tr>                         
                     </table>
                 </div>
             </div> 
