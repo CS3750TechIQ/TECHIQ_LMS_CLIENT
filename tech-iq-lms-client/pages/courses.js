@@ -84,7 +84,7 @@ export default function Courses() {
                 <div className="courseListContainer">
                     <table>                      
                             <tr>
-                                <th>Course subject</th>
+                                <th>Department</th>
                                 <th>Course number</th>
                                 <th>Course name</th>
                                 <th>Meeting time</th>
