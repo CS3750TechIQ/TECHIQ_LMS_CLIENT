@@ -66,8 +66,16 @@ export default function AddCourses() {
                         <h1 className="addHeading" >Create Class</h1>
                     </div>                
                     <div className="addFormItems">
-                        <label className="addCoursesLabel" for="subject">Course subject: </label>
-                        <input id="subject"></input>
+                        <label className="addCoursesLabel" for="number">Department: </label>
+                        <input className="addCoursesLabel" list="departments" name="department"></input>
+                        <datalist id="departments">
+                            <option value="Computer Science"></option>
+                            <option value="Electrical Engineering"></option>
+                            <option value="Computer Engineering"></option>
+                            <option value="Network Management Technology"></option>
+                            <option value="Mechanical Engineering"></option>
+                            <option value="Manufacturing Engineering"></option>
+                        </datalist>
                     </div>
                     <div className="addFormItems">
                         <label className="addCoursesLabel" for="number">Course number: </label>

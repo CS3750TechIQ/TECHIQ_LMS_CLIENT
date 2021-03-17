@@ -14,9 +14,7 @@ const CourseStyles = styled.div`
     .buttonContainerCourse{
         display: flex;
         flex-direction: row;
-        justify-content: space-evenly;
-        
-        
+        justify-content: space-evenly; 
     }
     .courseListContainer{
         display: flex;
@@ -26,8 +24,8 @@ const CourseStyles = styled.div`
     .courseTitle {
         text-align: center;
         color: #072f60;
-
     }
+
     .courseButton {
         background-color: #072f60;
         color: #ffffff;
