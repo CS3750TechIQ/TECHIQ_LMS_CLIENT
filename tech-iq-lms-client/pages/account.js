@@ -77,6 +77,7 @@ export default function Account() {
           <button onClick={() => {setIsEditing(true)}}>Edit</button> :
           <button type="submit" onClick={() => {setIsEditing(false)}}>Save</button>         
         }
+        
         {!isEditing ? <ViewingAccount /> : <EditingAccount />}
     </div>
   ) 
