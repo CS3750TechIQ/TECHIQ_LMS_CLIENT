@@ -46,6 +46,27 @@ const RegisterCoursesStyles = styled.div`
         font-weight: bold;
     }
 
+    .courseSearch {
+        text-align: center;
+        color: #072f60;
+        margin: 1rem;
+    }
+    .courseButton {
+        background-color: #072f60;
+        color: #ffffff;
+        margin: 5px;
+        padding: 5px;
+    }
+
+    .courseButton:hover{
+        background-color:#6a829f;
+    }
+    .courseSearchInput {
+        color: #072f60;
+        margin: 5px;
+        padding: 5px;
+    }
+
     table{       
         border-collapse: collapse;
         width: 80%;
@@ -71,17 +92,21 @@ export default function RegisterCourses() {
             <Nav /> 
             <div className="addCourseContainer">
                 <h1 className="courseTitle">Register Courses</h1>
+                <div class="courseSearch">
+                    <input className="courseSearchInput" type="text" placeholder="Search Courses" name="search"></input>
+                    <button className="courseButton" type="submit">Submit</button>                  
+                </div>
                 <div className="courseListContainer">
                     <table>
                         <tr>
                             <th>Department</th>
                             <th>Course number</th>
                             <th>Course name</th>
-                            <th>Meeting time</th> // Start and end time in DB table 
+                            <th>Meeting time</th> {/* Start and end time in DB table */}
                             <th>Location</th>
                             <th>Days</th>
                             <th>Max. capacity</th>
-                            <th>First name</th> // first and last of professor possible pulled from UserLMS table?
+                            <th>First name</th> {/* first and last of professor possible pulled from UserLMS table? */}
                             <th>last name</th>
                             <th>  </th>
                         </tr>
@@ -93,6 +118,8 @@ export default function RegisterCourses() {
                                 <td>Online</td>
                                 <td>MW</td>
                                 <td>50</td>
+                                <td>Drew</td>
+                                <td>Weidman</td>
                                 <td className="courseListButtonsP">
                                     <button type="button" className="courseListButtonsE">Add Class</button>                                   
                                 </td>
