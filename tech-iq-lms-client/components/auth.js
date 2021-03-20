@@ -1,15 +1,9 @@
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable no-console */
-/* eslint-disable no-alert */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { createContext, useState, useContext } from 'react';
-import Cookies from 'js-cookie';
 import axios from 'axios';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
-import { useQuery } from "react-query"
+import { useMutation } from "react-query";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 
 const AuthContext = createContext({});
@@ -224,41 +218,27 @@ const SignUpStyles = styled.div`
   }
 `;
 function Auth({ children }) {
-  const [enabled, setEnabled] = useState(false)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [user, setUser] = useState({})
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [user, setUser] = useLocalStorage('user', null)
   const [showSignUp, setShowSignUp] = useState(false)
-
-  const attemptLogIn = () => {
-    refetch();
-
-    if (isSuccess) {
-      setUser(data);
-      setIsAuthenticated(true);
-    } else if (isError) {
+  const signUpMutation = useMutation(async (email) => {
+    const { data } = await axios.get("http://localhost:50058/Account/" + email + "/getUser")
+    return data
+  }, {
+    onSuccess: data => {
+      setUser(data)
+    },
+    onError: err => {
+      console.error(err)
       alert("something went wrong");
     }
-  }
-
-  //function that will send a GET request to the server and save response to the cache
-  const { data, refetch, isSuccess, status, isLoading, isError, error } = useQuery(
-    "userData",
-    () => axios.get("http://localhost:50058/Account/" + email + "/getUser"),
-    {
-      refetchOnWindowFocus: false,
-      enabled: enabled,
-    }
-  );
-
-  const updateEmail = async (newEmail) => {
-    setEmail(newEmail);
-  };
+  })
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, updateEmail }}>
-      {!isAuthenticated ? (
+    <AuthContext.Provider value={user}>
+      {
+        !user ? (
         <LoginStyles>
           <style jsx global>
             {`
@@ -273,8 +253,7 @@ function Auth({ children }) {
               className="logInForm"
               onSubmit={(e) => {
                 e.preventDefault();
-                setEnabled(true)
-                attemptLogIn();
+                signUpMutation.mutate(email)
               }}
             >
               <input

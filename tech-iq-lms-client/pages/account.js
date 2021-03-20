@@ -4,6 +4,9 @@ import { useState } from 'react';
 import Nav from "../components/navBar";
 import { useQuery, useQueryClient } from "react-query";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import axios from "axios";
+import useLocalStorage from "../hooks/useLocalStorage";
+
 const AccountStyles = styled.div`
     display: flex;
     flex-wrap: wrap;
@@ -99,7 +102,8 @@ function ViewingAccount() {
   }
 
   const queryClient = useQueryClient();
-  const userData = queryClient.getQueryData('userData');
+  const userData = useLocalStorage('user');
+  console.log(userData)
   return (
     <AccountStyles>
       <div className="accountContainer">
@@ -114,9 +118,9 @@ function ViewingAccount() {
         </div>
 
         <div className="canvasInfo">
-          <h1>{userData.data.firstName + " " + userData.data.lastName}</h1>
-          <p>{userData.data.phoneNumber}</p>
-          <p>{userData.data.username}</p>
+          <h1>{userData.firstName + " " + userData.lastName}</h1>
+          <p>{userData.userPhone}</p>
+          <p>{userData.username}</p>
         </div>
         <div className="iconContainer">
           <SocialIcon url="https://github.com/" />
@@ -125,7 +129,7 @@ function ViewingAccount() {
         </div>
         <h4>Bio</h4>
         <div className="bioContainer">
-          <p>{userData.data.userBio}</p>
+          <p>{userData.userBio}</p>
         </div>
       </div>
     </AccountStyles>

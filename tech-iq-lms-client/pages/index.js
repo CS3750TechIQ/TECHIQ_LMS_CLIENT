@@ -1,7 +1,8 @@
+import React, { useState, Component } from 'react';
+import dynamic from "next/dynamic";
 import styled from "styled-components";
 import { useQueryClient } from "react-query";
 import axios from "axios";
-import React, { useState, Component } from 'react';
 import Nav from "../components/navBar";
 import Button from "../components/button";
 import List from "../components/todolist";
@@ -30,6 +31,9 @@ const HomeStyles = styled.div`
   }
 `;
 
+const NoSSRComponent = dynamic(() => import("../components/NoSSRComponent"), {
+  ssr: false,
+});
 
 export default function Home(props) {
   const queryClient = useQueryClient()
@@ -45,6 +49,7 @@ export default function Home(props) {
   return (
     <HomeStyles>
       <Nav />
+      <NoSSRComponent />
       <div className="rightSideBar">
         <List />
       </div>
