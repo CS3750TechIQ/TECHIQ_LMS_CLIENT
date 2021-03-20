@@ -1,11 +1,13 @@
+import React, { useState, Component } from 'react';
+import dynamic from "next/dynamic";
 import styled from "styled-components";
+import { useQueryClient } from "react-query";
+import axios from "axios";
 import Nav from "../components/navBar";
 import Button from "../components/button";
 import List from "../components/todolist";
 import CourseCards from "../components/courseCards";
 
-//
-import { useState } from 'react';
 
 const HomeStyles = styled.div`
 
@@ -29,10 +31,25 @@ const HomeStyles = styled.div`
   }
 `;
 
+const NoSSRComponent = dynamic(() => import("../components/NoSSRComponent"), {
+  ssr: false,
+});
+
 export default function Home(props) {
+  const queryClient = useQueryClient()
+  const data = queryClient.getQueryData('userData')
+
+  // componentDidUpdate(){
+  //   localStorage.setItem('_username', JSON.stringify(data))
+  // }
+
+  // componentDidMount() {
+
+  // }
   return (
     <HomeStyles>
       <Nav />
+      <NoSSRComponent />
       <div className="rightSideBar">
         <List />
       </div>

@@ -1,11 +1,12 @@
-import { createContext, useState, useContext } from "react";
-import Cookies from "js-cookie";
-import axios from "axios";
-import styled from "styled-components";
-import { useRouter } from "next/router";
+import { createContext, useState, useContext } from 'react';
+import axios from 'axios';
+import styled from 'styled-components';
+import { useRouter } from 'next/router';
+import { useMutation } from "react-query";
+import useLocalStorage from "../hooks/useLocalStorage";
+
 
 const AuthContext = createContext({});
-
 const LoginStyles = styled.div`
   font-family: "Rubik", sans-serif;
   margin-top: 10rem;
@@ -217,39 +218,27 @@ const SignUpStyles = styled.div`
   }
 `;
 function Auth({ children }) {
-  // create instance of router
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [user, setUser] = useState([]);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [showSignUp, setShowSignUp] = useState(false);
-
-  const updateEmail = async (newEmail) => {
-    setEmail(newEmail);
-  };
-
-  //function that will send a GET request to the server
-  const logInAccount = async () => {
-    updateEmail(email);
-    try {
-      const res = await axios.get(
-        "http://localhost:50058/Account/" + email + "/getUser"
-      );
-      console.log(res);
-      if (res.status === 200) {
-        setUser(res);
-        console.log("User found", user);
-        setIsAuthenticated(true);
-      }
-    } catch (e) {
-      alert(e);
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [user, setUser] = useLocalStorage('user', null)
+  const [showSignUp, setShowSignUp] = useState(false)
+  const signUpMutation = useMutation(async (email) => {
+    const { data } = await axios.get("http://localhost:50058/Account/" + email + "/getUser")
+    return data
+  }, {
+    onSuccess: data => {
+      setUser(data)
+    },
+    onError: err => {
+      console.error(err)
+      alert("something went wrong");
     }
-  };
+  })
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, updateEmail }}>
-      {!isAuthenticated ? (
+    <AuthContext.Provider value={user}>
+      {
+        !user ? (
         <LoginStyles>
           <style jsx global>
             {`
@@ -264,7 +253,7 @@ function Auth({ children }) {
               className="logInForm"
               onSubmit={(e) => {
                 e.preventDefault();
-                logInAccount();
+                signUpMutation.mutate(email)
               }}
             >
               <input
@@ -306,59 +295,64 @@ function Auth({ children }) {
 const useAuthState = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error("useAuthState must be used within an AuthProvider");
+    throw new Error('useAuthState must be used within an AuthProvider');
   }
   return context;
 };
 
 function SignUp() {
-  //create instance of router
+  // create instance of router
   const router = useRouter();
 
-  //Create state objects that will hold the user info
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [birthdate, setBirthdate] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [userType, setUserType] = useState("");
+  // Create state objects that will hold the user info
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [birthdate, setBirthdate] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [userType, setUserType] = useState('');
   const [blankFields, setBlankFields] = useState(false);
 
-  //function that will send a Post request to the server
+  // function that will send a Post request to the server
   const createAccount = async () => {
-    //#region input verification
-    if (firstName === null || firstName === "") {
+    // #region input verification
+    if (firstName === null || firstName === '') {
       setBlankFields(true);
       return;
-    } else if (lastName === null || lastName === "") {
+    } if (lastName === null || lastName === '') {
       setBlankFields(true);
       return;
-    } else if (email === null || email === "") {
+    } if (email === null || email === '') {
       setBlankFields(true);
       return;
-    } else if (birthdate === null || birthdate === "") {
+    } if (birthdate === null || birthdate === '') {
       setBlankFields(true);
       return;
-    } else if (password === null || password === "") {
+    } if (password === null || password === '') {
+      setBlankFields(true);
+      return;
+    } if (userType === null) {
       setBlankFields(true);
       return;
     }
-    //#endregion input verification
 
-    if (password != confirmPassword) {
-      alert("Passwords do not match");
+    // #endregion input verification
+
+    if (password !== confirmPassword) {
+      alert('Passwords do not match');
       return;
     }
 
     try {
       console.log(password);
-      const res = await axios.put("http://localhost:50058/Account/addUser", {
-        password: password,
-        firstName: firstName,
-        lastName: lastName,
+      const res = await axios.put('http://localhost:50058/Account/addUser', {
+        password,
+        firstName,
+        lastName,
         birthDate: birthdate,
         username: email,
+        userType,
       });
       if (res.status === 200) router.reload();
     } catch (e) {
@@ -375,6 +369,7 @@ function SignUp() {
           onSubmit={(e) => {
             e.preventDefault();
             createAccount();
+            console.log(userType);
           }}
         >
           <input
@@ -410,6 +405,7 @@ function SignUp() {
               type="radio"
               id="instructor"
               name="userType"
+              onChange={(e) => setUserType('Instructor')}
             />
             <label>Student</label>
             <input
@@ -417,6 +413,7 @@ function SignUp() {
               type="radio"
               id="student"
               name="userType"
+              onChange={(e) => setUserType('Student')}
             />
           </div>
           {blankFields === true ? (

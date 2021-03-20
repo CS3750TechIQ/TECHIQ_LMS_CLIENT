@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const TodoListStyles = styled.div`
   h3 {
@@ -26,66 +26,66 @@ const TodoListStyles = styled.div`
 
 export default function List() {
   return (
-    <TodoListStyles class="listContainer">
+    <TodoListStyles className="listContainer">
       <h3>To-Do List: </h3>
-      <div class="listContainer">
-        <div class="divContainer">
-          <label class="labelMain"> CS 3750 </label>
+      <div className="listContainer">
+        <div className="divContainer">
+          <label className="labelMain"> CS 3750 </label>
           <div>
             <div>
-              <label class="labelSub">Assignment: </label>
+              <label className="labelSub">Assignment: </label>
               <span> Todo List </span>
             </div>
-            <label class="labelSub"> Due: </label>
+            <label className="labelSub"> Due: </label>
             <span> Sunday, February 28 2021</span>
           </div>
         </div>
 
-        <div class="divContainer">
-          <label class="labelMain"> CS 3100 </label>
+        <div className="divContainer">
+          <label className="labelMain"> CS 3100 </label>
           <div>
             <div>
-              <label class="labelSub">Assignment: </label>
+              <label className="labelSub">Assignment: </label>
               <span> Todo List </span>
             </div>
-            <label class="labelSub"> Due: </label>
+            <label className="labelSub"> Due: </label>
             <span> Sunday, February 28 2021</span>
           </div>
         </div>
 
-        <div class="divContainer">
-          <label class="labelMain"> CS 3270 </label>
+        <div className="divContainer">
+          <label className="labelMain"> CS 3270 </label>
           <div>
             <div>
-              <label class="labelSub">Assignment: </label>
+              <label className="labelSub">Assignment: </label>
               <span> Todo List </span>
             </div>
-            <label class="labelSub"> Due: </label>
+            <label className="labelSub"> Due: </label>
             <span> Sunday, February 28 2021</span>
           </div>
         </div>
 
-        <div class="divContainer">
-          <label class="labelMain"> CS 3280 </label>
+        <div className="divContainer">
+          <label className="labelMain"> CS 3280 </label>
           <div>
             <div>
-              <label class="labelSub">Assignment: </label>
+              <label className="labelSub">Assignment: </label>
               <span> Todo List </span>
             </div>
-            <label class="labelSub"> Due: </label>
+            <label className="labelSub"> Due: </label>
             <span> Sunday, February 28 2021</span>
           </div>
         </div>
 
-        <div class="divContainer">
-          <label class="labelMain"> CS 4110 </label>
+        <div className="divContainer">
+          <label className="labelMain"> CS 4110 </label>
           <div>
             <div>
-              <label class="labelSub">Assignment: </label>
+              <label className="labelSub">Assignment: </label>
               <span> Todo List </span>
             </div>
             <label> Due: </label>
-            <span class="labelSub"> Sunday, February 28 2021</span>
+            <span className="labelSub"> Sunday, February 28 2021</span>
           </div>
         </div>
       </div>
