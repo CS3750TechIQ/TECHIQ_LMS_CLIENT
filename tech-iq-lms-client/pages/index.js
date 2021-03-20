@@ -31,25 +31,14 @@ const HomeStyles = styled.div`
   }
 `;
 
-const NoSSRComponent = dynamic(() => import("../components/NoSSRComponent"), {
-  ssr: false,
-});
 
 export default function Home(props) {
   const queryClient = useQueryClient()
   const data = queryClient.getQueryData('userData')
 
-  // componentDidUpdate(){
-  //   localStorage.setItem('_username', JSON.stringify(data))
-  // }
-
-  // componentDidMount() {
-
-  // }
   return (
     <HomeStyles>
       <Nav />
-      <NoSSRComponent />
       <div className="rightSideBar">
         <List />
       </div>
