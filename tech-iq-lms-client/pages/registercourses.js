@@ -74,13 +74,15 @@ export default function RegisterCourses() {
                 <div className="courseListContainer">
                     <table>
                         <tr>
-                            <th>Course subject</th>
+                            <th>Department</th>
                             <th>Course number</th>
                             <th>Course name</th>
-                            <th>Meeting time</th>
+                            <th>Meeting time</th> // Start and end time in DB table 
                             <th>Location</th>
                             <th>Days</th>
                             <th>Max. capacity</th>
+                            <th>First name</th> // first and last of professor possible pulled from UserLMS table?
+                            <th>last name</th>
                             <th>  </th>
                         </tr>
                         <tr>
