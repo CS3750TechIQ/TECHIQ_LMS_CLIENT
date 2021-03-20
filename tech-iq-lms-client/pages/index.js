@@ -7,6 +7,8 @@ import Nav from "../components/navBar";
 import Button from "../components/button";
 import List from "../components/todolist";
 import CourseCards from "../components/courseCards";
+import useLocalStorage from '../hooks/useLocalStorage';
+
 
 
 const HomeStyles = styled.div`
@@ -33,9 +35,9 @@ const HomeStyles = styled.div`
 
 
 export default function Home(props) {
-  const queryClient = useQueryClient()
-  const data = queryClient.getQueryData('userData')
 
+  const userData = useLocalStorage('user')
+  console.log(userData);
   return (
     <HomeStyles>
       <Nav />
