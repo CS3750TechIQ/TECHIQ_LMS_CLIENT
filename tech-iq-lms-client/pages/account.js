@@ -67,6 +67,9 @@ const AccountStyles = styled.div`
     background-color: Transparent;
     outline:none;
   }
+  .imageContainer{
+    margin: 8px;
+  }
 `;
 
 export default function Account() {
@@ -111,7 +114,7 @@ function ViewingAccount() {
           <div className="userImage">
              <img src={profileImage} alt="" id="img" className="userImage"/>
           </div>
-          <div>
+          <div className="imageContainer">
           <span><input class="inputFile" type='file' id='file' name="image" accept="*" onChange={imageHandler}/></span>
           <label class="inputLabel" htmlFor="file"><FontAwesomeIcon icon= "upload" size="xl"/> Upload Image</label>
           </div>
