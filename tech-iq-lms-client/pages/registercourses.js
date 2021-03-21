@@ -126,7 +126,7 @@ export default function RegisterCourses() {
                             </tr>
                     </table>
                 </div>
-                <a className="courseTitle courseReturn" href="/registration">Return to Registration</a>
+                <a className="courseTitle courseReturn" href="/registration">Return to Registration</a>  
             </div>
         </RegisterCoursesStyles>
     );
