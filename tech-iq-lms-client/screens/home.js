@@ -32,29 +32,14 @@ const HomeStyles = styled.div`
   }
 `;
 
-const getUserInfo = async (username) => {
-  return await axios.get("http://localhost:50058/Account/" + username + "/getUser").then(res => res.data)
-}
 
 export default function Home(props) {
 
   const localUserData = useLocalStorage('user')
-  const userInfoQuery = useQuery(['userInfo', localUserData[0].username], async () => {
-    const data = await getUserInfo(localUserData[0].username)
-    return data
-  })
-
-  if (userInfoQuery.isLoading) {
-    return 'Loading...'
-  }
-
-  if (userInfoQuery.isError) {
-    return "There was an error getting user info."
-  }  
 
   return (
     <HomeStyles>
-      <Nav userType={userInfoQuery.data.userType}/>
+      <Nav userType={localUserData[0].userType}/>
       <div className="rightSideBar">
         <List />
       </div>

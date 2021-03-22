@@ -175,7 +175,7 @@ export default function Account() {
 
   return (
     <AccountStyles>
-      <Nav />
+      <Nav userType={localUserData[0].userType}/>
       <div className="accountContainer">
         <div className="topSection">
           <div className="userImage">
