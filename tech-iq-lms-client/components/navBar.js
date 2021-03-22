@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Link from 'next/link';
+import { Link } from 'react-router-dom'
 import Router from 'next/router';
 import { useState } from 'react';
 import { useQueryClient } from 'react-query';
@@ -47,30 +47,30 @@ export default function Nav() {
     <NavStyles>
       <div className="navContainer">
         <div className="title">
-          <Link href="/">
+          <Link to="/">
             <a>Canvas</a>
           </Link>
         </div>
         <div className="pageLinks">
-          <Link href="/account">
+          <Link to="/account">
             <a>Account</a>
           </Link>
-          <Link href="/dashboard">
+          <Link to="/dashboard">
             <a>Dashboard</a>
           </Link>
           {
             userData.userType ==='Instructor' ? 
-            <Link href="/courses">
+            <Link to="/courses">
               <a>Courses</a> 
             </Link> :
-            <Link href="/registration">
+            <Link to="/registration">
               <a>Registration</a>
             </Link>
           }
-          <Link href="/calendar">
+          <Link to="/calendar">
             <a>Calendar</a>
           </Link>
-          <Link href='/'>
+          <Link to='/'>
             <a onClick={() => {useLocalStorage('user', null)}}>Logout</a>
           </Link>
         </div>

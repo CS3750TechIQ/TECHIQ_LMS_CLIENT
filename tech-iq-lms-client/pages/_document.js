@@ -1,4 +1,4 @@
-import Document, { Head, Main, NextScript } from 'next/document';
+import Document, { Html, Head, Main, NextScript } from 'next/document';
 // Import styled components ServerStyleSheet
 import { ServerStyleSheet } from 'styled-components';
 
@@ -21,31 +21,16 @@ export default class MyDocument extends Document {
   render() {
     return (
       // eslint-disable-next-line jsx-a11y/html-has-lang
-      <html>
+      <Html>
         <Head>
-          <title>CS 3750 Project</title>
           {/* Step 5: Output the styles in the head  */}
           {this.props.styleTags}
-          <link
-            href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,700&display=swap"
-            rel="stylesheet"
-          />
-          <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
-            integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU="
-            crossOrigin="anonymous"
-          />
-          <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0"
-          />
         </Head>
         <body>
           <Main />
           <NextScript />
         </body>
-      </html>
+      </Html>
     );
   }
 }
