@@ -53,7 +53,7 @@ export default function Registration() {
                 </div>
 
                 <div className="courseListContainer">
-                    <h1>*** placeholder for where registered courses will go ***</h1>
+                    <h1>*** This will pull from the /regiseredCoursesAPI ***</h1>
                 </div>
 
 

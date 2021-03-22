@@ -215,15 +215,15 @@ export default function addCourse() {
                         <label className="addCoursesLabel" for="Tuesday">Tuesday</label>
                     </div>
                     <div className="addFormItems">
-                        <input className="addCoursesLabel" type="checkbox" id="Wednesday" onChange={() => {setDays([...days,'w'])}} ></input>
+                        <input className="addCoursesLabel" type="checkbox" id="Wednesday" onChange={() => {setDays([...days,'W'])}} ></input>
                         <label className="addCoursesLabel" for="Wednesday">Wednesday</label>
                     </div>
                     <div className="addFormItems">    
-                        <input className="addCoursesLabel" type="checkbox" id="Thursday" onChange={() => {setDays([...days,'th'])}} ></input>
+                        <input className="addCoursesLabel" type="checkbox" id="Thursday" onChange={() => {setDays([...days,'TH'])}} ></input>
                         <label className="addCoursesLabel" for="Thursday">Thursday</label>
                     </div>
                     <div className="addFormItems">
-                        <input className="addCoursesLabel" type="checkbox" id="Friday" onChange={() => {setDays([...days,'f'])}} ></input>
+                        <input className="addCoursesLabel" type="checkbox" id="Friday" onChange={() => {setDays([...days,'F'])}} ></input>
                         <label className="addCoursesLabel" for="Friday">Friday</label>
                     </div>
                     <div className="addFormItems">
