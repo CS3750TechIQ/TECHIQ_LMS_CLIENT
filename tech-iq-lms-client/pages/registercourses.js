@@ -1,6 +1,10 @@
 import React from "react";
 import Nav from "../components/navBar";
 import styled from "styled-components";
+import { useState, useEffect } from 'react';
+import { useQuery } from "react-query";
+import axios from 'axios';
+
 
 const RegisterCoursesStyles = styled.div`
     .addCourseContainer{
@@ -40,7 +44,7 @@ const RegisterCoursesStyles = styled.div`
     
     .courseListButtonsE {
         background-color: #44a04b; 
-    }
+    } 
 
     .courseReturn {
         font-weight: bold;
@@ -81,20 +85,56 @@ const RegisterCoursesStyles = styled.div`
         text-align: left;
     }
 
-    td{
-
+    tr{
+        textalign:center;
     }
 `;
 
+
 export default function RegisterCourses() {
+    const [filterText, setFilterText] = useState("@")
+    const [course, setCourse] = useState([]);
+    function getCourses(){
+        if(filterText === ""){
+            axios.get("http://localhost:50058/Account/@/filtercourse")
+            .then(
+                (result)=>{
+                    setCourse(result.data);
+                }
+            )
+        }else{
+            axios.get("http://localhost:50058/Account/" + filterText + "/filtercourse")
+            .then(
+                (result)=>{
+                    setCourse(result.data);
+                }
+            )
+        }
+
+    };
+
+    function addCourse(e){
+        console.log("Course added" + e.target.value);
+    }
+
+  
+    useEffect(async () =>{
+        await axios.get("http://localhost:50058/Account/@/filtercourse")
+        .then(
+            (result)=>{
+                setCourse(result.data);
+            }
+        )
+    },[]);
+
     return(
         <RegisterCoursesStyles>
             <Nav /> 
             <div className="addCourseContainer">
                 <h1 className="courseTitle">Register Courses</h1>
-                <div class="courseSearch">
-                    <input className="courseSearchInput" type="text" placeholder="Search Courses" name="search"></input>
-                    <button className="courseButton" type="submit">Submit</button>                  
+                <div className="courseSearch">
+                    <input className="courseSearchInput" type="text" placeholder="Search Courses" name="search" onChange={(e) => setFilterText(e.target.value)}></input>
+                    <button className="courseButton" type="submit" onClick={getCourses} >Search</button>                  
                 </div>
                 <div className="courseListContainer">
                     <table>
@@ -107,23 +147,27 @@ export default function RegisterCourses() {
                             <th>Days</th>
                             <th>Max. capacity</th>
                             <th>First name</th> {/* first and last of professor possible pulled from UserLMS table? */}
-                            <th>last name</th>
-                            <th>  </th>
+                            <th>Last name</th>
+                            <th> Register </th>
                         </tr>
-                        <tr>
-                                <td>CS</td>
-                                <td>3550</td>
-                                <td>Adv. Database</td>
-                                <td>11:30 - 1:30</td>
-                                <td>Online</td>
-                                <td>MW</td>
-                                <td>50</td>
-                                <td>Drew</td>
-                                <td>Weidman</td>
+                        {course.map(( course ) => {
+                            return (
+                            <tr>
+                                <td>{course.department}</td>
+                                <td>{course.course_number}</td>
+                                <td>{course.course_name}</td>
+                                <td>{course.start_time}</td>
+                                <td>{course.location}</td>
+                                <td>{course.days}</td>
+                                <td>{course.max_capacity}</td>
+                                <td>{course.firstName}</td>
+                                <td>{course.lastName}</td>
                                 <td className="courseListButtonsP">
-                                    <button type="button" className="courseListButtonsE">Add Class</button>                                   
+                                    <button type="button" className="courseListButtonsE" onClick={addCourse}>Add Class</button>                                   
                                 </td>
                             </tr>
+                            );
+                            })} 
                     </table>
                 </div>
                 <a className="courseTitle courseReturn" href="/registration">Return to Registration</a>
