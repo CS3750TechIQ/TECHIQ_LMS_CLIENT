@@ -1,11 +1,11 @@
-import styled from "styled-components";
-import { SocialIcon } from "react-social-icons";
-import { useState } from "react";
-import Nav from "../components/navBar";
-import { useMutation, useQuery } from "react-query";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from "axios";
-import useLocalStorage from "../hooks/useLocalStorage";
+import styled from "styled-components"
+import { SocialIcon } from "react-social-icons"
+import { useState } from "react"
+import Nav from "../components/navBar"
+import { useMutation, useQuery } from "react-query"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import axios from "axios"
+import useLocalStorage from "../hooks/useLocalStorage"
 
 const AccountStyles = styled.div`
   h4 {
@@ -108,20 +108,25 @@ export default function Account() {
   //Get Local user info cache
   const localUserData = useLocalStorage('user')
   const [userBioText, setUserBio] = useState(localUserData[0].userBio);
+  //Set initial state
+  const [ isEditing, setIsEditing ] = useState(false);
+  const [userPhone, setUserPhone] = useState(localUserData[0].userPhone)
+  const [ userName, setUserName ] = useState(localUserData[0].username)
+  const [ firstName, setFirstName ] = useState('')
+  const [ lastName, setLastName] = useState('')
+  const [profileImage, setProfileImage] = useState(
+    "https://lh3.googleusercontent.com/proxy/CQrbom5H7ldcxHPzgrbcedYPJa8q3RESpTdBEPtiWgYD6aX-YEzHUek4M2XoNaCvFA5ZjAoVvu-xnYIBL6_DUkKowzEdlSckP2M"
+    );
+
   const userInfoQuery = useQuery(['userInfo', localUserData[0].username], async () => {
     const data = await getUserInfo(localUserData[0].username)
     setUserBio(data?.userBio ?? '')
     setUserPhone(data?.userPhone ?? '')
+    setFirstName(data?.firstName ?? '')
+    setLastName(data?.lastName ?? '')
     return data
   })
-  //Set initial state
-  const [ isEditing, setIsEditing ] = useState(false);
-  const [userPhone, setUserPhone] = useState(localUserData[0].userPhone);
-  const [ userName, setUserName ] = useState(localUserData[0].username);
-  const [profileImage, setProfileImage] = useState(
-    "https://lh3.googleusercontent.com/proxy/CQrbom5H7ldcxHPzgrbcedYPJa8q3RESpTdBEPtiWgYD6aX-YEzHUek4M2XoNaCvFA5ZjAoVvu-xnYIBL6_DUkKowzEdlSckP2M"
-    );
-  
+    
   const imageHandler = (e) => {
     const reader = new FileReader();
     reader.onload = () => {
@@ -140,6 +145,8 @@ export default function Account() {
       {
         userBio: userBioText,
         userPhone,
+        firstName,
+        lastName,
         userName
       }
     )
@@ -161,6 +168,8 @@ export default function Account() {
     return data
   }, {
     onSuccess: data => {
+      setFirstName(data.firstName)
+      setLastName(data.lastName)
       setUserBio(data.userBio)
     }
   })
@@ -187,13 +196,21 @@ export default function Account() {
           </div>
 
           <div className="canvasInfo">
-            <h1>{localUserData[0].firstName + " " + localUserData[0].lastName}</h1>
+          {
+            isEditing ? 
+            (
+            <div>
+              <input type="text" defaultValue={firstName} onChange={(e) => {setFirstName(e.target.value)}}/>
+              <input type="text" defaultValue={lastName} onChange={(e) => {setLastName(e.target.value)}}/>
+            </div>
+            ) :
+            <h1>{firstName + " " + lastName}</h1> 
+          }
             {              
               !isEditing ?
               <p>{userPhone}</p> :
               <div>
-                <label>Enter Current Phone Number</label>
-                <input type="text" placeholder={userPhone} onChange={(e) => {setUserPhone(e.target.value)}} />
+                <input type="text" defaultValue={userPhone} onChange={(e) => {setUserPhone(e.target.value)}} />
               </div>
             }        
             <p>{userName}</p>

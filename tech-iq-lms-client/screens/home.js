@@ -39,7 +39,7 @@ export default function Home(props) {
 
   return (
     <HomeStyles>
-      <Nav userType={localUserData[0].userType}/>
+      <Nav />
       <div className="rightSideBar">
         <List />
       </div>
