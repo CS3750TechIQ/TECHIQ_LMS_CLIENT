@@ -120,8 +120,8 @@ export default function Account() {
 
   const userInfoQuery = useQuery(['userInfo', localUserData[0].username], async () => {
     const data = await getUserInfo(localUserData[0].username)
-    setUserBio(data?.userBio ?? '')
-    setUserPhone(data?.userPhone ?? '')
+    setUserBio(data?.bio ?? '')
+    setUserPhone(data?.phone ?? '')
     setFirstName(data?.firstName ?? '')
     setLastName(data?.lastName ?? '')
     return data
@@ -143,8 +143,8 @@ export default function Account() {
     const { data } = await axios.put(
       "http://localhost:50058/Account/UpdateUserBio",
       {
-        userBio: userBioText,
-        userPhone,
+        bio: userBioText,
+        phone: userPhone,
         firstName,
         lastName,
         userName
@@ -170,7 +170,8 @@ export default function Account() {
     onSuccess: data => {
       setFirstName(data.firstName)
       setLastName(data.lastName)
-      setUserBio(data.userBio)
+      setUserBio(data.bio)
+      setUserPhone(data.phone)
     }
   })
 
@@ -226,7 +227,7 @@ export default function Account() {
           {
             !isEditing ? 
             <p>{userBioText}</p> :
-            <textarea id="bio" className="bioTextArea" rows="6" cols="75" defaultValue={userInfoQuery.data.userBio} onChange={(e) => {setUserBio(e.target.value)}} />
+            <textarea id="bio" className="bioTextArea" rows="6" cols="75" defaultValue={userBioText} onChange={(e) => {setUserBio(e.target.value)}} />
           }
         </div>
         {
