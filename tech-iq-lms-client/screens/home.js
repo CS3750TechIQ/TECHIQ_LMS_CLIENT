@@ -63,7 +63,6 @@ export default function Home(props) {
         <List />
       </div>
       <div className="courseCardLayout">
-      {console.log(userInfoQuery.data)}
       {
         userInfoQuery.data.length > 0
         ? userInfoQuery.data.map((p) => <CourseCards key={p.course_number} title={p.course_name} description={p.description}/>) 
