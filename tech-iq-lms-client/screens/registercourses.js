@@ -157,7 +157,8 @@ let isDisabled = false;
   }, []);
   const registerCourseMutation = useMutation(
 
-    async (value) => {        
+    async () => {        
+        for(let i = 0; i < regCourse.length; i++){
         const { data } = await axios.put(
             "http://localhost:50058/Account/RegisterCourse",
             {
@@ -171,6 +172,7 @@ let isDisabled = false;
             username: localUserData[0].username,
             }
         )
+        }
         return data
     },
     {
