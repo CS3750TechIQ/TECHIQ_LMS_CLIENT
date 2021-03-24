@@ -192,7 +192,6 @@ export default function RegisterCourses() {
               <th>Days</th>
               <th>Max. capacity</th>
               <th>First name</th>{" "}
-              {/* first and last of professor possible pulled from UserLMS table? */}
               <th>Last name</th>
               <th> Register </th>
             </tr>
