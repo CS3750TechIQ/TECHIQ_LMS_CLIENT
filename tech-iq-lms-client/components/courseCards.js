@@ -1,11 +1,12 @@
-import styled from 'styled-components';
-import BellIcon from 'react-bell-icon';
+import styled from 'styled-components'
+import BellIcon from 'react-bell-icon'
+import { useQueryClient } from 'react-query'
 
 const CardStyles = styled.div`
   .card {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     transition: 0.3s;
-    width: 200px;
+    width: 250px;
     height: 340px;
     border-radius: 5px;
   }
@@ -15,7 +16,7 @@ const CardStyles = styled.div`
   }
 
   .courseColor {
-    width: 200px;
+    width: 100%;
     height: 95px;
     background-color: #072f5f;
     border-radius: 5px 5px 0px 0px;
@@ -23,11 +24,15 @@ const CardStyles = styled.div`
 
   .courseName {
     text-align: center;
+    height: 40px;
   }
 
   .courseDesc {
-    padding: 10px 8px;
-    height: 105px;
+    padding: 1px 8px;
+    height: 90px;
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .viewButton {
@@ -55,17 +60,16 @@ const CardStyles = styled.div`
   }
 `;
 
-export default function CourseCards() {
+const CourseCards = ({title, description}) => {
   return (
     <CardStyles>
       <div className="card">
         <div className="courseColor" />
         <div>
-          <h3 className="courseName">Course Name</h3>
+          <h3 className="courseName">{title}</h3>
           <p className="courseDesc">
             {' '}
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sed
-            lorem dui. Pellentesque eget ante mauris.
+            {description}
           </p>
         </div>
         <div className="center">
@@ -79,3 +83,5 @@ export default function CourseCards() {
     </CardStyles>
   );
 }
+
+export default CourseCards;
