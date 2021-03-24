@@ -177,7 +177,6 @@ export default function Account() {
     setGithubLink(data?.githubLink ?? 'https://github.com/')
     setLinkedInLink(data?.linkedInLink ?? 'https://www.linkedin.com/')
     setTwitterLink(data?.twitterLink ?? 'https://twitter.com/')
-    console.log(data)
     return data
   })
     

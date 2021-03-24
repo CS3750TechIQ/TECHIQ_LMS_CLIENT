@@ -41,7 +41,6 @@ const NavStyles = styled.div`
 
 export default function Nav({userType}) {
   const userData = useLocalStorage('user')
-  console.log(userType)
   return (
     <NavStyles>
       <div className="navContainer">
