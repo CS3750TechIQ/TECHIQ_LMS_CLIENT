@@ -10,7 +10,7 @@ import {
 
 // Auth
 import { Auth } from "./auth"
-
+import { UserProvider } from "../hooks/useUser";
 // Screens
 import Account from '../screens/account'
 import Addcourses from '../screens/addcourses'
@@ -60,36 +60,38 @@ export default function App () {
     <>
       <Styles />
       <QueryClientProvider client={queryClient}>
-        <Router>
-          <Auth>
-            <Switch>
-              <Route path="/account">
-                <Account />
-              </Route>
-              <Route path="/addcourses">
-                <Addcourses />
-              </Route>
-              <Route path="/calendar">
-                <Calandar />
-              </Route>
-              <Route path="/courses">
-                <Courses />
-              </Route>
-              <Route path="/notifications">
-                <Notifications />
-              </Route>
-              <Route path="/registercourses">
-                <Registercourses />
-              </Route>
-              <Route path="/registration">
-                <Registration />
-              </Route>
-              <Route path="/">
-                <Home />
-              </Route>
-            </Switch>
-          </Auth>    
-        </Router>
+        <UserProvider>
+          <Router>
+            <Auth>
+              <Switch>
+                <Route path="/account">
+                  <Account />
+                </Route>
+                <Route path="/addcourses">
+                  <Addcourses />
+                </Route>
+                <Route path="/calendar">
+                  <Calandar />
+                </Route>
+                <Route path="/courses">
+                  <Courses />
+                </Route>
+                <Route path="/notifications">
+                  <Notifications />
+                </Route>
+                <Route path="/registercourses">
+                  <Registercourses />
+                </Route>
+                <Route path="/registration">
+                  <Registration />
+                </Route>
+                <Route path="/">
+                  <Home />
+                </Route>
+              </Switch>
+            </Auth>    
+          </Router>
+        </UserProvider>
         <ReactQueryDevtools />
       </QueryClientProvider>
     </>

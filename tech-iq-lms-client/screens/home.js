@@ -7,7 +7,7 @@ import Nav from "../components/navBar";
 import Button from "../components/button";
 import List from "../components/todolist";
 import CourseCards from "../components/courseCards";
-import useLocalStorage from "../hooks/useLocalStorage";
+import { useUser } from "../hooks/useUser";
 
 const HomeStyles = styled.div`
   .rightSideBar {
@@ -36,14 +36,16 @@ const getUserInfo = async (username) => {
     .then((res) => res.data);
 };
 
-export default function Home(props) {
-  const localUserData = useLocalStorage("user");
+export default function Home() {
+  const [ user, setUser ] = useUser();
 
   const userInfoQuery = useQuery(
-    ["userInfo", localUserData[0].username],
+    ["userInfo", user?.username],
     async () => {
-      const data = await getUserInfo(localUserData[0].username);
+      const data = await getUserInfo(user?.username);
       return data;
+    }, {
+      enabled: !!user?.username
     }
   );
 

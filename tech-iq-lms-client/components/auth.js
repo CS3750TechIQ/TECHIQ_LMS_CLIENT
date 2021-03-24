@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { useRouter } from 'next/router';
 import { useMutation } from "react-query";
 import useLocalStorage from "../hooks/useLocalStorage";
+import { useUser } from "../hooks/useUser";
 
 
 const AuthContext = createContext({});
@@ -220,7 +221,7 @@ const SignUpStyles = styled.div`
 function Auth({ children }) {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [user, setUser] = useLocalStorage('user', null)
+  const [user, setUser] = useUser()
   const [showSignUp, setShowSignUp] = useState(false)
   const signUpMutation = useMutation(async (email) => {
     const { data } = await axios.get("http://localhost:50058/Account/" + email + "/getUser")
@@ -234,7 +235,6 @@ function Auth({ children }) {
       alert("something went wrong");
     }
   })
-
   return (
     <AuthContext.Provider value={user}>
       {
