@@ -43,7 +43,6 @@ export default function Home(props) {
     ["userInfo", localUserData[0].username],
     async () => {
       const data = await getUserInfo(localUserData[0].username);
-      console.log(data);
       return data;
     }
   );
