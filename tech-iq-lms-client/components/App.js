@@ -28,12 +28,16 @@ import '@fullcalendar/timegrid/main.css'
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { 
   faEdit,
-  faUpload
+  faUpload,
+  faPlus,
+  faMinus
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
   faEdit,
-  faUpload
+  faUpload,
+  faPlus,
+  faMinus
 );
 
 const Styles = createGlobalStyle`

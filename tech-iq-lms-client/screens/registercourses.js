@@ -36,18 +36,23 @@ const RegisterCoursesStyles = styled.div`
     padding: 5px;
   }
 
-  .courseListButtonsP {
-    display: flex;
-    justify-content: space-evenly;
-  }
+    }
+    .courseButton {
+        background-color: #072f60;
+        color: #ffffff;
+        margin: 20px;
+        padding: 5px;
+    }
+    
+    .courseListButtonsE {
+      background-color: #072f60;
+      color: white;
+    } 
 
-  .courseListButtonsE {
-    background-color: #44a04b;
-  }
-
-  .btnRemoveCourse {
-    background: red;
-  }
+    .btnRemoveCourse{
+      background: red;
+      color: white;
+    }
 
   .courseReturn {
     font-weight: bold;
@@ -86,17 +91,33 @@ const RegisterCoursesStyles = styled.div`
     color: #ffffff;
     text-align: left;
   }
-
-  tr {
-    textalign: center;
-  }
-  .regCourseContainer {
-    border: 1px solid black;
-    margin: 25px;
-  }
+    tr{
+        textalign:center;
+    }
+    .regCourseContainer{
+        margin: 25px;
+        padding: 8px;
+        width: 40%;
+    }
+    .registerBtn{
+      background-color: #072f60;
+      color: #ffffff;
+      margin: 5px;
+      padding: 5px;
+    }
+    .registerBtnContainer{
+      width: 100%;
+      text-align: center;
+      margin: 15px;
+    }
+    .registerBtn:disabled{
+        background-color: #072f60;
+        opacity: 0.2;
+    }
 `;
 
 export default function RegisterCourses() {
+let isDisabled = false;
   const localUserData = useLocalStorage("user");
   const [filterText, setFilterText] = useState("@");
   const [regCourse, setRegCourse] = useState([]);
@@ -134,24 +155,23 @@ export default function RegisterCourses() {
         setCourse(result.data);
       });
   }, []);
-
   const registerCourseMutation = useMutation(
-    async (value) => {
-      const { data } = await axios.put(
-        "http://localhost:50058/Account/RegisterCourse",
-        {
-          department: course[value].department,
-          course_number: course[value].course_number,
-          course_name: course[value].course_name,
-          start_time: course[value].start_time,
-          end_time: course[value].end_time,
-          location: course[value].location,
-          days: course[value].days,
-          max_capacity: course[value].max_capacity,
-          username: localUserData[0].username,
-        }
-      )
-      return data
+
+    async (value) => {        
+        const { data } = await axios.put(
+            "http://localhost:50058/Account/RegisterCourse",
+            {
+            course_number: regCourse[i].course_number,
+            course_name: regCourse[i].course_name,
+            start_time: regCourse[i].start_time,
+            end_time: regCourse[i].end_time,
+            location: regCourse[i].location,
+            days: regCourse[i].days,
+            max_capacity: regCourse[i].max_capacity,
+            username: localUserData[0].username,
+            }
+        )
+        return data
     },
     {
       onSuccess: (data) => {
@@ -163,97 +183,80 @@ export default function RegisterCourses() {
       },
     }
   );
+    return(
+        <RegisterCoursesStyles>
+            <Nav /> 
+            <div className="addCourseContainer">
+                <h1 className="courseTitle">Register Courses</h1>
+                <div className="courseSearch">
+                    <input className="courseSearchInput" type="text" placeholder="Search Courses" name="search" onChange={(e) => setFilterText(e.target.value)}></input>
+                    <button className="courseButton" type="submit" onClick={getCourses} >Search</button>                  
+                </div>
+                <div className="courseListContainer">
+                    <table>
+                        <tr>
+                            {/* <th>Department</th> */}
+                            <th>Course number</th>
+                            <th>Course name</th>
+                            <th>Meeting time</th> {/* Start and end time in DB table */}
+                            <th>Location</th>
+                            <th>Days</th>
+                            <th>Max. capacity</th>
+                            <th>Credit Hours</th>
+                            <th>Instructor</th> {/* first and last of professor possible pulled from UserLMS table? */}
+                            <th> Add </th>
+                            <th> Remove </th>
+                        </tr>
+                        {course.map(( course, index ) => {
+                            return (
+                            <tr key={index}>
+                                {/* <td>{course.department}</td> */}
+                                <td>{course.course_number}</td>
+                                <td>{course.course_name}</td>
+                                <td>{course.start_time}</td>
+                                <td>{course.location}</td>
+                                <td>{course.days}</td>
+                                <td>{course.max_capacity}</td>
+                                <td>{course.credit_hours}</td>
+                                <td>{course.firstName} {course.lastName}</td>
+                                <td className="courseListButtonsP">
+                                    <button type="button" className="courseListButtonsE" onClick={() => addCourse(index,this)}><FontAwesomeIcon icon= "plus" size="xl"/></button>                                   
+                                </td>
+                                <td className="courseListButtonsP">
+                                    <button type="button" className="btnRemoveCourse" onClick={() => removeCourse(index)}><FontAwesomeIcon icon= "minus" size="xl"/></button>                                   
+                                </td>
+                            </tr>
+                            );
+                            })} 
+                    </table>    
+                </div>
 
-  return (
-    <RegisterCoursesStyles>
-      <Nav />
-      <div className="addCourseContainer">
-        <h1 className="courseTitle">Register Courses</h1>
-        <div className="courseSearch">
-          <input
-            className="courseSearchInput"
-            type="text"
-            placeholder="Search Courses"
-            name="search"
-            onChange={(e) => setFilterText(e.target.value)}
-          ></input>
-          <button className="courseButton" type="submit" onClick={getCourses}>
-            Search
-          </button>
-        </div>
-        <div className="courseListContainer">
-          <table>
-            <tr>
-              <th>Department</th>
-              <th>Course number</th>
-              <th>Course name</th>
-              <th>Meeting time</th> {/* Start and end time in DB table */}
-              <th>Location</th>
-              <th>Days</th>
-              <th>Max. capacity</th>
-              <th>First name</th>{" "}
-              <th>Last name</th>
-              <th> Register </th>
-            </tr>
-            {course.map((course, index) => {
-              return (
-                <tr key={index}>
-                  <td>{course.department}</td>
-                  <td>{course.course_number}</td>
-                  <td>{course.course_name}</td>
-                  <td>{course.start_time}</td>
-                  <td>{course.location}</td>
-                  <td>{course.days}</td>
-                  <td>{course.max_capacity}</td>
-                  <td>{course.firstName}</td>
-                  <td>{course.lastName}</td>
-                  <td className="courseListButtonsP">
-                    <button
-                      type="button"
-                      className="courseListButtonsE"
-                      onClick={() => addCourse(index, this)}
-                    >
-                      Add Class
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
-          </table>
-        </div>
-        <a className="courseTitle courseReturn" href="/registration">
-          Return to Registration
-        </a>
+                <div className="courseListContainer">
+                    <table className = "regCourseContainer">
+                        {regCourse.map(( regCourse, index ) => {
+                            return (
+                                <tr key={index}>
+                                    {/* <td>{regCourse.department}</td> */}
+                                    <td>{regCourse.course_number}</td>
+                                    <td>{regCourse.course_name}</td>
+                                    <td>{regCourse.start_time}</td>
+                                    <td>{regCourse.location}</td>
+                                    <td>{regCourse.days}</td>
+                                    <td>{regCourse.max_capacity}</td>
+                                    {/* <td>{regCourse.firstName}</td>
+                                    <td>{regCourse.lastName}</td> */}
+                                </tr>
+                                );
+                            })} 
+                    </table>   
 
-        <div className="courseListContainer">
-          <table className="regCourseContainer">
-            {regCourse.map((regCourse, index) => {
-              return (
-                <tr key={index}>
-                  <td>{regCourse.department}</td>
-                  <td>{regCourse.course_number}</td>
-                  <td>{regCourse.course_name}</td>
-                  <td>{regCourse.start_time}</td>
-                  <td>{regCourse.location}</td>
-                  <td>{regCourse.days}</td>
-                  <td>{regCourse.max_capacity}</td>
-                  <td>{regCourse.firstName}</td>
-                  <td>{regCourse.lastName}</td>
-                  <td className="courseListButtonsP">
-                    <button
-                      type="button"
-                      className="btnRemoveCourse"
-                      onClick={() => removeCourse(index)}
-                    >
-                      <FontAwesomeIcon icon="trash" size="xl" />
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
-          </table>
-        </div>
-      </div>
-    </RegisterCoursesStyles>
-  );
+                </div>
+                    <div className="registerBtnContainer">
+                      <button className="registerBtn" onClick={() => registerCourseMutation.mutate()} disabled={regCourse.length <= 0}>Register</button>
+                    </div>
+                    <a className="courseTitle courseReturn" href="/registration">Return to Registration</a>  
+
+            </div>
+        </RegisterCoursesStyles>
+    );
 }
