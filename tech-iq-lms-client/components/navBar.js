@@ -60,11 +60,14 @@ export default function Nav({userType}) {
             userType === 'Instructor' ? 
             <Link to="/courses">
               <a>Courses</a> 
-            </Link> :
+            </Link> :           
             <Link to="/registration">
               <a>Registration</a>
             </Link>
           }
+          <Link to="/tuition">
+            <a>Tuition</a>
+          </Link>
           <Link to="/calendar">
             <a>Calendar</a>
           </Link>
