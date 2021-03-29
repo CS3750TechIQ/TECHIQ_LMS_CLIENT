@@ -156,23 +156,17 @@ let isDisabled = false;
       });
   }, []);
   const registerCourseMutation = useMutation(
-
     async () => {        
         for(let i = 0; i < regCourse.length; i++){
         const { data } = await axios.put(
             "http://localhost:50058/Account/RegisterCourse",
             {
             course_number: regCourse[i].course_number,
-            course_name: regCourse[i].course_name,
-            start_time: regCourse[i].start_time,
-            end_time: regCourse[i].end_time,
-            location: regCourse[i].location,
-            days: regCourse[i].days,
-            max_capacity: regCourse[i].max_capacity,
-            username: localUserData[0].username,
+            studentId: localUserData[0].studentId
             }
         )
         }
+        debugger;
         return data
     },
     {
