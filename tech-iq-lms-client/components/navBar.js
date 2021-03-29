@@ -39,8 +39,8 @@ const NavStyles = styled.div`
   }
 `;
 
-export default function Nav({userType}) {
-  const [ user, setUser ] = useUser()
+export default function Nav() {
+  const [ user ] = useUser()
   return (
     <NavStyles>
       <div className="navContainer">

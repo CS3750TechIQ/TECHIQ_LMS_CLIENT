@@ -1,7 +1,9 @@
 import React from "react";
+import { Link } from 'react-router-dom'
 import Nav from "../components/navBar";
 import styled from "styled-components";
-import useLocalStorage from '../hooks/useLocalStorage';
+import { useRouter } from "next/router";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 const CourseStyles = styled.div`
   .addCourseContainer {
@@ -63,9 +65,14 @@ const CourseStyles = styled.div`
   td {
   }
 `;
-
 export default function Courses() {
   const localUserData = useLocalStorage("user");
+  const router = useRouter();
+  
+  const handleClick = e => {
+    e.preventDefault()
+    router.push('/instructorCourse')
+  }
 
   return (
     <CourseStyles>
@@ -98,19 +105,18 @@ export default function Courses() {
             </tr>
             <tr>
               <td>CS</td>
-              <td>3550</td>
-              <td>Adv. Database</td>
+              <td>4120</td>
+              <td>Under Water Basket Weaving</td>
               <td>11:30 - 1:30</td>
               <td>Online</td>
               <td>MW</td>
               <td>50</td>
               <td className="courseListButtonsP">
-                <button type="button" className="courseListButtonsE">
-                  Edit
-                </button>
-                <button type="button" className="courseListButtonsD">
-                  Delete
-                </button>
+                <Link to="/instructorCourse">
+                <a>Details</a>
+                </Link>
+                <button className="courseListButtonsE">Edit</button>
+                <button className="courseListButtonsD">Delete</button>
               </td>
             </tr>
             <tr>
@@ -122,6 +128,7 @@ export default function Courses() {
               <td>MW</td>
               <td>50</td>
               <td className="courseListButtonsP">
+                <button className="detailsButton">Details</button>
                 <button type="button" className="courseListButtonsE">
                   Edit
                 </button>

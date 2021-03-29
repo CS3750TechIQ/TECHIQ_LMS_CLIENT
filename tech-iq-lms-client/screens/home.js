@@ -30,11 +30,17 @@ const HomeStyles = styled.div`
   }
 `;
 
-const getUserInfo = async (username) => {
+const getStudentInfo = async (username) => {
   return await axios
     .get("http://localhost:50058/Account/" + username + "/getRegisteredCourses")
-    .then((res) => res.data);
+    .then((res) => res.data)
 };
+
+const getInstructorInfo = async (instructorId) => {
+  return await axios
+    .get("http://localhost:50058/Account/" + instructorId + "/getInstructorCourses")
+    .then((res) => res.data)
+}
 
 export default function Home() {
   const [ user, setUser ] = useUser();
@@ -42,8 +48,13 @@ export default function Home() {
   const userInfoQuery = useQuery(
     ["userInfo", user?.username],
     async () => {
-      const data = await getUserInfo(user?.username);
-      return data;
+      if(user?.userType === 'Student')
+        return await getStudentInfo(user?.username);
+      else
+      {
+        console.log(user?.instructorId)
+        return await getInstructorInfo(user?.instructorid);
+      }
     }, {
       enabled: !!user?.username
     }
