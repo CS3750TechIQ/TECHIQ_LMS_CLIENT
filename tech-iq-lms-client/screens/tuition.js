@@ -23,7 +23,7 @@ export default function tuition() {
     
     return(
         <TuitionStyles>
-            <Nav/>
+            <Nav />
             <div className="tuitionContainer">
                 <label>Name on card: </label>
                 <input
@@ -55,5 +55,5 @@ export default function tuition() {
             </div>
 
         </TuitionStyles>
-    )
+    );
 }

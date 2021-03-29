@@ -117,7 +117,6 @@ const RegisterCoursesStyles = styled.div`
 `;
 
 export default function RegisterCourses() {
-let isDisabled = false;
   const localUserData = useLocalStorage("user");
   const [filterText, setFilterText] = useState("@");
   const [regCourse, setRegCourse] = useState([]);

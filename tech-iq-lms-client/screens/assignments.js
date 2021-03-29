@@ -95,7 +95,7 @@ export default function addAssignment() {
     const [due_date, setDue_Date] = useState("");
     const [max_points, setMax_points] = useState("");
     const [submission_type, setSubmission_type] = useState("");
-    const [blankfields, setBlankfields] = useState("";)
+    const [blankfields, setBlankfields] = useState("");
 
     // function that will send a P0st request to the server
     const createAssignment = async () => {
