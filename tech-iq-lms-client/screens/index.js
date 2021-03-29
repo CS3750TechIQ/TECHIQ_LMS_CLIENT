@@ -36,7 +36,6 @@ const HomeStyles = styled.div`
 export default function Home(props) {
 
   const userData = useLocalStorage('user')
-  console.log(userData);
   return (
     <HomeStyles>
       <Nav />

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import Router from 'next/router';
 import { useState } from 'react';
 import { useQueryClient, useQuery } from 'react-query';
-import useLocalStorage from '../hooks/useLocalStorage';
+import { useUser } from '../hooks/useUser';
 
 const NavStyles = styled.div`
   a {
@@ -40,7 +40,7 @@ const NavStyles = styled.div`
 `;
 
 export default function Nav({userType}) {
-  const userData = useLocalStorage('user')
+  const [ user, setUser ] = useUser()
   return (
     <NavStyles>
       <div className="navContainer">
@@ -57,7 +57,7 @@ export default function Nav({userType}) {
             <a>Dashboard</a>
           </Link>
           {
-            userType === 'Instructor' ? 
+            user.userType === 'Instructor' ? 
             <Link to="/courses">
               <a>Courses</a> 
             </Link> :           
