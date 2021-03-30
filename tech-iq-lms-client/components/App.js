@@ -20,6 +20,7 @@ import Notifications from '../screens/notifications'
 import Registercourses from '../screens/registercourses'
 import Registration from '../screens/registration'
 import InstructorCourse from '../screens/instructorCourse'
+import Tuition from '../screens/tuition'
 import Home from '../screens/home'
 
 // FullCalendar
@@ -88,6 +89,9 @@ export default function App () {
                 </Route>
                 <Route path="/instructorCourse">
                   <InstructorCourse />
+                </Route>
+                <Route path="/tuition">
+                  <Tuition />
                 </Route>
                 <Route path="/">
                   <Home />
