@@ -1,8 +1,10 @@
-import React from "react";
-import { Link } from 'react-router-dom'
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import Nav from "../components/navBar";
 import styled from "styled-components";
 import { useRouter } from "next/router";
+import { useQuery } from "react-query";
+import axios from "axios";
 import useLocalStorage from "../hooks/useLocalStorage";
 
 const CourseStyles = styled.div`
@@ -65,14 +67,62 @@ const CourseStyles = styled.div`
   td {
   }
 `;
-export default function Courses() {
-  const localUserData = useLocalStorage("user");
-  const router = useRouter();
-  
-  const handleClick = e => {
-    e.preventDefault()
-    router.push('/instructorCourse')
+
+const CourseAssignmentStyles = styled.div`
+  .goBackButton {
+    text-align: center;
+    color: #072f60;
+    font-weight: bold;
   }
+`;
+
+const AssignmentStyles = styled.div`
+  .goBackButton {
+    text-align: center;
+    color: #072f60;
+    font-weight: bold;
+  }
+`;
+
+const getAssignments = async (courseNum) => {
+  return await axios
+    .get("http://localhost:50058/Account/" + courseNum + "/getAssignments")
+    .then((res) => res.data);
+};
+
+export default function Courses() {
+  const [viewingCourse, setViewingCourse] = useState(false);
+  const [courseNum, setCourseNum] = useState();
+
+  return (
+    <div>
+      {!viewingCourse ? (
+        <CourseList
+          courseNum={courseNum}
+          setCourseNum={setCourseNum}
+          viewingCourse={viewingCourse}
+          setViewingCourse={setViewingCourse}
+        />
+      ) : (
+        <CourseAssignments
+          courseNum={courseNum}
+          setCourseNum={setCourseNum}
+          viewingCourse={viewingCourse}
+          setViewingCourse={setViewingCourse}
+        />
+      )}
+      {console.log(viewingCourse)}
+    </div>
+  );
+}
+
+function CourseList(props) {
+  const localUserData = useLocalStorage("user");
+
+  const viewCourseDetails = (courseNum) => {
+    props.setCourseNum(courseNum);
+    props.setViewingCourse(true);
+  };
 
   return (
     <CourseStyles>
@@ -90,7 +140,6 @@ export default function Courses() {
             </button>
           </form>
         </div>
-
         <div className="courseListContainer">
           <table>
             <tr>
@@ -112,9 +161,13 @@ export default function Courses() {
               <td>MW</td>
               <td>50</td>
               <td className="courseListButtonsP">
-                <Link to="/instructorCourse">
-                <a>Details</a>
-                </Link>
+                <button
+                  onClick={() => {
+                    viewCourseDetails(4120);
+                  }}
+                >
+                  Details
+                </button>
                 <button className="courseListButtonsE">Edit</button>
                 <button className="courseListButtonsD">Delete</button>
               </td>
@@ -128,7 +181,14 @@ export default function Courses() {
               <td>MW</td>
               <td>50</td>
               <td className="courseListButtonsP">
-                <button className="detailsButton">Details</button>
+                <button
+                  className="detailsButton"
+                  onClick={() => {
+                    viewCourseDetails(2420);
+                  }}
+                >
+                  Details
+                </button>
                 <button type="button" className="courseListButtonsE">
                   Edit
                 </button>
@@ -144,5 +204,54 @@ export default function Courses() {
         </a>
       </div>
     </CourseStyles>
+  );
+}
+
+function CourseAssignments(props) {
+  const assignmentsInfoQuery = useQuery(["assignments"], async () => {
+    return await getAssignments(props.courseNum);
+  });
+
+  if (assignmentsInfoQuery.isLoading) {
+    return "Loading...";
+  }
+
+  if (assignmentsInfoQuery.isError) {
+    return "There was an error getting course info.";
+  }
+
+  return (
+    <CourseAssignmentStyles>
+      <Nav />
+      {assignmentsInfoQuery.data.length > 0
+        ? assignmentsInfoQuery.data.map((p) => (
+            <Assignment
+              key={p.assignmentID}
+              title={p.assignment_title}
+              description={p.assignment_desc}
+              courseNum={p.course_number}
+            />
+          ))
+        : null}
+      <a
+        className="goBackButton"
+        href="#"
+        onClick={() => {
+          props.setViewingCourse(false);
+        }}
+      >
+        Go back to your courses
+      </a>
+    </CourseAssignmentStyles>
+  );
+}
+
+function Assignment({ title, description, courseNum }) {
+  return (
+    <AssignmentStyles>
+      <h2>{title}</h2>
+      <div>{courseNum}</div>
+      <div>{description}</div>
+    </AssignmentStyles>
   );
 }

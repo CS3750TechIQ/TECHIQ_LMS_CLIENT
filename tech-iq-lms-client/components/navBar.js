@@ -1,9 +1,9 @@
-import styled from 'styled-components';
-import { Link } from 'react-router-dom'
-import Router from 'next/router';
-import { useState } from 'react';
-import { useQueryClient, useQuery } from 'react-query';
-import { useUser } from '../hooks/useUser';
+import styled from "styled-components";
+import { Link } from "react-router-dom";
+import Router from "next/router";
+import { useState } from "react";
+import { useQueryClient, useQuery } from "react-query";
+import { useUser } from "../hooks/useUser";
 
 const NavStyles = styled.div`
   a {
@@ -29,18 +29,20 @@ const NavStyles = styled.div`
     display: flex;
     padding: 1rem;
 
-    a, div {
+    a,
+    div {
       padding: 1rem;
     }
 
-    a:hover, div:hover {
+    a:hover,
+    div:hover {
       color: #58cced;
     }
   }
 `;
 
 export default function Nav() {
-  const [ user ] = useUser()
+  const [user] = useUser();
   return (
     <NavStyles>
       <div className="navContainer">
@@ -56,23 +58,31 @@ export default function Nav() {
           <Link to="/dashboard">
             <a>Dashboard</a>
           </Link>
-          {
-            user.userType === 'Instructor' ? 
+          {user.userType === "Instructor" ? (
             <Link to="/courses">
-              <a>Courses</a> 
-            </Link> :           
+              <a>Courses</a>
+            </Link>
+          ) : (
             <Link to="/registration">
               <a>Registration</a>
             </Link>
-          }
-          <Link to="/tuition">
-            <a>Tuition</a>
-          </Link>
+          )}
+          {user?.userType === "Student" ? (
+            <Link to="/tuition">
+              <a>Tuition</a>
+            </Link>
+          ) : null}
           <Link to="/calendar">
             <a>Calendar</a>
           </Link>
-          <Link to='/'>
-            <a onClick={() => {useLocalStorage('user', null)}}>Logout</a>
+          <Link to="/">
+            <a
+              onClick={() => {
+                useLocalStorage("user", null);
+              }}
+            >
+              Logout
+            </a>
           </Link>
         </div>
       </div>
