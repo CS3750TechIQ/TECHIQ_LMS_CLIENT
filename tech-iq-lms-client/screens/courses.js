@@ -89,6 +89,12 @@ const CourseAssignmentStyles = styled.div`
     color: #072f60;
     font-weight: bold;
   }
+
+  .noAssignmentsText {
+    margin: 2rem;
+    text-align: center;
+    font-size: 1.4rem;
+  }
 `;
 
 const AssignmentStyles = styled.div`
@@ -189,16 +195,17 @@ function CourseList(props) {
               <td>Online</td>
               <td>MW</td>
               <td>50</td>
-              <td className="courseListButtonsP">
+                <button className="courseListButtonsE">Edit</button>
+                <button className="courseListButtonsD">Delete</button>
                 <button
+                  className="detailsButton"
                   onClick={() => {
                     viewCourseDetails(4120);
                   }}
                 >
                   Details
                 </button>
-                <button className="courseListButtonsE">Edit</button>
-                <button className="courseListButtonsD">Delete</button>
+              <td className="courseListButtonsP">
               </td>
             </tr>
             <tr>
@@ -210,6 +217,12 @@ function CourseList(props) {
               <td>MW</td>
               <td>50</td>
               <td className="courseListButtonsP">
+                <button type="button" className="courseListButtonsE">
+                  Edit
+                </button>
+                <button type="button" className="courseListButtonsD">
+                  Delete
+                </button>
                 <button
                   className="detailsButton"
                   onClick={() => {
@@ -217,12 +230,6 @@ function CourseList(props) {
                   }}
                 >
                   Details
-                </button>
-                <button type="button" className="courseListButtonsE">
-                  Edit
-                </button>
-                <button type="button" className="courseListButtonsD">
-                  Delete
                 </button>
               </td>
             </tr>
@@ -265,7 +272,7 @@ function CourseAssignments(props) {
                 submissionType={p.submission_type}
               />
             ))
-          : null}
+          : <div className="noAssignmentsText">This course has no assignments</div>}
       </div>
       <div className="goBackContainer">
         <a
