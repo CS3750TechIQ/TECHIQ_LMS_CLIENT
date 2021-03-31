@@ -69,6 +69,21 @@ const CourseStyles = styled.div`
 `;
 
 const CourseAssignmentStyles = styled.div`
+  .assignmentsContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .assignment {
+    flex-basis: 50%;
+  }
+
+  .goBackContainer {
+    text-align: center;
+    margin: 2rem;
+  }
+
   .goBackButton {
     text-align: center;
     color: #072f60;
@@ -77,11 +92,25 @@ const CourseAssignmentStyles = styled.div`
 `;
 
 const AssignmentStyles = styled.div`
-  .goBackButton {
-    text-align: center;
-    color: #072f60;
-    font-weight: bold;
+  .assignmentCard {
+    padding: 1rem;
+    border-bottom: 1px solid #072f60;
+
+    :hover {
+      background-color: #3CB043;
+    }
   }
+
+  .cardHeader {
+    display: flex;
+
+  }
+
+  div {
+    padding: .5rem 1rem 0 0;
+  }
+}
+
 `;
 
 const getAssignments = async (courseNum) => {
@@ -223,35 +252,55 @@ function CourseAssignments(props) {
   return (
     <CourseAssignmentStyles>
       <Nav />
-      {assignmentsInfoQuery.data.length > 0
-        ? assignmentsInfoQuery.data.map((p) => (
-            <Assignment
-              key={p.assignmentID}
-              title={p.assignment_title}
-              description={p.assignment_desc}
-              courseNum={p.course_number}
-            />
-          ))
-        : null}
-      <a
-        className="goBackButton"
-        href="#"
-        onClick={() => {
-          props.setViewingCourse(false);
-        }}
-      >
-        Go back to your courses
-      </a>
+      <div className="assignmentsContainer">
+        {assignmentsInfoQuery.data.length > 0
+          ? assignmentsInfoQuery.data.map((p) => (
+              <Assignment
+                className="assignment"
+                key={p.assignmentID}
+                title={p.assignment_title}
+                description={p.assignment_desc}
+                courseNum={p.course_number}
+                dueDate={p.due_date}
+                submissionType={p.submission_type}
+              />
+            ))
+          : null}
+      </div>
+      <div className="goBackContainer">
+        <a
+          className="goBackButton"
+          href="#"
+          onClick={() => {
+            props.setViewingCourse(false);
+          }}
+        >
+          Go back to your courses
+        </a>
+      </div>
     </CourseAssignmentStyles>
   );
 }
 
-function Assignment({ title, description, courseNum }) {
+function Assignment({
+  title,
+  description,
+  courseNum,
+  dueDate,
+  submissionType,
+}) {
   return (
     <AssignmentStyles>
-      <h2>{title}</h2>
-      <div>{courseNum}</div>
-      <div>{description}</div>
+      <div className="assignmentCard">
+        <h2>{title}</h2>
+        <div className="cardHeader">
+          <div><strong>Course Number: </strong> {courseNum}</div>
+          <div><strong>Due Date: </strong>{dueDate}</div>
+        </div>
+        <div><strong>Description:</strong></div>
+        <div>{description}</div>
+        <div><strong>Submission Type: </strong>{submissionType}</div>
+      </div>
     </AssignmentStyles>
   );
 }
