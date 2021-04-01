@@ -69,6 +69,79 @@ const CourseStyles = styled.div`
 `;
 
 const CourseAssignmentStyles = styled.div`
+  h1 {
+    padding-left: 1rem;
+  }
+
+  input[type="radio"] {
+    transform: scale(1.4);
+  }
+
+  input[type="date"],
+  input[type="text"],
+  textarea {
+    appearance: none;
+    -webkit-appearance: none;
+    color: #95a5a6;
+    font-family: "Helvetica", arial, sans-serif;
+    font-size: 18px;
+    border: 1px solid #ecf0f1;
+    padding: 8px;
+    display: inline-block !important;
+    visibility: visible !important;
+  }
+
+  input[type="date"],
+  input[type="text"],
+  textarea,
+  focus {
+    color: #95a5a6;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+  }
+
+  form {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    margin-top: 2rem;
+    width: 50%;
+    justify-content: space-between;
+    padding: 1rem;
+    border-radius: 0.25rem;
+    border: 1px solid #a0a0a0;
+
+    .dataTitle {
+      font-weight: bold;
+      padding: 0.5rem 0 0.5rem 0;
+    }
+  }
+
+  .formButton {
+    font-size: 1.2rem;
+    margin: .5rem 0 .5rem 0;
+    width: 250px;
+    padding: 0.5rem;
+    color: white;
+    border: 1px solid #a0a0a0;
+    border-radius: .5rem;
+    background-color: #0a66c2;
+
+    :hover {
+      transform: scale(1.1);
+    }
+  }
+
+  .radio {
+    margin: 0.5rem;
+  }
+
+  .newCourse {
+    width: 1000px;
+    margin: 2rem;
+  }
+
   .assignmentsContainer {
     display: flex;
     flex-direction: column;
@@ -94,6 +167,14 @@ const CourseAssignmentStyles = styled.div`
     margin: 2rem;
     text-align: center;
     font-size: 1.4rem;
+  }
+
+  .existingAssignments {
+    font-size: 1.75rem;
+    font-weight: bold;
+    border-bottom: 1px solid #072f60;
+    padding-left: 1rem;
+    
   }
 `;
 
@@ -195,6 +276,7 @@ function CourseList(props) {
               <td>Online</td>
               <td>MW</td>
               <td>50</td>
+              <td className="courseListButtonsP">
                 <button className="courseListButtonsE">Edit</button>
                 <button className="courseListButtonsD">Delete</button>
                 <button
@@ -205,7 +287,6 @@ function CourseList(props) {
                 >
                   Details
                 </button>
-              <td className="courseListButtonsP">
               </td>
             </tr>
             <tr>
@@ -244,9 +325,52 @@ function CourseList(props) {
 }
 
 function CourseAssignments(props) {
+  const router = useRouter();
+  
+  const [ newTitle, setNewTitle ] = useState('')
+  const [ newDesc, setNewDesc ] = useState('')
+  const [ newDueDate, setNewDueDate ] = useState('')
+  const [ newMaxPoints, setNewMaxPoints ] = useState('')
+  const [ newSubType, setNewSubType ] = useState('')
+
   const assignmentsInfoQuery = useQuery(["assignments"], async () => {
     return await getAssignments(props.courseNum);
   });
+
+  const createAssignment = async () => {
+    if (newTitle === null || newTitle === '') {
+      setBlankFields(true);
+      return;
+    } if (newDesc === null || newDesc === '') {
+      setBlankFields(true);
+      return;
+    } if (newDueDate === null || newDueDate === '') {
+      setBlankFields(true);
+      return;
+    } if (newMaxPoints === null || newMaxPoints === '') {
+      setBlankFields(true);
+      return;
+    } if (newSubType === null || newSubType === '') {
+      setBlankFields(true);
+      return;
+    }
+
+    try {
+      const res = await axios.put('http://localhost:50058/Account/addAssignment', {
+        course_number: props.courseNum,
+        assignment_title: newTitle,
+        assignment_desc: newDesc,
+        due_date: newDueDate,
+        max_points: newMaxPoints,
+        submission_type: newSubType,
+      });
+      if (res.status === 200) {
+        router.reload();
+      }
+    } catch (e) {
+      alert(e);
+    }
+  }
 
   if (assignmentsInfoQuery.isLoading) {
     return "Loading...";
@@ -259,20 +383,72 @@ function CourseAssignments(props) {
   return (
     <CourseAssignmentStyles>
       <Nav />
+      <h1>Course Details</h1>
+      <div className="newCourse">
+        <form onSubmit={(e) => {
+          e.preventDefault()
+          createAssignment()
+        }}>
+        <h2>New Assignment</h2>
+          <label for="title" className="dataTitle">
+            Assignment Title:{" "}
+          </label>
+          <input type="text" id="title" onChange={(e) => {setNewTitle(e.target.value)}} />
+          <label for="description" className="dataTitle">
+            Assignment Description:{" "}
+          </label>
+          <textarea id="description" onChange={(e) => {setNewDesc(e.target.value)}}/>
+          <label for="dueDate" className="dataTitle">
+            Due Date:{" "}
+          </label>
+          <input type="date" id="dueDate" onChange={(e) => {setNewDueDate(e.target.value)}} />
+          <label for="points" className="dataTitle">
+            Maximum Points:{" "}
+          </label>
+          <input type="text" id="points" onChange={(e) => {setNewMaxPoints(e.target.value)}}/>
+          <label className="dataTitle">Submission Type:</label>
+          <div className="radioBlock">
+            <label for="fileSubmission">File Submission</label>
+            <input
+              className="radio"
+              type="radio"
+              id="fileSubmission"
+              name="submissionType"
+              onChange={() => {setNewSubType('File Submission')}}
+            />
+            <label for="textEntry">Text Entry</label>
+            <input
+              className="radio"
+              type="radio"
+              id="textEntry"
+              name="submissionType"
+              onChange={() => {setNewSubType('Text Entry')}}
+            />
+          </div>
+          <button type="submit" class="formButton">
+            Create New Assignment
+          </button>
+        </form>
+      </div>
+      <div className="existingAssignments">Existing Assignments</div>
       <div className="assignmentsContainer">
-        {assignmentsInfoQuery.data.length > 0
-          ? assignmentsInfoQuery.data.map((p) => (
-              <Assignment
-                className="assignment"
-                key={p.assignmentID}
-                title={p.assignment_title}
-                description={p.assignment_desc}
-                courseNum={p.course_number}
-                dueDate={p.due_date}
-                submissionType={p.submission_type}
-              />
-            ))
-          : <div className="noAssignmentsText">This course has no assignments</div>}
+        {assignmentsInfoQuery.data.length > 0 ? (
+          assignmentsInfoQuery.data.map((p) => (
+            <Assignment
+              className="assignment"
+              key={p.assignmentID}
+              title={p.assignment_title}
+              description={p.assignment_desc}
+              courseNum={p.course_number}
+              dueDate={p.due_date}
+              submissionType={p.submission_type}
+            />
+          ))
+        ) : (
+          <div className="noAssignmentsText">
+            This course has no assignments
+          </div>
+        )}
       </div>
       <div className="goBackContainer">
         <a
@@ -299,14 +475,24 @@ function Assignment({
   return (
     <AssignmentStyles>
       <div className="assignmentCard">
-        <h2>{title}</h2>
+        <h3>{title}</h3>
         <div className="cardHeader">
-          <div><strong>Course Number: </strong> {courseNum}</div>
-          <div><strong>Due Date: </strong>{dueDate}</div>
+          <div>
+            <strong>Course Number: </strong> {courseNum}
+          </div>
+          <div>
+            <strong>Due Date: </strong>
+            {dueDate}
+          </div>
         </div>
-        <div><strong>Description:</strong></div>
+        <div>
+          <strong>Description:</strong>
+        </div>
         <div>{description}</div>
-        <div><strong>Submission Type: </strong>{submissionType}</div>
+        <div>
+          <strong>Submission Type: </strong>
+          {submissionType}
+        </div>
       </div>
     </AssignmentStyles>
   );

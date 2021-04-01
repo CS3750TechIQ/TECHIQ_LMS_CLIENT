@@ -369,7 +369,6 @@ function SignUp() {
           onSubmit={(e) => {
             e.preventDefault();
             createAccount();
-            console.log(userType);
           }}
         >
           <input
