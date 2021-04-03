@@ -63,7 +63,7 @@ export default function Nav() {
               <a>Courses</a>
             </Link>
           ) : (
-            <Link to="/registration">
+            <Link to="/registercourses">
               <a>Registration</a>
             </Link>
           )}
