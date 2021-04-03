@@ -69,9 +69,8 @@ export default function tuition() {
   return (
     <TuitionStyles>
       <Nav />
-      {console.log(tuitionInfoQuery?.Tuition)}
       <div className="tuitionContainer">
-        <p className="tuitionTotalContainer">Amount owed: {tuitionInfoQuery?.Tuition}</p>
+        <p className="tuitionTotalContainer">Amount owed: {tuitionInfoQuery?.data.tuition}</p>
         <div className="inputLabelitems">
           <label>Name on card: </label>
           <input className="inputBox" type="text" />
