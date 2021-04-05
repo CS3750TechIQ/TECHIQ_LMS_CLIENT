@@ -50,7 +50,6 @@ export default function Calendar() {
         initialView="timeGridWeek"
         nowIndicator={true}
         editable={true}
-        initialEvents={[{ title: "nice event", start: new Date() }]}
         initialEvents={getInitialEvents()}
       />
     </CalendarStyles>
