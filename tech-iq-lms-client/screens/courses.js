@@ -242,7 +242,7 @@ function CourseList(props) {
 
   return (
     <CourseStyles>
-      <Nav userType={localUserData[0].userType} />
+      <Nav />
       <div className="addCourseContainer">
         <h1 className="courseTitle">Course list</h1>
 
