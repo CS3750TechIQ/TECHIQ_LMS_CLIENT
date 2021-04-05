@@ -30,7 +30,6 @@ export default function Calendar() {
         start: assignmentInfoQuery.data[i]?.due_date
       })
     }
-    console.log(assignments)
     return assignments;
   }
 
