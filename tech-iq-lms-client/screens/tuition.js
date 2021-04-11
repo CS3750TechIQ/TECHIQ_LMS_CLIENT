@@ -120,7 +120,7 @@ export default function tuition() {
       console.log(cardExpMonth);
       console.log(cardExpYear);
       console.log(cardCVC);
-      const { data } = await axios.post(
+      const { data } = await axios.put(
         "http://localhost:50058/Account/submitPayment",
         {
           amount,
@@ -136,7 +136,7 @@ export default function tuition() {
     },
     {
       onError: (err) => {
-        alert("payment successful");
+        alert("payment successful but error");
       }
     }
   );
