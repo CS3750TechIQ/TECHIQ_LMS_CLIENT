@@ -58,6 +58,7 @@ export default function tuition() {
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const [cardNumber, setCardNumber] = useState("");
+  const [currency, setCurrency] = useState("USD");
   const [cardExpMonth, setCardExpMonth] = useState("");
   const [cardExpYear, setCardExpYear] = useState("");
   const [cardCVC, setCardCVC] = useState("");
@@ -81,12 +82,13 @@ export default function tuition() {
       console.log(cardExpMonth);
       console.log(cardExpYear);
       console.log(cardCVC);
-      const { data } = await axios.put(
+      const { data } = await axios.post(
         "http://localhost:50058/Account/submitPayment",
         {
           amount,
           description,
           cardNumber,
+          currency,
           cardExpMonth,
           cardExpYear,
           cardCVC
