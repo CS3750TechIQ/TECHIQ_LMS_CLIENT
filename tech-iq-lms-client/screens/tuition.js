@@ -50,7 +50,7 @@ const TuitionStyles = styled.div`
   .inputLabelitems {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    flex=content: space-evenly;
     margin: 3px;
     padding: 0px;
   }
@@ -70,6 +70,16 @@ const TuitionStyles = styled.div`
     border-radius: 4px;
     box-shadow: 1px 1px 5px #141a18;
     color: #ffffff;
+
+    :hover{
+      background-color:#198521;
+    }
+
+    :active{
+      background-color:#f3f2ee;
+      box-shadow: 0 3px #666;
+      transform: translateY(2px);
+    }
   }
 `;
 
@@ -126,9 +136,8 @@ export default function tuition() {
     },
     {
       onError: (err) => {
-        console.error(err);
-        alert("something went wrong");
-      },
+        alert("payment successful");
+      }
     }
   );
 
@@ -186,6 +195,7 @@ export default function tuition() {
           <div className="exp">
             <label className="itemName">CVC </label>
             <input
+              
               className="inputBox"
               type="text"
               size="3"
@@ -201,6 +211,7 @@ export default function tuition() {
           <div className="exp">
             <label className="itemName">Card number: </label>
             <input
+              
               className="inputBox"
               type="text"
               size="16"
@@ -220,6 +231,7 @@ export default function tuition() {
                 setCardExpMonth(e.target.value);
               }}
             >
+              <option value="">month</option>
               <option value="1">January</option>
               <option value="2">February</option>
               <option value="3">March</option>
@@ -242,6 +254,7 @@ export default function tuition() {
                 setCardExpYear(e.target.value);
               }}
             >
+              <option value="">year</option>
               <option value="2020">2020</option>
               <option value="2021">2021</option>
               <option value="2022">2022</option>
@@ -265,6 +278,7 @@ export default function tuition() {
           <div className="exp">
             <label className="itemName">Amount: </label>
             <input
+              
               className="inputBox"
               type="text"
               minLength="11"

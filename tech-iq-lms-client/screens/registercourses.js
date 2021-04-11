@@ -172,11 +172,13 @@ export default function RegisterCourses() {
     {
       onSuccess: (data) => {
         setRegCourse((oldArray) => [...oldArray, course[value]])
-      },
+      }
+      /*
       onError: (err) => {
         console.error(err);
         alert("something went wrong")
       },
+      */
     }
   );
     return(

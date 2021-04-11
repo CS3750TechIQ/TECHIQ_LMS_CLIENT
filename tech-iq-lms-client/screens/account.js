@@ -43,12 +43,13 @@ const AccountStyles = styled.div`
   }
 
   .accountContainer {
+    background-color: #072f60;
     padding: 2rem;
     width: 750px;
     margin: auto;
     margin-top: 50px;
     border-radius: 4px;
-    box-shadow: 0.25px 0.25px 3px #a0a0a0;
+    box-shadow: 1px 1px 10px #a0a0a0;
   }
 
   .topSection {
@@ -107,6 +108,7 @@ const AccountStyles = styled.div`
     background-color: Transparent;
     outline: none;
   }
+
   .imageContainer {
     margin: 8px;
   }
@@ -129,6 +131,9 @@ const AccountStyles = styled.div`
     border: 1px solid #a0a0a0;
     border-radius: 8px;
     margin: 1rem 2rem 2rem 2rem;
+    border-radius: 4px;
+    box-shadow: 1px 1px 5px #141a18;
+    
   }
 
   .editButton {
@@ -136,14 +141,19 @@ const AccountStyles = styled.div`
     margin: 1rem;
     width: 125px;
     padding: 0.5rem;
-    color: white;
-    border: 1px solid #a0a0a0;
-    border-radius: 1rem;
-    background-color: #0a66c2;
+    color: #ffffff;
+    border-radius: 4px;
+    box-shadow: 1px 1px 5px #141a18;
+    background-color: #44a04b;
+
 
     :hover {
       transform: scale(1.1);
     }
+  }
+
+  .allFont{
+    color: #ffffff;
   }
 `;
 
@@ -155,7 +165,7 @@ const getUserInfo = async (username) => {
 
 export default function Account() {
   //Get Local user info cache
-  const [ user, setUser ] = useUser();
+  const [user, setUser] = useUser();
   const [userBioText, setUserBio] = useState(user?.userBio);
   //Set initial state
   const [isEditing, setIsEditing] = useState(false);
@@ -170,20 +180,17 @@ export default function Account() {
     "https://lh3.googleusercontent.com/proxy/CQrbom5H7ldcxHPzgrbcedYPJa8q3RESpTdBEPtiWgYD6aX-YEzHUek4M2XoNaCvFA5ZjAoVvu-xnYIBL6_DUkKowzEdlSckP2M"
   );
 
-  const userInfoQuery = useQuery(
-    ["userInfo", user?.username],
-    async () => {
-      const data = await getUserInfo(user?.username);
-      setUserBio(data?.bio ?? "");
-      setUserPhone(data?.phone ?? "");
-      setFirstName(data?.firstName ?? "");
-      setLastName(data?.lastName ?? "");
-      setGithubLink(data?.githubLink ?? "https://github.com/");
-      setLinkedInLink(data?.linkedInLink ?? "https://www.linkedin.com/");
-      setTwitterLink(data?.twitterLink ?? "https://twitter.com/");
-      return data;
-    }
-  );
+  const userInfoQuery = useQuery(["userInfo", user?.username], async () => {
+    const data = await getUserInfo(user?.username);
+    setUserBio(data?.bio ?? "");
+    setUserPhone(data?.phone ?? "");
+    setFirstName(data?.firstName ?? "");
+    setLastName(data?.lastName ?? "");
+    setGithubLink(data?.githubLink ?? "https://github.com/");
+    setLinkedInLink(data?.linkedInLink ?? "https://www.linkedin.com/");
+    setTwitterLink(data?.twitterLink ?? "https://twitter.com/");
+    return data;
+  });
 
   const imageHandler = (e) => {
     const reader = new FileReader();
@@ -239,9 +246,7 @@ export default function Account() {
   const getCurrentUserInfoMutation = useMutation(
     async () => {
       const { data } = await axios.get(
-        "http://localhost:50058/Account/" +
-          user?.username +
-          "/getUser"
+        "http://localhost:50058/Account/" + user?.username + "/getUser"
       );
       return data;
     },
@@ -285,8 +290,8 @@ export default function Account() {
                 onChange={imageHandler}
               />
             </span>
-            <label class="inputLabel" htmlFor="file">
-              <FontAwesomeIcon icon="upload" size="xl" /> Upload Image
+            <label class="inputLabel allFont" htmlFor="file">
+              <FontAwesomeIcon className="allFont" icon="upload" size="xl" /> Upload Image
             </label>
           </div>
 
@@ -295,7 +300,7 @@ export default function Account() {
               <div>
                 <div className="editContainer">
                   <label>First Name: </label>
-                  <input
+                  <input                   
                     type="text"
                     defaultValue={firstName}
                     onChange={(e) => {
@@ -315,17 +320,18 @@ export default function Account() {
                 </div>
               </div>
             ) : (
-              <h1>{firstName + " " + lastName}</h1>
+              <h1 className="allFont">{firstName + " " + lastName}</h1>
             )}
             {!isEditing ? (
               <div>
-                <p>{userPhone}</p>
-                <p>{userName}</p>
+                <p className="allFont">{userPhone}</p>
+                <p className="allFont">{userName}</p>
               </div>
             ) : (
               <div className="editContainer">
                 <label>Phone Number: </label>
                 <input
+                
                   type="text"
                   defaultValue={userPhone}
                   onChange={(e) => {
@@ -372,7 +378,7 @@ export default function Account() {
             )}
           </div>
         </div>
-        <h4>Bio</h4>
+        <h4 className="allFont">Bio</h4>
         <div className="bioContainer">
           {!isEditing ? (
             <p>{userBioText}</p>

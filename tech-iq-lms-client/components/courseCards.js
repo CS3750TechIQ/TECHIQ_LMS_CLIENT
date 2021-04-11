@@ -37,11 +37,17 @@ const CardStyles = styled.div`
 
   .viewButton {
     background-color: #072f5f;
+    border-radius: 3px;
+    box-shadow: 0.5px 0.5px 1px #141a18;
   }
 
   .dropButton {
     background-color: #e3122e;
+    border-radius: 3px;
+    box-shadow: 0.5px 0.5px 1px #141a18;
   }
+
+
 
   .courseButton {
     padding: 4px 8px;
