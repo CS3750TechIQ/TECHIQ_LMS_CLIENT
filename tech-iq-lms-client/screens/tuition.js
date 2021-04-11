@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Nav from "../components/navBar";
 import styled from "styled-components";
 import { useRouter } from "next/router";
-import useLocalStorage from "../hooks/useLocalStorage";
 import { useMutation, useQuery } from "react-query";
 import axios from "axios";
 import { useUser } from "../hooks/useUser";
@@ -71,12 +70,12 @@ const TuitionStyles = styled.div`
     box-shadow: 1px 1px 5px #141a18;
     color: #ffffff;
 
-    :hover{
-      background-color:#198521;
+    :hover {
+      background-color: #198521;
     }
 
-    :active{
-      background-color:#f3f2ee;
+    :active {
+      background-color: #f3f2ee;
       box-shadow: 0 3px #666;
       transform: translateY(2px);
     }
@@ -88,6 +87,28 @@ const getTuition = async (studentID) => {
     .get("http://localhost:50058/Account/" + studentID + "/getTuition")
     .then((res) => res.data);
 };
+
+const submitPayment = async (
+  amount,
+  description,
+  cardNumber,
+  currency,
+  cardExpMonth,
+  cardExpYear,
+  cardCVC) => {
+  const data = await axios.put("http://localhost:50058/Account/submitPayment", {
+    amount,
+    description,
+    cardNumber,
+    currency,
+    cardExpMonth,
+    cardExpYear,
+    cardCVC,
+  });
+  console.log(data)
+  return data
+};
+
 
 export default function tuition() {
   const [user] = useUser();
@@ -114,30 +135,26 @@ export default function tuition() {
   // mutation function
   const submitPaymentMutation = useMutation(
     async () => {
-      console.log(amount);
-      console.log(description);
-      console.log(cardNumber);
-      console.log(cardExpMonth);
-      console.log(cardExpYear);
-      console.log(cardCVC);
-      const { data } = await axios.put(
-        "http://localhost:50058/Account/submitPayment",
-        {
-          amount,
-          description,
-          cardNumber,
-          currency,
-          cardExpMonth,
-          cardExpYear,
-          cardCVC,
-        }
-      );
+      const data = await submitPayment(
+        amount,
+        description,
+        cardNumber,
+        currency,
+        cardExpMonth,
+        cardExpYear,
+        cardCVC,)
+      console.log(data);
       return data;
     },
     {
+      onSuccess: (data) => {
+        alert("Payment successful.");
+      },
       onError: (err) => {
-        alert("payment successful but error");
-      }
+        console.log(err)
+        console.log(data)
+        alert("Error processing payment.");
+      },
     }
   );
 
@@ -157,7 +174,7 @@ export default function tuition() {
         <div className="inputLabelitems">
           <p className="tuitionTotalContainer">Student:</p>
           <p className="tuitionTotalContainer">
-            {tuitionInfoQuery?.data.firstName} {tuitionInfoQuery?.data.lastName}
+            {user?.firstName} {user?.lastName}
           </p>
         </div>
         <div className="inputLabelitems">
@@ -195,7 +212,6 @@ export default function tuition() {
           <div className="exp">
             <label className="itemName">CVC </label>
             <input
-              
               className="inputBox"
               type="text"
               size="3"
@@ -211,7 +227,6 @@ export default function tuition() {
           <div className="exp">
             <label className="itemName">Card number: </label>
             <input
-              
               className="inputBox"
               type="text"
               size="16"
@@ -278,7 +293,6 @@ export default function tuition() {
           <div className="exp">
             <label className="itemName">Amount: </label>
             <input
-              
               className="inputBox"
               type="text"
               minLength="11"
