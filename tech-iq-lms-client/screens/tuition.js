@@ -88,28 +88,6 @@ const getTuition = async (studentID) => {
     .then((res) => res.data);
 };
 
-const submitPayment = async (
-  amount,
-  description,
-  cardNumber,
-  currency,
-  cardExpMonth,
-  cardExpYear,
-  cardCVC) => {
-  const data = await axios.put("http://localhost:50058/Account/submitPayment", {
-    amount,
-    description,
-    cardNumber,
-    currency,
-    cardExpMonth,
-    cardExpYear,
-    cardCVC,
-  });
-  console.log(data)
-  return data
-};
-
-
 export default function tuition() {
   const [user] = useUser();
 
@@ -135,24 +113,26 @@ export default function tuition() {
   // mutation function
   const submitPaymentMutation = useMutation(
     async () => {
-      const data = await submitPayment(
-        amount,
-        description,
-        cardNumber,
-        currency,
-        cardExpMonth,
-        cardExpYear,
-        cardCVC,)
-      console.log(data);
-      return data;
+      const data = await axios.put(
+        "http://localhost:50058/Account/submitPayment",
+        {
+          amount,
+          description,
+          cardNumber,
+          currency,
+          cardExpMonth,
+          cardExpYear,
+          cardCVC,
+          studentId: user?.studentId
+        }
+      )
+      return data
     },
     {
       onSuccess: (data) => {
         alert("Payment successful.");
       },
       onError: (err) => {
-        console.log(err)
-        console.log(data)
         alert("Error processing payment.");
       },
     }
