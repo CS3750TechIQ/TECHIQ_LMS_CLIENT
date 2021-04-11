@@ -7,41 +7,69 @@ import { useMutation, useQuery } from "react-query";
 import axios from "axios";
 import { useUser } from "../hooks/useUser";
 
-
 const TuitionStyles = styled.div`
   .tuitionContainer {
     display: flex;
     flex-direction: column;
-    justify-content: right;
+    justify-content: center;
+    background-color: #072f60;
     padding: 2rem;
-    width: 750px;
+    width: 25rem;
     margin: auto;
     margin-top: 50px;
     border-radius: 4px;
-    box-shadow: 0.25px 0.25px 3px #a0a0a0;
+    box-shadow: 1px 1px 10px #a0a0a0;
   }
 
   .tuitionTotalContainer {
     display: flex;
     margin: auto;
+    color: #ffffff;
   }
 
   .paymentButton {
     display: flex;
-    width: 150px;
-    padding: 3px;
-    margin: auto;
+    width: auto;
+    padding: 0.3rem;
+    padding-left: 1.2rem;
+  }
+
+  .cardImage {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 3px;
+    padding: 0px;
   }
 
   .inputBox {
-    display: flex;
-    width: 300px;
+    border-radius: 4px;
+    box-shadow: 1px 1px 5px #141a18;
   }
 
   .inputLabelitems {
     display: flex;
+    flex-direction: row;
+    justify-content: center;
     margin: 3px;
-    padding: 3px;
+    padding: 0px;
+  }
+
+  .exp {
+    display: flex;
+    flex-direction: column;
+    padding: 0.3rem;
+  }
+
+  .itemName {
+    color: #ffffff;
+  }
+
+  .submitButton {
+    background-color: #44a04b;
+    border-radius: 4px;
+    box-shadow: 1px 1px 5px #141a18;
+    color: #ffffff;
   }
 `;
 
@@ -89,13 +117,16 @@ export default function tuition() {
           cardNumber,
           cardExpMonth,
           cardExpYear,
-          cardCVC
+          cardCVC,
         }
       );
       return data;
     },
     {
-      // onSuccess ??
+      onError: (err) => {
+        console.error(err);
+        alert("something went wrong");
+      },
     }
   );
 
@@ -111,82 +142,147 @@ export default function tuition() {
     <TuitionStyles>
       <Nav />
       <div className="tuitionContainer">
-        <p className="tuitionTotalContainer">
-          Amount owed: {tuitionInfoQuery?.data.tuition}
-        </p>
+        <h1 className="tuitionTotalContainer">View/Pay Tuition</h1>
         <div className="inputLabelitems">
-          <label>Name on card: </label>
-          <input
-            className="inputBox"
-            type="text"
-            onChange={(e) => {
-              setDescription(e.target.value);
-            }}
-          />
+          <p className="tuitionTotalContainer">Student:</p>
+          <p className="tuitionTotalContainer">
+            {tuitionInfoQuery?.data.firstName} {tuitionInfoQuery?.data.lastName}
+          </p>
         </div>
         <div className="inputLabelitems">
-          <label>Credit card number: </label>
-          <input
-            className="inputBox"
-            type="text"
-            onChange={(e) => {
-              setCardNumber(e.target.value);
-            }}
-          />
+          <p className="tuitionTotalContainer">Tuition amount: </p>
+          <p className="tuitionTotalContainer">
+            {tuitionInfoQuery?.data.tuition}
+          </p>
+        </div>
+      </div>
+      <div className="tuitionContainer">
+        <div className="cardImage">
+          <a href="http://www.credit-card-logos.com/">
+            <img
+              alt="Credit Card Logos"
+              title="Credit Card Logos"
+              src="http://www.credit-card-logos.com/images/multiple_credit-card-logos-1/credit_card_logos_10.gif"
+              width="336"
+              height="50"
+              border="0"
+            />
+          </a>
         </div>
         <div className="inputLabelitems">
-          <label>Expiration Month: </label>
-          <input
-            className="inputBox"
-            type="text"
-            onChange={(e) => {
-              setCardExpMonth(e.target.value);
-            }}
-          />
+          <div className="exp">
+            <label className="itemName">Name on card: </label>
+            <input
+              className="inputBox"
+              type="text"
+              size="32"
+              onChange={(e) => {
+                setDescription(e.target.value);
+              }}
+            />
+          </div>
+          <div className="exp">
+            <label className="itemName">CVC </label>
+            <input
+              className="inputBox"
+              type="text"
+              size="3"
+              onChange={(e) => {
+                setCardCVC(e.target.value);
+              }}
+              minLength="3"
+              maxlength="3"
+            />
+          </div>
         </div>
         <div className="inputLabelitems">
-          <label>Expiration Year: </label>
-          <input
-            className="inputBox"
-            type="text"
-            onChange={(e) => {
-              setCardExpYear(e.target.value);
-            }}
-          />
+          <div className="exp">
+            <label className="itemName">Card number: </label>
+            <input
+              className="inputBox"
+              type="text"
+              size="16"
+              onChange={(e) => {
+                setCardNumber(e.target.value);
+              }}
+              minLength="16"
+              maxlength="16"
+            />
+          </div>
+
+          <div className="exp">
+            <label className="itemName">Month </label>
+            <select
+              className="inputDrop"
+              onChange={(e) => {
+                setCardExpMonth(e.target.value);
+              }}
+            >
+              <option value="1">January</option>
+              <option value="2">February</option>
+              <option value="3">March</option>
+              <option value="4">April</option>
+              <option value="5">May</option>
+              <option value="6">June</option>
+              <option value="7">July</option>
+              <option value="8">August</option>
+              <option value="9">September</option>
+              <option value="10">October</option>
+              <option value="11">November</option>
+              <option value="12">December</option>
+            </select>
+          </div>
+          <div className="exp">
+            <label className="itemName">Year </label>
+            <select
+              className="inputDrop"
+              onChange={(e) => {
+                setCardExpYear(e.target.value);
+              }}
+            >
+              <option value="2020">2020</option>
+              <option value="2021">2021</option>
+              <option value="2022">2022</option>
+              <option value="2023">2023</option>
+              <option value="2024">2024</option>
+              <option value="2025">2025</option>
+              <option value="2026">2026</option>
+              <option value="2027">2027</option>
+              <option value="2028">2028</option>
+              <option value="2029">2029</option>
+              <option value="2030">2030</option>
+              <option value="2031">2031</option>
+              <option value="2032">2032</option>
+              <option value="2033">2033</option>
+              <option value="2034">2034</option>
+              <option value="2035">2035</option>
+            </select>
+          </div>
         </div>
         <div className="inputLabelitems">
-          <label>CVC Number: </label>
-          <input
-            className="inputBox"
-            type="text"
-            onChange={(e) => {
-              setCardCVC(e.target.value);
-            }}
-          />
-        </div>
-        <div className="inputLabelitems">
-          <label>Payment amount: </label>
-          <input
-            className="inputBox"
-            type="text"
-            onChange={(e) => {
-              setAmount(e.target.value);
-            }}
-          />
-        </div>
-        <div className="inputLabelitems">
-          <label>Memo: </label>
-          <input className="inputBox" type="text" />
-        </div>
-        <div className="paymentButton">
-          <button
-            className="submitButton"
-            onClick={() => {
-              submitPaymentMutation.mutate();
-            }}
-          >
-            Submit payment
-          </button>
+          <div className="exp">
+            <label className="itemName">Amount: </label>
+            <input
+              className="inputBox"
+              type="text"
+              minLength="11"
+              maxlength="11"
+              onChange={(e) => {
+                setAmount(e.target.value);
+              }}
+            />
+          </div>
+
+          <div className="paymentButton">
+            <button
+              className="submitButton"
+              onClick={() => {
+                submitPaymentMutation.mutate();
+              }}
+            >
+              Submit payment
+            </button>
+          </div>
         </div>
       </div>
     </TuitionStyles>
