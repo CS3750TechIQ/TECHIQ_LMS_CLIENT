@@ -75,15 +75,21 @@ export default function tuition() {
   // mutation function
   const submitPaymentMutation = useMutation(
     async () => {
-      const { data } = await axios.post(
+      console.log(amount);
+      console.log(description);
+      console.log(cardNumber);
+      console.log(cardExpMonth);
+      console.log(cardExpYear);
+      console.log(cardCVC);
+      const { data } = await axios.put(
         "http://localhost:50058/Account/submitPayment",
         {
-          amount: amount,
-          description: description,
-          cardNumber: cardNumber,
-          cardExpMonth: cardExpMonth,
-          cardExpYear: cardExpYear,
-          cardCVC: cardCVC
+          amount,
+          description,
+          cardNumber,
+          cardExpMonth,
+          cardExpYear,
+          cardCVC
         }
       );
       return data;
@@ -132,7 +138,7 @@ export default function tuition() {
           <label>Expiration Month: </label>
           <input
             className="inputBox"
-            type="date"
+            type="text"
             onChange={(e) => {
               setCardExpMonth(e.target.value);
             }}
@@ -142,7 +148,7 @@ export default function tuition() {
           <label>Expiration Year: </label>
           <input
             className="inputBox"
-            type="date"
+            type="text"
             onChange={(e) => {
               setCardExpYear(e.target.value);
             }}
