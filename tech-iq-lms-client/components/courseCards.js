@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 import BellIcon from 'react-bell-icon'
 import { useQueryClient } from 'react-query'
+import StudentAssignments from '../screens/studentAssignments';
+import { Link } from "react-router-dom";
 
 const CardStyles = styled.div`
   .card {
@@ -10,7 +12,10 @@ const CardStyles = styled.div`
     height: 340px;
     border-radius: 5px;
   }
-
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
   .card:hover {
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
   }
@@ -66,7 +71,7 @@ const CardStyles = styled.div`
   }
 `;
 
-const CourseCards = ({title, description}) => {
+const CourseCards = ({key,title, description}) => {
   return (
     <CardStyles>
       <div className="card">
@@ -82,7 +87,10 @@ const CourseCards = ({title, description}) => {
           <a href="/notifications">
             <BellIcon color="#072F5F" width="25" />
           </a>
-          <button type="button" className="viewButton courseButton">View</button>
+          
+          <Link to="/studentAssignments">
+            <button type="button" className="viewButton courseButton" onClick={() =><StudentAssignments courseNumber={key}/>}>View </button>
+          </Link>
           <button type="button" className="dropButton courseButton">Drop</button>
         </div>
       </div>
