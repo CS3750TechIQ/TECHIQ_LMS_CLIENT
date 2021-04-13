@@ -23,7 +23,7 @@ import InstructorCourse from '../screens/instructorCourse'
 import Tuition from '../screens/tuition'
 import Home from '../screens/home'
 import StudentAssignments from '../screens/studentAssignments'
-
+import AssignmentSubmission from '../screens/assignmentSubmission'
 
 // FullCalendar
 import '@fullcalendar/common/main.css'
@@ -97,6 +97,9 @@ export default function App () {
                 </Route>
                 <Route path="/studentAssignments">
                   <StudentAssignments />
+                </Route>
+                <Route path="/assignmentSubmission">
+                  <AssignmentSubmission />
                 </Route>
                 <Route path="/">
                   <Home />

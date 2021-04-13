@@ -77,8 +77,9 @@ export default function Home() {
       <div className="courseCardLayout">
       {
         userInfoQuery.data.length > 0
-        ? userInfoQuery.data.map((p) => <CourseCards key={p.course_number} title={p.course_name} description={p.description}/>) 
+        ? userInfoQuery.data.map((p) => <CourseCards number={p.course_number} title={p.course_name} description={p.description}/>) 
         : null
+        
       }
       </div>
     </HomeStyles>

@@ -71,10 +71,10 @@ const CardStyles = styled.div`
   }
 `;
 
-const CourseCards = ({key,title, description}) => {
+const CourseCards = ({number,title, description}) => {
   return (
     <CardStyles>
-      <div className="card">
+      <div className="card" key={number}>
         <div className="courseColor" />
         <div>
           <h3 className="courseName">{title}</h3>
@@ -89,7 +89,7 @@ const CourseCards = ({key,title, description}) => {
           </a>
           
           <Link to="/studentAssignments">
-            <button type="button" className="viewButton courseButton" onClick={() =><StudentAssignments courseNumber={key}/>}>View </button>
+            <button type="button" className="viewButton courseButton" onClick={() => <StudentAssignments courseNumber={number}/>}>View </button>
           </Link>
           <button type="button" className="dropButton courseButton">Drop</button>
         </div>
