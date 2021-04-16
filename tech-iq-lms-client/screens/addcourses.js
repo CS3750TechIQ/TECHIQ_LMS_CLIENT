@@ -5,8 +5,8 @@ import styled from "styled-components";
 import { useRouter } from "next/router";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { useQuery } from "react-query";
-import axios from 'axios';
-import { useUser } from '../hooks/useUser'
+import axios from "axios";
+import { useUser } from "../hooks/useUser";
 
 const AddCoursesStyles = styled.div`
   .addCoursesLabel {
@@ -97,19 +97,15 @@ export default function addCourse() {
   const [location, setLocation] = useState("");
   const [days, setDays] = useState([]);
   const [max_capacity, setMax_Capacity] = useState("");
-  const [user, setUserData] = useUser()
+  const [user, setUserData] = useUser();
   const [username, setUsername] = useState(user?.username);
   const [firstname, setFirstname] = useState(user?.firstName);
   const [lastname, setLastname] = useState(user?.lastName);
-  /*
-  const userData = useUser("user");
-  const [username, setUsername] = useState(userData.username);
-  const [firstname, setFirstname] = useState(userData.firstname);
-  const [lastname, setLastname] = useState(userData.lastname);
-  */
+  const [instructorId, setInstructorId] = useState(user?.instructorid);
   const [credit_hours, setCredit_hours] = useState("");
   const [description, setDescription] = useState("");
   const [blankfields, setBlankfields] = useState("");
+  const [departmentId, setDepartmentId] = useState("");
 
   // function that will send a Post request to the server
   const createCourse = async () => {
@@ -167,21 +163,27 @@ export default function addCourse() {
       setBlankfields(true);
       return;
     }
+    if (departmentId === null || departmentId === "") {
+      setBlankfields(true);
+      return;
+    }
 
     // verify correct information is sent in console
-    console.log(department)
-    console.log(course_number)
-    console.log(course_name)
-    console.log(start_time)
-    console.log(end_time)
-    console.log(location)
-    console.log(days)
-    console.log(max_capacity)
-    console.log(username)
-    console.log(firstname)
-    console.log(lastname)
-    console.log(credit_hours)
-    console.log(description)
+    console.log(department);
+    console.log(course_number);
+    console.log(course_name);
+    console.log(start_time);
+    console.log(end_time);
+    console.log(location);
+    console.log(days);
+    console.log(max_capacity);
+    console.log(username);
+    console.log(firstname);
+    console.log(lastname);
+    console.log(credit_hours);
+    console.log(description);
+    console.log(departmentId);
+    console.log(instructorId);
     try {
       const res = await axios.put("http://localhost:50058/Account/AddCourse", {
         department,
@@ -197,6 +199,8 @@ export default function addCourse() {
         lastname,
         credit_hours,
         description,
+        departmentId,
+        instructorId,
       });
       if (res.status === 200) router.reload();
     } catch (e) {
@@ -389,6 +393,17 @@ export default function addCourse() {
               onChange={(e) => setDescription(e.target.value)}
             ></input>
           </div>
+          {/* testing */}
+          <div className="addFormItems">
+            <label className="addCoursesLabel" for="DepartmentId">
+              Department Id
+            </label>
+            <input
+              id="DepartmentId"
+              onChange={(e) => setDepartmentId(e.target.value)}
+            ></input>
+          </div>
+          {/* testing */}
           {blankfields === true ? (
             <div className="missingFields">Missing required fields</div>
           ) : null}
