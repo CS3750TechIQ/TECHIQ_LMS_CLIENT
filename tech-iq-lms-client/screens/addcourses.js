@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { useQuery } from "react-query";
 import axios from 'axios';
+import { useUser } from '../hooks/useUser'
 
 const AddCoursesStyles = styled.div`
   .addCoursesLabel {
@@ -96,17 +97,23 @@ export default function addCourse() {
   const [location, setLocation] = useState("");
   const [days, setDays] = useState([]);
   const [max_capacity, setMax_Capacity] = useState("");
-  const userData = useLocalStorage("user");
+  const [user, setUserData] = useUser()
+  const [username, setUsername] = useState(user?.username);
+  const [firstname, setFirstname] = useState(user?.firstname);
+  const [lastname, setLastname] = useState(user?.lastname);
+  /*
+  const userData = useUser("user");
   const [username, setUsername] = useState(userData.username);
   const [firstname, setFirstname] = useState(userData.firstname);
   const [lastname, setLastname] = useState(userData.lastname);
+  */
   const [credit_hours, setCredit_hours] = useState("");
   const [description, setDescription] = useState("");
   const [blankfields, setBlankfields] = useState("");
 
   // function that will send a Post request to the server
   const createCourse = async () => {
-    console.log(userData);
+    //console.log(userData);
     //#region  input verification
     if (department === null || department === "") {
       setBlankfields(true);
@@ -259,7 +266,7 @@ export default function addCourse() {
               type="checkbox"
               id="Monday"
               onChange={() => {
-                setDays([...days, "Monday"]);
+                setDays([...days, "M"]);
               }}
             ></input>
             <label className="addCoursesLabel" for="Monday">
@@ -351,9 +358,7 @@ export default function addCourse() {
             </label>
             <input
               className="addCoursesLabel"
-              type="location"
-              id="stTime"
-              name="stTime"
+              id="location"
               onChange={(e) => setLocation(e.target.value)}
             ></input>
           </div>
