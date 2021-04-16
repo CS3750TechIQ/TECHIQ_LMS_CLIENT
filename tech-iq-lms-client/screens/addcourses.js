@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { useRouter } from "next/router";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { useQuery } from "react-query";
+import axios from 'axios';
 
 const AddCoursesStyles = styled.div`
   .addCoursesLabel {
@@ -99,6 +100,8 @@ export default function addCourse() {
   const [username, setUsername] = useState(userData.username);
   const [firstname, setFirstname] = useState(userData.firstname);
   const [lastname, setLastname] = useState(userData.lastname);
+  const [credit_hours, setCredit_hours] = useState("");
+  const [description, setDescription] = useState("");
   const [blankfields, setBlankfields] = useState("");
 
   // function that will send a Post request to the server
@@ -149,7 +152,29 @@ export default function addCourse() {
       setBlankfields(true);
       return;
     }
+    if (credit_hours === null || credit_hours === "") {
+      setBlankfields(true);
+      return;
+    }
+    if (description === null || description === "") {
+      setBlankfields(true);
+      return;
+    }
 
+    // verify correct information is sent in console
+    console.log(department)
+    console.log(course_number)
+    console.log(course_name)
+    console.log(start_time)
+    console.log(end_time)
+    console.log(location)
+    console.log(days)
+    console.log(max_capacity)
+    console.log(username)
+    console.log(firstname)
+    console.log(lastname)
+    console.log(credit_hours)
+    console.log(description)
     try {
       const res = await axios.put("http://localhost:50058/Account/AddCourse", {
         department,
@@ -163,6 +188,8 @@ export default function addCourse() {
         username,
         firstname,
         lastname,
+        credit_hours,
+        description,
       });
       if (res.status === 200) router.reload();
     } catch (e) {
@@ -191,6 +218,7 @@ export default function addCourse() {
               id="departments"
               onChange={(e) => setDepartment(e.target.value)}
             >
+              <option value="">Choose department</option>
               <option value="Computer Science">Computer Science</option>
               <option value="Electrical Engineering">
                 Electrical Engineering
@@ -336,6 +364,24 @@ export default function addCourse() {
             <input
               id="capacity"
               onChange={(e) => setMax_Capacity(e.target.value)}
+            ></input>
+          </div>
+          <div className="addFormItems">
+            <label className="addCoursesLabel" for="credit_hours">
+              Credit hours
+            </label>
+            <input
+              id="credit_hours"
+              onChange={(e) => setCredit_hours(e.target.value)}
+            ></input>
+          </div>
+          <div className="addFormItems">
+            <label className="addCoursesLabel" for="description">
+              Description
+            </label>
+            <input
+              id="description"
+              onChange={(e) => setDescription(e.target.value)}
             ></input>
           </div>
           {blankfields === true ? (
