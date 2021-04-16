@@ -99,8 +99,8 @@ export default function addCourse() {
   const [max_capacity, setMax_Capacity] = useState("");
   const [user, setUserData] = useUser()
   const [username, setUsername] = useState(user?.username);
-  const [firstname, setFirstname] = useState(user?.firstname);
-  const [lastname, setLastname] = useState(user?.lastname);
+  const [firstname, setFirstname] = useState(user?.firstName);
+  const [lastname, setLastname] = useState(user?.lastName);
   /*
   const userData = useUser("user");
   const [username, setUsername] = useState(userData.username);
