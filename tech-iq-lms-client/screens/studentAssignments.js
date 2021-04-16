@@ -81,7 +81,7 @@ const StudentAssignments = ({courseNumber}) => {
             <Nav /> 
             <div className="addAssignmentContainer">
                 <div className="assignmentContainer">
-                    <h1 className="assignmentTitle">{courseNumber} 4120 Assignments</h1>
+                    <h1 className="assignmentTitle">{courseNumber} Assignments</h1>
                     <div className="assignmentListContainer">
                         <table>
                             <tr>
