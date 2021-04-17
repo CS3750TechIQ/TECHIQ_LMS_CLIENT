@@ -9,6 +9,20 @@ import axios from "axios";
 import { useUser } from "../hooks/useUser";
 
 const AddCoursesStyles = styled.div`
+  .addCourseContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #ffffff;
+    padding: 2rem;
+    width: 25rem;
+    margin: auto;
+    margin-top: 50px;
+    border-radius: 4px;
+    box-shadow: 1px 1px 10px #a0a0a0;
+  }
+
+
   .addCoursesLabel {
     color: #072f60;
     margin: 8px;
@@ -89,7 +103,6 @@ export default function addCourse() {
   const router = useRouter();
 
   // Creating state objects that hold the course information
-  const [department, setDepartment] = useState("");
   const [course_number, setCourse_Number] = useState("");
   const [course_name, setCourse_Name] = useState("");
   const [start_time, setStart_Time] = useState("");
@@ -98,23 +111,19 @@ export default function addCourse() {
   const [days, setDays] = useState([]);
   const [max_capacity, setMax_Capacity] = useState("");
   const [user, setUserData] = useUser();
-  const [username, setUsername] = useState(user?.username);
-  const [firstname, setFirstname] = useState(user?.firstName);
-  const [lastname, setLastname] = useState(user?.lastName);
-  const [instructorId, setInstructorId] = useState(user?.instructorid);
+  //const [username, setUsername] = useState(user?.username);
+  //const [firstname, setFirstname] = useState(user?.firstName);
+  //const [lastname, setLastname] = useState(user?.lastName);
+  const [InstructorId, setInstructorId] = useState(user?.instructorid);
   const [credit_hours, setCredit_hours] = useState("");
   const [description, setDescription] = useState("");
   const [blankfields, setBlankfields] = useState("");
-  const [departmentId, setDepartmentId] = useState("");
+  const [DepartmentId, setDepartmentId] = useState("");
 
   // function that will send a Post request to the server
   const createCourse = async () => {
     //console.log(userData);
     //#region  input verification
-    if (department === null || department === "") {
-      setBlankfields(true);
-      return;
-    }
     if (course_number === null || course_number === "") {
       setBlankfields(true);
       return;
@@ -143,6 +152,7 @@ export default function addCourse() {
       setBlankfields(true);
       return;
     }
+    /*
     if (username === null || username === "") {
       setBlankfields(true);
       return;
@@ -155,6 +165,7 @@ export default function addCourse() {
       setBlankfields(true);
       return;
     }
+    */
     if (credit_hours === null || credit_hours === "") {
       setBlankfields(true);
       return;
@@ -163,13 +174,12 @@ export default function addCourse() {
       setBlankfields(true);
       return;
     }
-    if (departmentId === null || departmentId === "") {
+    if (DepartmentId === null || DepartmentId === "") {
       setBlankfields(true);
       return;
     }
 
     // verify correct information is sent in console
-    console.log(department);
     console.log(course_number);
     console.log(course_name);
     console.log(start_time);
@@ -177,16 +187,15 @@ export default function addCourse() {
     console.log(location);
     console.log(days);
     console.log(max_capacity);
-    console.log(username);
-    console.log(firstname);
-    console.log(lastname);
+    //console.log(username);
+    //console.log(firstname);
+    //console.log(lastname);
     console.log(credit_hours);
     console.log(description);
-    console.log(departmentId);
-    console.log(instructorId);
+    console.log(DepartmentId);
+    console.log(InstructorId);
     try {
       const res = await axios.put("http://localhost:50058/Account/AddCourse", {
-        department,
         course_number,
         course_name,
         start_time,
@@ -194,19 +203,20 @@ export default function addCourse() {
         location,
         days,
         max_capacity,
-        username,
-        firstname,
-        lastname,
+        //username,
+        //firstname,
+        //lastname,
         credit_hours,
         description,
-        departmentId,
-        instructorId,
+        DepartmentId,
+        InstructorId,
       });
       if (res.status === 200) router.reload();
     } catch (e) {
       alert(e);
     }
   };
+
   return (
     <AddCoursesStyles>
       <Nav />
@@ -227,23 +237,15 @@ export default function addCourse() {
 
             <select
               id="departments"
-              onChange={(e) => setDepartment(e.target.value)}
+              onChange={(e) => setDepartmentId(e.target.value)}
             >
               <option value="">Choose department</option>
-              <option value="Computer Science">Computer Science</option>
-              <option value="Electrical Engineering">
-                Electrical Engineering
-              </option>
-              <option value="Computer Engineering">Computer Engineering</option>
-              <option value="Network Management Technology">
-                Network Management Technology
-              </option>
-              <option value="Mechanical Engineering">
-                Mechanical Engineering
-              </option>
-              <option value="Manufacturing Engineering">
-                Manufacturing Engineering
-              </option>
+              <option value="1">Computer Science</option>
+              <option value="2">Electrical Engineering</option>
+              <option value="3">Computer Engineering</option>
+              <option value="4">Network Management Technology</option>
+              <option value="5">Mechanical Engineering</option>
+              <option value="6">Manufacturing Engineering</option>
             </select>
           </div>
           <div className="addFormItems">
@@ -393,17 +395,6 @@ export default function addCourse() {
               onChange={(e) => setDescription(e.target.value)}
             ></input>
           </div>
-          {/* testing */}
-          <div className="addFormItems">
-            <label className="addCoursesLabel" for="DepartmentId">
-              Department Id
-            </label>
-            <input
-              id="DepartmentId"
-              onChange={(e) => setDepartmentId(e.target.value)}
-            ></input>
-          </div>
-          {/* testing */}
           {blankfields === true ? (
             <div className="missingFields">Missing required fields</div>
           ) : null}
