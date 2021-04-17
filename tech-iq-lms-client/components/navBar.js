@@ -48,7 +48,7 @@ export default function Nav() {
       <div className="navContainer">
         <div className="title">
           <Link to="/">
-            <a>Canvas</a>
+            <a>Canvas | {user?.username}</a>
           </Link>
         </div>
         <div className="pageLinks">

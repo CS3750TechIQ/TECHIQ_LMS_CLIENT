@@ -77,7 +77,8 @@ const CourseCards = ({number,title, description}) => {
       <div className="card" key={number}>
         <div className="courseColor" />
         <div>
-          <h3 className="courseName">{title}</h3>
+          <h3 className="courseName">{number} | {title}</h3>
+          
           <p className="courseDesc">
             {' '}
             {description}
