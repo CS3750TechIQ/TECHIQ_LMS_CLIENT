@@ -3,6 +3,10 @@ import BellIcon from 'react-bell-icon'
 import { useQueryClient } from 'react-query'
 import StudentAssignments from '../screens/studentAssignments';
 import { Link } from "react-router-dom";
+import { useUser } from "../hooks/useUser";
+import { useQuery, useMutation } from "react-query";
+import axios from 'axios';
+
 
 const CardStyles = styled.div`
   .card {
@@ -71,13 +75,28 @@ const CardStyles = styled.div`
   }
 `;
 
-const CourseCards = ({number,title, description}) => {
+
+
+const CourseCards = ({number ,title, description}) => {
+
+  const [user] = useUser();
+
+   const unregisterCourseMutation = useMutation(
+    async () => {
+      
+        const { data } = await axios
+        .delete("http://localhost:50058/Account/" + user?.studentId + "/" + number + "/unregisterCourse")
+      
+      return data;
+    }
+  );
+
   return (
     <CardStyles>
       <div className="card" key={number}>
         <div className="courseColor" />
         <div>
-          <h3 className="courseName">{number} | {title}</h3>
+          <h3 className="courseName"> {user?.studentId}| {number} | {title}</h3>
           
           <p className="courseDesc">
             {' '}
@@ -92,11 +111,16 @@ const CourseCards = ({number,title, description}) => {
           <Link to="/studentAssignments">
             <button type="button" className="viewButton courseButton" onClick={() => <StudentAssignments courseNumber={number}/>}>View </button>
           </Link>
-          <button type="button" className="dropButton courseButton">Drop</button>
+          <button 
+            type="button" 
+            className="dropButton courseButton"
+            onClick={() => unregisterCourseMutation.mutate()}
+            >Drop</button>
         </div>
       </div>
     </CardStyles>
   );
 }
+
 
 export default CourseCards;
