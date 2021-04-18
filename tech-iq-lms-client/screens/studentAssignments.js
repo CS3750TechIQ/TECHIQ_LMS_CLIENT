@@ -4,113 +4,165 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "react-query";
 import axios from "axios";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import useLocalStorage from "../hooks/useLocalStorage";
-import Moment from 'moment';
-import RegisterCourses from "./registercourses";
+import { useUser } from "../hooks/useUser";
+import Moment from "moment";
 import { Link } from "react-router-dom";
-import AssignmentSubmission from '../screens/assignmentSubmission';
 
 const StudentAssignmentsStyles = styled.div`
-    .addAssignmentContainer {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        width: auto;
-    }
-    .assignmentContainer {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        width: auto;
-    }
-    .assignmentListContainer {
-        display: flex;
-        justify-content: center;
-    }
+  .addAssignmentContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: auto;
+  }
+  .assignmentContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: auto;
+  }
+  .assignmentListContainer {
+    display: flex;
+    justify-content: center;
+  }
 
-    table {
-        border-collapse: collapse;
-        width: 80%;
-      }
-    
-    th {
+  table {
+    border-collapse: collapse;
+    width: 80%;
+  }
+
+  th {
     padding-top: 8px;
     padding-bottom: 8px;
     background-color: #072f60;
     color: #ffffff;
     text-align: left;
-    }
-    tr{
-        textalign:center;
-        margin-bottom: 50px;
-    }
-    .assignmentListContainer {
-        display: flex;
-        justify-content: center;
-    }
-    
-    .assignmentTitle {
+  }
+  tr {
+    textalign: center;
+    margin-bottom: 50px;
+  }
+  .assignmentListContainer {
+    display: flex;
+    justify-content: center;
+  }
+
+  .assignmentTitle {
     text-align: center;
     color: #072f60;
-    }
+  }
 `;
 
-const StudentAssignments = ({courseNumber}) => {
-    const [assignment, setAssignment] = useState([]);
+const AssignmentSubmissionStyles = styled.div`
+   
+`;
 
-    // function submitAssignment(value) {
-    //     debugger;
-    //     <RegisterCourses/>
-    //     alert(assignment[value].assignment_title);
-    //     console.log(assignment[value]);
-    //   }
+const fetchAllAssignments = async (username) => {
+  return await axios
+    .get(
+      "http://localhost:50058/Account/" +
+        username +
+        "/getAllRegisteredCoursesAssignments"
+    )
+    .then((res) => {
+      while (res.data.length > 5) {
+        res.data.pop();
+      }
+      return res.data;
+    });
+};
 
-        useEffect(async () => {
-            debugger;
-            await axios
-            //   .get("http://localhost:50058/Account/" + courseNumber + "/getAssignments")
-            .get("http://localhost:50058/Account/4120/getAssignments")
-              .then((result) => {
-                setAssignment(result.data);
-              });
-          }, []);
+const StudentAssignments = ({ courseNumber }) => {
+  const [user, setUser] = useUser();
+  const [viewSubmitPage, setViewSubmitPage] = useState(false);
 
-        return(
-            <StudentAssignmentsStyles>
-            <Nav /> 
-            <div className="addAssignmentContainer">
-                <div className="assignmentContainer">
-                    <h1 className="assignmentTitle">{courseNumber} Assignments</h1>
-                    <div className="assignmentListContainer">
-                        <table>
-                            <tr>
-                                <th>Title</th>
-                                <th>Description</th> {/* Start and end time in DB table */}
-                                <th>Due Date</th>
-                                <th>Max Points</th>
-                                <th></th>
-                            </tr>
-                            {assignment.map(( assignment, index ) => {
-                                return (
-                                <tr key={index}>
-                                    <td>{assignment.assignment_title}</td>
-                                    <td>{assignment.assignment_desc}</td>
-                                    <td> {Moment(assignment.due_date).format('lll')}</td>
-                                    <td>{assignment.max_points}</td>
-                                    <td className="">
-                                    <Link to="/assignmentSubmission">
-                                        <button type="button" className="" onClick={() => <AssignmentSubmission assignment={assignment}/>}>Submit</button>          
-                                    </Link>                         
-                                    </td>
-                                </tr>
-                                );
-                            })} 
-                        </table>    
-                    </div>
-                </div>
+  // function submitAssignment(value) {
+  //     debugger;
+  //     <RegisterCourses/>
+  //     alert(assignment[value].assignment_title);
+  //     console.log(assignment[value]);
+  //   }
+  const assignmentsListQuery = useQuery(
+    ["assignmentList", user?.username],
+    async () => {
+      return await fetchAllAssignments(user?.username);
+    }
+  );
+
+  return (
+    <StudentAssignmentsStyles>
+      {viewSubmitPage ? (
+        <AssignmentSubmission
+          viewSubmitPage={viewSubmitPage}
+          setViewSubmitPage={setViewSubmitPage}
+        />
+      ) : (
+        <div>
+          <Nav />
+          <div className="addAssignmentContainer">
+            <div className="assignmentContainer">
+              <h1 className="assignmentTitle">{courseNumber} Assignments</h1>
+              <div className="assignmentListContainer">
+                <table>
+                  <tr>
+                    <th>Title</th>
+                    <th>Description</th> {/* Start and end time in DB table */}
+                    <th>Due Date</th>
+                    <th>Max Points</th>
+                    <th></th>
+                  </tr>
+                  {assignmentsListQuery.data?.length > 0 ? (
+                    assignmentsListQuery.data.map((p) => (
+                      <Assignment
+                        viewSubmitPage={viewSubmitPage}
+                        setViewSubmitPage={setViewSubmitPage}
+                        assignment_title={p.assignment_title}
+                        assignment_desc={p.assignment_desc}
+                        due_date={p.due_date}
+                        max_points={p.max_points}
+                      />
+                    ))
+                  ) : (
+                    <div>You have no assignments</div>
+                  )}
+                </table>
+              </div>
             </div>
-            </StudentAssignmentsStyles>
-        );
+          </div>
+        </div>
+      )}
+    </StudentAssignmentsStyles>
+  );
+};
+
+function Assignment(props) {
+  return (
+    <tr>
+      <td>{props.assignment_title}</td>
+      <td>{props.assignment_desc}</td>
+      <td> {Moment(props.due_date).format("lll")}</td>
+      <td>{props.max_points}</td>
+      <td className="">
+        <button
+          type="button"
+          onClick={() => {
+            props.setViewSubmitPage(true);
+          }}
+        >
+          Submit
+        </button>
+      </td>
+    </tr>
+  );
+}
+
+function AssignmentSubmission(props) {
+  return (
+    <AssignmentSubmissionStyles>
+      <Nav />
+      <div>Text</div>
+      <a href="#" onClick={() => {props.setViewSubmitPage(false)}}>Go Back to Assignments</a>
+    </AssignmentSubmissionStyles>
+  );
 }
 export default StudentAssignments;
