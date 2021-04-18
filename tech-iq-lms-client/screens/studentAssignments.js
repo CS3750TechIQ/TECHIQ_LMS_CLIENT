@@ -7,6 +7,7 @@ import axios from "axios";
 import { useUser } from "../hooks/useUser";
 import Moment from "moment";
 import { Link } from "react-router-dom";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 const StudentAssignmentsStyles = styled.div`
   .addAssignmentContainer {
@@ -57,12 +58,12 @@ const AssignmentSubmissionStyles = styled.div`
    
 `;
 
-const fetchAllAssignments = async (username) => {
+const fetchAllAssignments = async (courseNumber) => {
   return await axios
     .get(
       "http://localhost:50058/Account/" +
-        username +
-        "/getAllRegisteredCoursesAssignments"
+        courseNumber +
+        "/getAssignments"
     )
     .then((res) => {
       while (res.data.length > 5) {
@@ -72,7 +73,8 @@ const fetchAllAssignments = async (username) => {
     });
 };
 
-const StudentAssignments = ({ courseNumber }) => {
+const StudentAssignments = () => {
+  const [courseNumber, setCourseNumber] = useLocalStorage('courseNumber')
   const [user, setUser] = useUser();
   const [viewSubmitPage, setViewSubmitPage] = useState(false);
 
@@ -83,9 +85,9 @@ const StudentAssignments = ({ courseNumber }) => {
   //     console.log(assignment[value]);
   //   }
   const assignmentsListQuery = useQuery(
-    ["assignmentList", user?.username],
+    ["assignmentList", courseNumber],
     async () => {
-      return await fetchAllAssignments(user?.username);
+      return await fetchAllAssignments(courseNumber);
     }
   );
 

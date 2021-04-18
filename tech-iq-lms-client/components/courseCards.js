@@ -1,12 +1,12 @@
-import styled from 'styled-components'
-import BellIcon from 'react-bell-icon'
-import { useQueryClient } from 'react-query'
-import StudentAssignments from '../screens/studentAssignments';
+import styled from "styled-components";
+import BellIcon from "react-bell-icon";
 import { Link } from "react-router-dom";
 import { useUser } from "../hooks/useUser";
-import { useQuery, useMutation } from "react-query";
-import axios from 'axios';
-
+import { useQuery, useMutation, useQueryClient } from "react-query";
+import { useState } from "react";
+import axios from "axios";
+import { set } from "js-cookie";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 const CardStyles = styled.div`
   .card {
@@ -56,8 +56,6 @@ const CardStyles = styled.div`
     box-shadow: 0.5px 0.5px 1px #141a18;
   }
 
-
-
   .courseButton {
     padding: 4px 8px;
     margin-left: 10px;
@@ -77,50 +75,59 @@ const CardStyles = styled.div`
 
 
 
-const CourseCards = ({number ,title, description}) => {
-
+const CourseCards = ({ number, title, description }) => {
   const [user] = useUser();
+  const [selectedCourse, setSelectedCourse] = useLocalStorage("courseNumber", "");
 
-   const unregisterCourseMutation = useMutation(
-    async () => {
-      
-        const { data } = await axios
-        .delete("http://localhost:50058/Account/" + user?.studentId + "/" + number + "/unregisterCourse")
-      
-      return data;
-    }
-  );
+  const unregisterCourseMutation = useMutation(async () => {
+    const { data } = await axios.delete(
+      "http://localhost:50058/Account/" +
+        user?.studentId +
+        "/" +
+        number +
+        "/unregisterCourse"
+    );
+    return data;
+  });
 
   return (
     <CardStyles>
       <div className="card" key={number}>
         <div className="courseColor" />
         <div>
-          <h3 className="courseName"> {user?.studentId}| {number} | {title}</h3>
-          
-          <p className="courseDesc">
-            {' '}
-            {description}
-          </p>
+          <h3 className="courseName">
+            {" "}
+            {user?.studentId}| {number} | {title}
+          </h3>
+
+          <p className="courseDesc"> {description}</p>
         </div>
         <div className="center">
           <a href="/notifications">
             <BellIcon color="#072F5F" width="25" />
           </a>
-          
-          <Link to="/studentAssignments">
-            <button type="button" className="viewButton courseButton" onClick={() => <StudentAssignments courseNumber={number}/>}>View </button>
-          </Link>
-          <button 
-            type="button" 
+            <button
+              type="button"
+              className="viewButton courseButton"
+              onClick={() => {
+                setSelectedCourse(number);
+                if(selectedCourse === number)
+                  window.location = '/studentAssignments'
+              }}
+            >
+              View{" "}
+            </button>
+          <button
+            type="button"
             className="dropButton courseButton"
             onClick={() => unregisterCourseMutation.mutate()}
-            >Drop</button>
+          >
+            Drop
+          </button>
         </div>
       </div>
     </CardStyles>
   );
-}
-
+};
 
 export default CourseCards;
