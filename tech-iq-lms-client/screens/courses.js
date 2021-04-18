@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { useRouter } from "next/router";
 import { useQuery } from "react-query";
 import axios from "axios";
-import useLocalStorage from "../hooks/useLocalStorage";
+import { useUser } from "../hooks/useUser";
 
 const CourseStyles = styled.div`
   .addCourseContainer {
@@ -120,12 +120,12 @@ const CourseAssignmentStyles = styled.div`
 
   .formButton {
     font-size: 1.2rem;
-    margin: .5rem 0 .5rem 0;
+    margin: 0.5rem 0 0.5rem 0;
     width: 250px;
     padding: 0.5rem;
     color: white;
     border: 1px solid #a0a0a0;
-    border-radius: .5rem;
+    border-radius: 0.5rem;
     background-color: #0a66c2;
 
     :hover {
@@ -174,7 +174,6 @@ const CourseAssignmentStyles = styled.div`
     font-weight: bold;
     border-bottom: 1px solid #072f60;
     padding-left: 1rem;
-    
   }
 `;
 
@@ -201,44 +200,65 @@ const AssignmentStyles = styled.div`
 `;
 
 const getAssignments = async (courseNum) => {
+  console.log(courseNum)
   return await axios
     .get("http://localhost:50058/Account/" + courseNum + "/getAssignments")
     .then((res) => res.data);
 };
 
+const getInstructorInfo = async (instructorId) => {
+  return await axios
+    .get(
+      "http://localhost:50058/Account/" + instructorId + "/getInstructorCourses"
+    )
+    .then((res) => res.data);
+};
+
 export default function Courses() {
   const [viewingCourse, setViewingCourse] = useState(false);
-  const [courseNum, setCourseNum] = useState();
+  const [selectedCourseNum, setSelectedCourseNum] = useState();
 
   return (
     <div>
       {!viewingCourse ? (
-        <CourseList
-          courseNum={courseNum}
-          setCourseNum={setCourseNum}
+        <CourseListPage
+          selectedCourseNum={selectedCourseNum}
+          setSelectedCourseNum={setSelectedCourseNum}
           viewingCourse={viewingCourse}
           setViewingCourse={setViewingCourse}
         />
       ) : (
         <CourseAssignments
-          courseNum={courseNum}
-          setCourseNum={setCourseNum}
+          selectedCourseNum={selectedCourseNum}
+          setSelectedCourseNum={setSelectedCourseNum}
           viewingCourse={viewingCourse}
           setViewingCourse={setViewingCourse}
         />
       )}
-      {console.log(viewingCourse)}
     </div>
   );
 }
 
-function CourseList(props) {
-  const localUserData = useLocalStorage("user");
+function CourseListPage(props) {
+  const [user, setUser] = useUser();
 
-  const viewCourseDetails = (courseNum) => {
-    props.setCourseNum(courseNum);
-    props.setViewingCourse(true);
-  };
+  const instructorCourses = useQuery(
+    ["courseList", user?.username],
+    async () => {
+      return await getInstructorInfo(user?.instructorid);
+    },
+    {
+      enabled: !!user?.username,
+    }
+  );
+
+  if (instructorCourses.isLoading) {
+    return "Loading...";
+  }
+
+  if (instructorCourses.isError) {
+    return "There was an error getting your courses";
+  }
 
   return (
     <CourseStyles>
@@ -256,66 +276,13 @@ function CourseList(props) {
             </button>
           </form>
         </div>
-        <div className="courseListContainer">
-          <table>
-            <tr>
-              <th>Department</th>
-              <th>Course number</th>
-              <th>Course name</th>
-              <th>Meeting time</th>
-              <th>Location</th>
-              <th>Days</th>
-              <th>Max. capacity</th>
-              <th> </th>
-            </tr>
-            <tr>
-              <td>CS</td>
-              <td>4120</td>
-              <td>Under Water Basket Weaving</td>
-              <td>11:30 - 1:30</td>
-              <td>Online</td>
-              <td>MW</td>
-              <td>50</td>
-              <td className="courseListButtonsP">
-                <button className="courseListButtonsE">Edit</button>
-                <button className="courseListButtonsD">Delete</button>
-                <button
-                  className="detailsButton"
-                  onClick={() => {
-                    viewCourseDetails(4120);
-                  }}
-                >
-                  Details
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>CS</td>
-              <td>2420</td>
-              <td>Data Structures & Algorithms</td>
-              <td>2:30 - 3:30</td>
-              <td>Online</td>
-              <td>MW</td>
-              <td>50</td>
-              <td className="courseListButtonsP">
-                <button type="button" className="courseListButtonsE">
-                  Edit
-                </button>
-                <button type="button" className="courseListButtonsD">
-                  Delete
-                </button>
-                <button
-                  className="detailsButton"
-                  onClick={() => {
-                    viewCourseDetails(2420);
-                  }}
-                >
-                  Details
-                </button>
-              </td>
-            </tr>
-          </table>
-        </div>
+        <CourseList
+          selectedCourseNum={props.courseNum}
+          setSelectedCourseNum={props.setSelectedCourseNum}
+          viewingCourse={props.viewingCourse}
+          setViewingCourse={props.setViewingCourse}
+          instructorCourses={instructorCourses.data}
+        />
         <a className="courseTitle courseReturn" href="/">
           Return to Dashboard
         </a>
@@ -324,53 +291,134 @@ function CourseList(props) {
   );
 }
 
+function CourseList(props) {
+
+  return (
+    <CourseStyles>
+      <div className="courseListContainer">
+        <table>
+          <tr>
+            <th>Department</th>
+            <th>Course number</th>
+            <th>Course name</th>
+            <th>Meeting time</th>
+            <th>Location</th>
+            <th>Days</th>
+            <th>Max. capacity</th>
+            <th> </th>
+          </tr>
+          {props.instructorCourses.length > 0 ? (
+            props.instructorCourses.map((p) => (
+              <Course
+                setSelectedCourseNum={props.setSelectedCourseNum}
+                setViewingCourse={props.setViewingCourse}
+                department={p.department}
+                course_number={p.course_number}
+                course_name={p.course_name}
+                start_time={p.start_time}
+                end_time={p.end_time}
+                location={p.location}
+                days={p.days}
+                capacity={p.capacity}
+              />
+            ))
+          ) : (
+            <div>You have no courses</div>
+          )}
+        </table>
+      </div>
+    </CourseStyles>
+  );
+}
+
+function Course(props) {
+  const viewCourseDetails = (courseNum) => {
+    props.setSelectedCourseNum(courseNum);
+    props.setViewingCourse(true);
+  };
+
+  return (
+    <tr>
+      <td>{props.department}</td>
+      <td>{props.course_number}</td>
+      <td>{props.course_name}</td>
+      <td>
+        {props.start_time} - {props.end_time}
+      </td>
+      <td>{props.location}</td>
+      <td>{props.days}</td>
+      <td>{props.capacity}</td>
+      <td className="courseListButtonsP">
+        <button className="courseListButtonsE">Edit</button>
+        <button className="courseListButtonsD">Delete</button>
+        <button
+          className="detailsButton"
+          onClick={() => {
+            viewCourseDetails(props.course_number);
+          }}
+        >
+          Details
+        </button>
+      </td>
+    </tr>
+  );
+}
+
 function CourseAssignments(props) {
   const router = useRouter();
-  
-  const [ newTitle, setNewTitle ] = useState('')
-  const [ newDesc, setNewDesc ] = useState('')
-  const [ newDueDate, setNewDueDate ] = useState('')
-  const [ newMaxPoints, setNewMaxPoints ] = useState('')
-  const [ newSubType, setNewSubType ] = useState('')
+
+  const [newTitle, setNewTitle] = useState("");
+  const [newDesc, setNewDesc] = useState("");
+  const [newDueDate, setNewDueDate] = useState("");
+  const [newMaxPoints, setNewMaxPoints] = useState("");
+  const [newSubType, setNewSubType] = useState("");
 
   const assignmentsInfoQuery = useQuery(["assignments"], async () => {
-    return await getAssignments(props.courseNum);
+    {console.log(props.selectedCourseNum)}
+    return await getAssignments(props.selectedCourseNum);
   });
 
   const createAssignment = async () => {
-    if (newTitle === null || newTitle === '') {
+    if (newTitle === null || newTitle === "") {
       setBlankFields(true);
       return;
-    } if (newDesc === null || newDesc === '') {
+    }
+    if (newDesc === null || newDesc === "") {
       setBlankFields(true);
       return;
-    } if (newDueDate === null || newDueDate === '') {
+    }
+    if (newDueDate === null || newDueDate === "") {
       setBlankFields(true);
       return;
-    } if (newMaxPoints === null || newMaxPoints === '') {
+    }
+    if (newMaxPoints === null || newMaxPoints === "") {
       setBlankFields(true);
       return;
-    } if (newSubType === null || newSubType === '') {
+    }
+    if (newSubType === null || newSubType === "") {
       setBlankFields(true);
       return;
     }
 
     try {
-      const res = await axios.put('http://localhost:50058/Account/addAssignment', {
-        course_number: props.courseNum,
-        assignment_title: newTitle,
-        assignment_desc: newDesc,
-        due_date: newDueDate,
-        max_points: newMaxPoints,
-        submission_type: newSubType,
-      });
+      const res = await axios.put(
+        "http://localhost:50058/Account/addAssignment",
+        {
+          course_number: props.selectedCourseNum,
+          assignment_title: newTitle,
+          assignment_desc: newDesc,
+          due_date: newDueDate,
+          max_points: newMaxPoints,
+          submission_type: newSubType,
+        }
+      );
       if (res.status === 200) {
         router.reload();
       }
     } catch (e) {
       alert(e);
     }
-  }
+  };
 
   if (assignmentsInfoQuery.isLoading) {
     return "Loading...";
@@ -385,27 +433,52 @@ function CourseAssignments(props) {
       <Nav />
       <h1>Course Details</h1>
       <div className="newCourse">
-        <form onSubmit={(e) => {
-          e.preventDefault()
-          createAssignment()
-        }}>
-        <h2>New Assignment</h2>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            createAssignment();
+          }}
+        >
+          <h2>New Assignment</h2>
           <label for="title" className="dataTitle">
             Assignment Title:{" "}
           </label>
-          <input type="text" id="title" onChange={(e) => {setNewTitle(e.target.value)}} />
+          <input
+            type="text"
+            id="title"
+            onChange={(e) => {
+              setNewTitle(e.target.value);
+            }}
+          />
           <label for="description" className="dataTitle">
             Assignment Description:{" "}
           </label>
-          <textarea id="description" onChange={(e) => {setNewDesc(e.target.value)}}/>
+          <textarea
+            id="description"
+            onChange={(e) => {
+              setNewDesc(e.target.value);
+            }}
+          />
           <label for="dueDate" className="dataTitle">
             Due Date:{" "}
           </label>
-          <input type="date" id="dueDate" onChange={(e) => {setNewDueDate(e.target.value)}} />
+          <input
+            type="date"
+            id="dueDate"
+            onChange={(e) => {
+              setNewDueDate(e.target.value);
+            }}
+          />
           <label for="points" className="dataTitle">
             Maximum Points:{" "}
           </label>
-          <input type="text" id="points" onChange={(e) => {setNewMaxPoints(e.target.value)}}/>
+          <input
+            type="text"
+            id="points"
+            onChange={(e) => {
+              setNewMaxPoints(e.target.value);
+            }}
+          />
           <label className="dataTitle">Submission Type:</label>
           <div className="radioBlock">
             <label for="fileSubmission">File Submission</label>
@@ -414,7 +487,9 @@ function CourseAssignments(props) {
               type="radio"
               id="fileSubmission"
               name="submissionType"
-              onChange={() => {setNewSubType('File Submission')}}
+              onChange={() => {
+                setNewSubType("File Submission");
+              }}
             />
             <label for="textEntry">Text Entry</label>
             <input
@@ -422,7 +497,9 @@ function CourseAssignments(props) {
               type="radio"
               id="textEntry"
               name="submissionType"
-              onChange={() => {setNewSubType('Text Entry')}}
+              onChange={() => {
+                setNewSubType("Text Entry");
+              }}
             />
           </div>
           <button type="submit" class="formButton">
