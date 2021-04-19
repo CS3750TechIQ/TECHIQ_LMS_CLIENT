@@ -92,6 +92,7 @@ export default function tuition() {
   const [user] = useUser();
 
   // set state
+  const [tuitionAmount, setTuitionAmount] = useState()
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const [cardNumber, setCardNumber] = useState("");
@@ -103,7 +104,10 @@ export default function tuition() {
   const tuitionInfoQuery = useQuery(
     ["tuition", user?.studentId],
     async () => {
-      return await getTuition(user?.studentId);
+      const data = await getTuition(user?.studentId);
+      console.log(data)
+      setTuitionAmount(data)
+      return data;
     },
     {
       enabled: !!user?.studentId,
@@ -160,7 +164,7 @@ export default function tuition() {
         <div className="inputLabelitems">
           <p className="tuitionTotalContainer">Tuition amount: </p>
           <p className="tuitionTotalContainer">
-            {tuitionInfoQuery?.data.tuition}
+            {tuitionAmount}
           </p>
         </div>
       </div>
