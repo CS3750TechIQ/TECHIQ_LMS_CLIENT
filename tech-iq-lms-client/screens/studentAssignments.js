@@ -6,7 +6,7 @@ import { useQuery, useMutation } from "react-query";
 import axios from "axios";
 import { useUser } from "../hooks/useUser";
 import Moment from "moment";
-import { Link } from "react-router-dom";
+import { BrowserRouter as Router, Link, useLocation } from "react-router-dom";
 import useLocalStorage from "../hooks/useLocalStorage";
 
 const StudentAssignmentsStyles = styled.div`
@@ -54,17 +54,11 @@ const StudentAssignmentsStyles = styled.div`
   }
 `;
 
-const AssignmentSubmissionStyles = styled.div`
-   
-`;
+const AssignmentSubmissionStyles = styled.div``;
 
 const fetchAllAssignments = async (courseNumber) => {
   return await axios
-    .get(
-      "http://localhost:50058/Account/" +
-        courseNumber +
-        "/getAssignments"
-    )
+    .get("http://localhost:50058/Account/" + courseNumber + "/getAssignments")
     .then((res) => {
       while (res.data.length > 5) {
         res.data.pop();
@@ -73,11 +67,15 @@ const fetchAllAssignments = async (courseNumber) => {
     });
 };
 
+function useQueryParameters() {
+  return new URLSearchParams(useLocation().search);
+}
+
 const StudentAssignments = () => {
-  const [courseNumber, setCourseNumber] = useLocalStorage('courseNumber')
+  let query = useQueryParameters();
+  const [courseNumber, setCourseNumber] = useState(query.get("courseNumber"));
   const [user, setUser] = useUser();
   const [viewSubmitPage, setViewSubmitPage] = useState(false);
-
   // function submitAssignment(value) {
   //     debugger;
   //     <RegisterCourses/>
@@ -163,7 +161,14 @@ function AssignmentSubmission(props) {
     <AssignmentSubmissionStyles>
       <Nav />
       <div>Text</div>
-      <a href="#" onClick={() => {props.setViewSubmitPage(false)}}>Go Back to Assignments</a>
+      <a
+        href="#"
+        onClick={() => {
+          props.setViewSubmitPage(false);
+        }}
+      >
+        Go Back to Assignments
+      </a>
     </AssignmentSubmissionStyles>
   );
 }

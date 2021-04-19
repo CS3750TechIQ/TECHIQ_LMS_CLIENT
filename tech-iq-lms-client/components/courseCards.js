@@ -3,10 +3,7 @@ import BellIcon from "react-bell-icon";
 import { Link } from "react-router-dom";
 import { useUser } from "../hooks/useUser";
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import { useState } from "react";
 import axios from "axios";
-import { set } from "js-cookie";
-import useLocalStorage from "../hooks/useLocalStorage";
 
 const CardStyles = styled.div`
   .card {
@@ -77,7 +74,6 @@ const CardStyles = styled.div`
 
 const CourseCards = ({ number, title, description }) => {
   const [user] = useUser();
-  const [selectedCourse, setSelectedCourse] = useLocalStorage("courseNumber", "");
 
   const unregisterCourseMutation = useMutation(async () => {
     const { data } = await axios.delete(
@@ -106,17 +102,14 @@ const CourseCards = ({ number, title, description }) => {
           <a href="/notifications">
             <BellIcon color="#072F5F" width="25" />
           </a>
-            <button
-              type="button"
-              className="viewButton courseButton"
-              onClick={() => {
-                setSelectedCourse(number);
-                if(selectedCourse === number)
-                  window.location = '/studentAssignments'
-              }}
-            >
-              View{" "}
-            </button>
+          <Link to={"/studentAssignments?courseNumber=" + number}>
+              <button
+                type="button"
+                className="viewButton courseButton"
+              >
+                View{" "}
+              </button>
+          </Link>
           <button
             type="button"
             className="dropButton courseButton"
