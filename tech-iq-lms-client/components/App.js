@@ -1,47 +1,38 @@
-import { createGlobalStyle } from "styled-components"
-import { QueryClient, QueryClientProvider } from "react-query"
-import { ReactQueryDevtools } from 'react-query/devtools'
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
+import { createGlobalStyle } from "styled-components";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 // Auth
-import { Auth } from "./auth"
+import { Auth } from "./auth";
 import { UserProvider } from "../hooks/useUser";
 // Screens
-import Account from '../screens/account'
-import Addcourses from '../screens/addcourses'
-import Calandar from '../screens/calendar'
-import Courses from '../screens/courses'
-import Notifications from '../screens/notifications'
-import Registercourses from '../screens/registercourses'
-import Registration from '../screens/registration'
-import InstructorCourse from '../screens/instructorCourse'
-import Tuition from '../screens/tuition'
-import Home from '../screens/home'
-import StudentAssignments from '../screens/studentAssignments'
+import Account from "../screens/account";
+import Addcourses from "../screens/addcourses";
+import Calandar from "../screens/calendar";
+import Courses from "../screens/courses";
+import Notifications from "../screens/notifications";
+import Registercourses from "../screens/registercourses";
+import Registration from "../screens/registration";
+import InstructorCourse from "../screens/instructorCourse";
+import Tuition from "../screens/tuition";
+import Home from "../screens/home";
+import StudentAssignments from "../screens/studentAssignments";
+import InstructorAssignment from '../screens/instructorAssignment';
 
 // FullCalendar
-import '@fullcalendar/common/main.css'
-import '@fullcalendar/daygrid/main.css'
-import '@fullcalendar/timegrid/main.css'
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { 
+import "@fullcalendar/common/main.css";
+import "@fullcalendar/daygrid/main.css";
+import "@fullcalendar/timegrid/main.css";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
   faEdit,
   faUpload,
   faPlus,
-  faMinus
-} from '@fortawesome/free-solid-svg-icons';
+  faMinus,
+} from "@fortawesome/free-solid-svg-icons";
 
-library.add(
-  faEdit,
-  faUpload,
-  faPlus,
-  faMinus
-);
+library.add(faEdit, faUpload, faPlus, faMinus);
 
 const Styles = createGlobalStyle`
   html, body {
@@ -56,9 +47,9 @@ const Styles = createGlobalStyle`
   }
 `;
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient();
 
-export default function App () {
+export default function App() {
   return (
     <>
       <Styles />
@@ -97,15 +88,18 @@ export default function App () {
                 <Route path="/studentAssignments">
                   <StudentAssignments />
                 </Route>
+                <Route path="/instructorAssignment">
+                  <InstructorAssignment />
+                </Route>
                 <Route path="/">
                   <Home />
                 </Route>
               </Switch>
-            </Auth>    
+            </Auth>
           </Router>
         </UserProvider>
         <ReactQueryDevtools />
       </QueryClientProvider>
     </>
-  )
+  );
 }

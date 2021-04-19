@@ -178,6 +178,11 @@ const CourseAssignmentStyles = styled.div`
 `;
 
 const AssignmentStyles = styled.div`
+  .assignmentLink {
+    text-decoration: none;
+    color: black;
+  }
+
   .assignmentCard {
     padding: 1rem;
     border-bottom: 1px solid #072f60;
@@ -514,6 +519,7 @@ function CourseAssignments(props) {
             <Assignment
               className="assignment"
               key={p.assignmentID}
+              assignmentID={p.assignmentID}
               title={p.assignment_title}
               description={p.assignment_desc}
               courseNum={p.course_number}
@@ -548,29 +554,33 @@ function Assignment({
   courseNum,
   dueDate,
   submissionType,
+  assignmentID
 }) {
+  console.log(assignmentID)
   return (
     <AssignmentStyles>
-      <div className="assignmentCard">
-        <h3>{title}</h3>
-        <div className="cardHeader">
-          <div>
-            <strong>Course Number: </strong> {courseNum}
+      <Link className="assignmentLink" to={"/instructorAssignment?assignmentId=" + assignmentID}>
+          <div className="assignmentCard">
+            <h3>{title}</h3>
+            <div className="cardHeader">
+              <div>
+                <strong>Course Number: </strong> {courseNum}
+              </div>
+              <div>
+                <strong>Due Date: </strong>
+                {dueDate}
+              </div>
+            </div>
+            <div>
+              <strong>Description:</strong>
+            </div>
+            <div>{description}</div>
+            <div>
+              <strong>Submission Type: </strong>
+              {submissionType}
+            </div>
           </div>
-          <div>
-            <strong>Due Date: </strong>
-            {dueDate}
-          </div>
-        </div>
-        <div>
-          <strong>Description:</strong>
-        </div>
-        <div>{description}</div>
-        <div>
-          <strong>Submission Type: </strong>
-          {submissionType}
-        </div>
-      </div>
+      </Link>
     </AssignmentStyles>
   );
 }
