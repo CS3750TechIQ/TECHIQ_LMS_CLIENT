@@ -129,10 +129,9 @@ export default function addCourse() {
 
   // function that will send a Post request to the server
 
-  //console.log(userData);
-  //#region  input verification
-  /*
-    if (course_number === null || course_number === "") {
+  // verify correct information is sent in console
+  const addCourse = () => {
+        if (course_number === null || course_number === "") {
       setBlankfields(true);
       return;
     }
@@ -159,20 +158,7 @@ export default function addCourse() {
     if (max_capacity === null || max_capacity === "") {
       setBlankfields(true);
       return;
-    }
-    if (username === null || username === "") {
-      setBlankfields(true);
-      return;
-    }
-    if (firstname === null || firstname === "") {
-      setBlankfields(true);
-      return;
-    }
-    if (lastname === null || lastname === "") {
-      setBlankfields(true);
-      return;
-    }
-    
+    } 
     if (credit_hours === null || credit_hours === "") {
       setBlankfields(true);
       return;
@@ -185,10 +171,8 @@ export default function addCourse() {
       setBlankfields(true);
       return;
     }
-    */
-
-  // verify correct information is sent in console
-
+    createCourse.mutate()
+  }
   const createCourse = useMutation(
     async () => {
       const { data } = await axios.put(
@@ -410,7 +394,7 @@ export default function addCourse() {
               className="courseButton"
               value="Create"
               onClick={() => {
-                createCourse.mutate();
+                addCourse();
               }}
             >
               Create
