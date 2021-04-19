@@ -4,7 +4,7 @@ import Nav from "../components/navBar";
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import useLocalStorage from "../hooks/useLocalStorage";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import axios from "axios";
 import { useUser } from "../hooks/useUser";
 
@@ -66,12 +66,12 @@ const AddCoursesStyles = styled.div`
     font-weight: bold;
   }
 
-  .addDescription{
+  .addDescription {
     height: 80px;
     width: 210px;
   }
 
-  .addDrop{
+  .addDrop {
     width: 210px;
   }
 
@@ -106,7 +106,8 @@ const AddCoursesStyles = styled.div`
 
 export default function addCourse() {
   // create instance of router
-  const router = useRouter();
+  //const router = useRouter();
+  const [user] = useUser();
 
   // Creating state objects that hold the course information
   const [course_number, setCourse_Number] = useState("");
@@ -116,20 +117,21 @@ export default function addCourse() {
   const [location, setLocation] = useState("");
   const [days, setDays] = useState([]);
   const [max_capacity, setMax_Capacity] = useState("");
-  const [user, setUserData] = useUser();
+  
   //const [username, setUsername] = useState(user?.username);
   //const [firstname, setFirstname] = useState(user?.firstName);
   //const [lastname, setLastname] = useState(user?.lastName);
-  const [InstructorId, setInstructorId] = useState(user?.instructorid);
+  const [InstructorId] = useState(user?.instructorid);
   const [credit_hours, setCredit_hours] = useState("");
   const [description, setDescription] = useState("");
   const [blankfields, setBlankfields] = useState("");
   const [DepartmentId, setDepartmentId] = useState("");
 
   // function that will send a Post request to the server
-  const createCourse = async () => {
+  
     //console.log(userData);
     //#region  input verification
+    /*
     if (course_number === null || course_number === "") {
       setBlankfields(true);
       return;
@@ -158,7 +160,6 @@ export default function addCourse() {
       setBlankfields(true);
       return;
     }
-    /*
     if (username === null || username === "") {
       setBlankfields(true);
       return;
@@ -171,7 +172,7 @@ export default function addCourse() {
       setBlankfields(true);
       return;
     }
-    */
+    
     if (credit_hours === null || credit_hours === "") {
       setBlankfields(true);
       return;
@@ -184,8 +185,10 @@ export default function addCourse() {
       setBlankfields(true);
       return;
     }
+    */
 
     // verify correct information is sent in console
+    
     console.log(course_number);
     console.log(course_name);
     console.log(start_time);
@@ -198,10 +201,14 @@ export default function addCourse() {
     //console.log(lastname);
     console.log(credit_hours);
     console.log(description);
-    console.log(DepartmentId);
     console.log(InstructorId);
-    try {
-      const res = await axios.put("http://localhost:50058/Account/AddCourse", {
+    console.log(DepartmentId);
+    
+  const createCourse = useMutation(
+    async () => {
+      const data = await axios.put(
+        "http://localhost:50058/Account/AddCourse", 
+        {
         course_number,
         course_name,
         start_time,
@@ -214,24 +221,31 @@ export default function addCourse() {
         //lastname,
         credit_hours,
         description,
-        DepartmentId,
         InstructorId,
-      });
-      if (res.status === 200) router.reload();
-    } catch (e) {
-      alert(e);
+        DepartmentId,
+        }
+      )
+      return data;
+    },
+    {
+      onSuccess: (data) => {
+        alert("Add course successful.");
+      },
+      onError: (err) => {
+        alert("Error adding course.");
+      },
     }
-  };
+  );
 
   return (
     <AddCoursesStyles>
       <Nav />
-      <form
+      {/* <form
         onSubmit={(e) => {
           e.preventDefault();
-          createCourse();
+          createCourse.mutate();
         }}
-      >
+      > */}
         <div className="addButtonItem">
           <h1 className="addHeading">Create Class</h1>
         </div>
@@ -242,7 +256,8 @@ export default function addCourse() {
                 Department:{" "}
               </label>
 
-              <select className="addDrop"
+              <select
+                className="addDrop"
                 id="departments"
                 onChange={(e) => setDepartmentId(e.target.value)}
               >
@@ -409,7 +424,13 @@ export default function addCourse() {
               <div className="missingFields">Missing required fields</div>
             ) : null}
             <div className="addButtonItem">
-              <button className="courseButton" type="submit" value="Create">
+              <button
+                className="courseButton"
+                value="Create"
+                onClick={() => {
+                  createCourse.mutate();
+                }}
+              >
                 Create
               </button>
               <a className="courseReturn" href="/courses">
@@ -419,7 +440,7 @@ export default function addCourse() {
             </div>
           </div>
         </div>
-      </form>
+      {/* </form> */}
     </AddCoursesStyles>
   );
 }
