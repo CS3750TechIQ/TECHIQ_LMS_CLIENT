@@ -84,7 +84,6 @@ const AssignmentSubmissionStyles = styled.div`
    .butoContainer{
         text-align: center;
    }
-
 `;
 
 const fetchAllAssignments = async (courseNumber) => {
