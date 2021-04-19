@@ -133,7 +133,6 @@ const AccountStyles = styled.div`
     margin: 1rem 2rem 2rem 2rem;
     border-radius: 4px;
     box-shadow: 1px 1px 5px #141a18;
-    
   }
 
   .editButton {
@@ -146,13 +145,12 @@ const AccountStyles = styled.div`
     box-shadow: 1px 1px 5px #141a18;
     background-color: #44a04b;
 
-
     :hover {
       transform: scale(1.1);
     }
   }
 
-  .allFont{
+  .allFont {
     color: #ffffff;
   }
 `;
@@ -291,7 +289,8 @@ export default function Account() {
               />
             </span>
             <label class="inputLabel allFont" htmlFor="file">
-              <FontAwesomeIcon className="allFont" icon="upload" size="xl" /> Upload Image
+              <FontAwesomeIcon className="allFont" icon="upload" size="xl" />{" "}
+              Upload Image
             </label>
           </div>
 
@@ -300,7 +299,7 @@ export default function Account() {
               <div>
                 <div className="editContainer">
                   <label>First Name: </label>
-                  <input                   
+                  <input
                     type="text"
                     defaultValue={firstName}
                     onChange={(e) => {
@@ -331,7 +330,6 @@ export default function Account() {
               <div className="editContainer">
                 <label>Phone Number: </label>
                 <input
-                
                   type="text"
                   defaultValue={userPhone}
                   onChange={(e) => {

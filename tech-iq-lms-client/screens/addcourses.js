@@ -115,9 +115,9 @@ export default function addCourse() {
   const [start_time, setStart_Time] = useState("");
   const [end_time, setEnd_Time] = useState("");
   const [location, setLocation] = useState("");
-  const [days, setDays] = useState([]);
+  const [days, setDays] = useState("");
   const [max_capacity, setMax_Capacity] = useState("");
-  
+
   //const [username, setUsername] = useState(user?.username);
   //const [firstname, setFirstname] = useState(user?.firstName);
   //const [lastname, setLastname] = useState(user?.lastName);
@@ -128,10 +128,10 @@ export default function addCourse() {
   const [DepartmentId, setDepartmentId] = useState("");
 
   // function that will send a Post request to the server
-  
-    //console.log(userData);
-    //#region  input verification
-    /*
+
+  //console.log(userData);
+  //#region  input verification
+  /*
     if (course_number === null || course_number === "") {
       setBlankfields(true);
       return;
@@ -187,44 +187,26 @@ export default function addCourse() {
     }
     */
 
-    // verify correct information is sent in console
-    
-    console.log(course_number);
-    console.log(course_name);
-    console.log(start_time);
-    console.log(end_time);
-    console.log(location);
-    console.log(days);
-    console.log(max_capacity);
-    //console.log(username);
-    //console.log(firstname);
-    //console.log(lastname);
-    console.log(credit_hours);
-    console.log(description);
-    console.log(InstructorId);
-    console.log(DepartmentId);
-    
+  // verify correct information is sent in console
+
   const createCourse = useMutation(
     async () => {
-      const data = await axios.put(
-        "http://localhost:50058/Account/AddCourse", 
+      const { data } = await axios.put(
+        "http://localhost:50058/Account/AddCourse",
         {
-        course_number,
-        course_name,
-        start_time,
-        end_time,
-        location,
-        days,
-        max_capacity,
-        //username,
-        //firstname,
-        //lastname,
-        credit_hours,
-        description,
-        InstructorId,
-        DepartmentId,
+          course_number,
+          course_name,
+          start_time,
+          end_time,
+          location,
+          days,
+          max_capacity,
+          credit_hours,
+          description,
+          InstructorId,
+          DepartmentId,
         }
-      )
+      );
       return data;
     },
     {
@@ -246,200 +228,200 @@ export default function addCourse() {
           createCourse.mutate();
         }}
       > */}
-        <div className="addButtonItem">
-          <h1 className="addHeading">Create Class</h1>
-        </div>
-        <div className="addCourseContainer">
-          <div className="addFormContainer">
-            <div className="addFormItems">
-              <label className="addCoursesLabel" for="departments">
-                Department:{" "}
-              </label>
+      <div className="addButtonItem">
+        <h1 className="addHeading">Create Class</h1>
+      </div>
+      <div className="addCourseContainer">
+        <div className="addFormContainer">
+          <div className="addFormItems">
+            <label className="addCoursesLabel" for="departments">
+              Department:{" "}
+            </label>
 
-              <select
-                className="addDrop"
-                id="departments"
-                onChange={(e) => setDepartmentId(e.target.value)}
-              >
-                <option value="">Choose department</option>
-                <option value="1">Computer Science</option>
-                <option value="2">Electrical Engineering</option>
-                <option value="3">Computer Engineering</option>
-                <option value="4">Network Mngmt Technology</option>
-                <option value="5">Mechanical Engineering</option>
-                <option value="6">Manufacturing Engineering</option>
-              </select>
-            </div>
-            <div className="addFormItems">
-              <label className="addCoursesLabel" for="number">
-                Course number:{" "}
-              </label>
-              <input
-                id="number"
-                onChange={(e) => setCourse_Number(e.target.value)}
-              ></input>
-            </div>
-            <div className="addFormItems">
-              <label className="addCoursesLabel" for="name">
-                Course name:{" "}
-              </label>
-              <input
-                id="name"
-                onChange={(e) => setCourse_Name(e.target.value)}
-              ></input>
-            </div>
-            <div className="addFormItems">
-              <input
-                className="addCoursesLabel"
-                type="checkbox"
-                id="Monday"
-                onChange={() => {
-                  setDays([...days, "M"]);
-                }}
-              ></input>
-              <label className="addCoursesLabel" for="Monday">
-                Monday
-              </label>
-            </div>
-            <div className="addFormItems">
-              <input
-                className="addCoursesLabel"
-                type="checkbox"
-                id="Tuesday"
-                onChange={() => {
-                  setDays([...days, "T"]);
-                }}
-              ></input>
-              <label className="addCoursesLabel" for="Tuesday">
-                Tuesday
-              </label>
-            </div>
-            <div className="addFormItems">
-              <input
-                className="addCoursesLabel"
-                type="checkbox"
-                id="Wednesday"
-                onChange={() => {
-                  setDays([...days, "W"]);
-                }}
-              ></input>
-              <label className="addCoursesLabel" for="Wednesday">
-                Wednesday
-              </label>
-            </div>
-            <div className="addFormItems">
-              <input
-                className="addCoursesLabel"
-                type="checkbox"
-                id="Thursday"
-                onChange={() => {
-                  setDays([...days, "TH"]);
-                }}
-              ></input>
-              <label className="addCoursesLabel" for="Thursday">
-                Thursday
-              </label>
-            </div>
-            <div className="addFormItems">
-              <input
-                className="addCoursesLabel"
-                type="checkbox"
-                id="Friday"
-                onChange={() => {
-                  setDays([...days, "F"]);
-                }}
-              ></input>
-              <label className="addCoursesLabel" for="Friday">
-                Friday
-              </label>
-            </div>
+            <select
+              className="addDrop"
+              id="departments"
+              onChange={(e) => setDepartmentId(e.target.value)}
+            >
+              <option value="">Choose department</option>
+              <option value="1">Computer Science</option>
+              <option value="2">Electrical Engineering</option>
+              <option value="3">Computer Engineering</option>
+              <option value="4">Network Mngmt Technology</option>
+              <option value="5">Mechanical Engineering</option>
+              <option value="6">Manufacturing Engineering</option>
+            </select>
           </div>
-          <div className="addFormContainer">
-            <div className="addFormItems">
-              <label className="addCoursesLabel" for="stTime">
-                {" "}
-                Start Time:{" "}
-              </label>
-              <input
-                className="addCoursesLabel"
-                type="time"
-                id="stTime"
-                name="stTime"
-                onChange={(e) => setStart_Time(e.target.value)}
-              ></input>
-            </div>
-            <div className="addFormItems">
-              <label className="addCoursesLabel" for="edTime">
-                {" "}
-                End Time:{" "}
-              </label>
-              <input
-                className="addCoursesLabel"
-                type="time"
-                id="edTime"
-                name="edTime"
-                onChange={(e) => setEnd_Time(e.target.value)}
-              ></input>
-            </div>
-            <div className="addFormItems">
-              <label className="addCoursesLabel" for="location">
-                {" "}
-                Location{" "}
-              </label>
-              <input
-                className="addCoursesLabel"
-                id="location"
-                onChange={(e) => setLocation(e.target.value)}
-              ></input>
-            </div>
-            <div className="addFormItems">
-              <label className="addCoursesLabel" for="capacity">
-                Max. capacity
-              </label>
-              <input
-                id="capacity"
-                onChange={(e) => setMax_Capacity(e.target.value)}
-              ></input>
-            </div>
-            <div className="addFormItems">
-              <label className="addCoursesLabel" for="credit_hours">
-                Credit hours
-              </label>
-              <input
-                id="credit_hours"
-                onChange={(e) => setCredit_hours(e.target.value)}
-              ></input>
-            </div>
-            <div className="addFormItems">
-              <label className="addCoursesLabel " for="description">
-                Description
-              </label>
-              <input
-                className="addDescription"
-                id="description"
-                onChange={(e) => setDescription(e.target.value)}
-              ></input>
-            </div>
-            {blankfields === true ? (
-              <div className="missingFields">Missing required fields</div>
-            ) : null}
-            <div className="addButtonItem">
-              <button
-                className="courseButton"
-                value="Create"
-                onClick={() => {
-                  createCourse.mutate();
-                }}
-              >
-                Create
-              </button>
-              <a className="courseReturn" href="/courses">
-                {" "}
-                Return to courses
-              </a>
-            </div>
+          <div className="addFormItems">
+            <label className="addCoursesLabel" for="number">
+              Course number:{" "}
+            </label>
+            <input
+              id="number"
+              onChange={(e) => setCourse_Number(e.target.value)}
+            ></input>
+          </div>
+          <div className="addFormItems">
+            <label className="addCoursesLabel" for="name">
+              Course name:{" "}
+            </label>
+            <input
+              id="name"
+              onChange={(e) => setCourse_Name(e.target.value)}
+            ></input>
+          </div>
+          <div className="addFormItems">
+            <input
+              className="addCoursesLabel"
+              type="checkbox"
+              id="Monday"
+              onChange={() => {
+                setDays(days + "M");
+              }}
+            ></input>
+            <label className="addCoursesLabel" for="Monday">
+              Monday
+            </label>
+          </div>
+          <div className="addFormItems">
+            <input
+              className="addCoursesLabel"
+              type="checkbox"
+              id="Tuesday"
+              onChange={() => {
+                setDays(days + "T");
+              }}
+            ></input>
+            <label className="addCoursesLabel" for="Tuesday">
+              Tuesday
+            </label>
+          </div>
+          <div className="addFormItems">
+            <input
+              className="addCoursesLabel"
+              type="checkbox"
+              id="Wednesday"
+              onChange={() => {
+                setDays(days + "W");
+              }}
+            ></input>
+            <label className="addCoursesLabel" for="Wednesday">
+              Wednesday
+            </label>
+          </div>
+          <div className="addFormItems">
+            <input
+              className="addCoursesLabel"
+              type="checkbox"
+              id="Thursday"
+              onChange={() => {
+                setDays(days + "TH");
+              }}
+            ></input>
+            <label className="addCoursesLabel" for="Thursday">
+              Thursday
+            </label>
+          </div>
+          <div className="addFormItems">
+            <input
+              className="addCoursesLabel"
+              type="checkbox"
+              id="Friday"
+              onChange={() => {
+                setDays(days + "F");
+              }}
+            ></input>
+            <label className="addCoursesLabel" for="Friday">
+              Friday
+            </label>
           </div>
         </div>
+        <div className="addFormContainer">
+          <div className="addFormItems">
+            <label className="addCoursesLabel" for="stTime">
+              {" "}
+              Start Time:{" "}
+            </label>
+            <input
+              className="addCoursesLabel"
+              type="time"
+              id="stTime"
+              name="stTime"
+              onChange={(e) => setStart_Time(e.target.value)}
+            ></input>
+          </div>
+          <div className="addFormItems">
+            <label className="addCoursesLabel" for="edTime">
+              {" "}
+              End Time:{" "}
+            </label>
+            <input
+              className="addCoursesLabel"
+              type="time"
+              id="edTime"
+              name="edTime"
+              onChange={(e) => setEnd_Time(e.target.value)}
+            ></input>
+          </div>
+          <div className="addFormItems">
+            <label className="addCoursesLabel" for="location">
+              {" "}
+              Location{" "}
+            </label>
+            <input
+              className="addCoursesLabel"
+              id="location"
+              onChange={(e) => setLocation(e.target.value)}
+            ></input>
+          </div>
+          <div className="addFormItems">
+            <label className="addCoursesLabel" for="capacity">
+              Max. capacity
+            </label>
+            <input
+              id="capacity"
+              onChange={(e) => setMax_Capacity(e.target.value)}
+            ></input>
+          </div>
+          <div className="addFormItems">
+            <label className="addCoursesLabel" for="credit_hours">
+              Credit hours
+            </label>
+            <input
+              id="credit_hours"
+              onChange={(e) => setCredit_hours(e.target.value)}
+            ></input>
+          </div>
+          <div className="addFormItems">
+            <label className="addCoursesLabel " for="description">
+              Description
+            </label>
+            <input
+              className="addDescription"
+              id="description"
+              onChange={(e) => setDescription(e.target.value)}
+            ></input>
+          </div>
+          {blankfields === true ? (
+            <div className="missingFields">Missing required fields</div>
+          ) : null}
+          <div className="addButtonItem">
+            <button
+              className="courseButton"
+              value="Create"
+              onClick={() => {
+                createCourse.mutate();
+              }}
+            >
+              Create
+            </button>
+            <a className="courseReturn" href="/courses">
+              {" "}
+              Return to courses
+            </a>
+          </div>
+        </div>
+      </div>
       {/* </form> */}
     </AddCoursesStyles>
   );
