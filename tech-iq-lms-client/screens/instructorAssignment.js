@@ -96,8 +96,8 @@ export default function InstructorAssignment() {
       </div>
       <h2>Submissions</h2>
       <div className="submissions">
-        {submissionInfoQuery.data.length > 0 ? (
-          submissionInfoQuery.data.map((p) => (
+        {submissionInfoQuery?.data.length > 0 ? (
+          submissionInfoQuery?.data.map((p) => (
             <Submission
               studentId={p.StudentId}
               submission={p.submission}
