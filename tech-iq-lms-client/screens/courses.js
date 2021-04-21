@@ -356,14 +356,16 @@ function Course(props) {
       <td className="courseListButtonsP">
         <button className="courseListButtonsE">Edit</button>
         <button className="courseListButtonsD">Delete</button>
-        <button
-          className="detailsButton"
-          onClick={() => {
-            viewCourseDetails(props.course_number);
-          }}
-        >
-          Details
-        </button>
+        <Link to={"/courses?course=" + props.course_number}>
+          <button
+            className="detailsButton"
+            onClick={() => {
+              viewCourseDetails(props.course_number);
+            }}
+          >
+            Details
+          </button>
+        </Link>
       </td>
     </tr>
   );
@@ -556,7 +558,6 @@ function Assignment({
   submissionType,
   assignmentID
 }) {
-  console.log(assignmentID)
   return (
     <AssignmentStyles>
       <Link className="assignmentLink" to={"/instructorAssignment?assignmentId=" + assignmentID}>

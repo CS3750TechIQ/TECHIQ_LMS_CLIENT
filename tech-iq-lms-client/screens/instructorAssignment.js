@@ -96,12 +96,14 @@ export default function InstructorAssignment() {
       </div>
       <h2>Submissions</h2>
       <div className="submissions">
-        {submissionInfoQuery?.data.length > 0 ? (
+        {submissionInfoQuery?.data?.length > 0 ? (
           submissionInfoQuery?.data.map((p) => (
             <Submission
-              studentId={p.StudentId}
+              assignmentID={p.assignmentID}
+              studentId={p.studentId}
               submission={p.submission}
               submissionDate={p.submission_date}
+              grade={p.grade}
             />
           ))
         ) : (
@@ -112,24 +114,40 @@ export default function InstructorAssignment() {
   );
 }
 
-function Submission({ studentId, submission, submissionDate }) {
+function Submission({
+  assignmentID,
+  studentId,
+  submission,
+  submissionDate,
+  grade,
+}) {
   return (
     <SubmissionStyles>
-      <div className="assignmentCard">
-        <div className="cardHeader">
-          <div>
-            <strong>Student Name: </strong> {studentId}
+      <Link
+        className="assignmentLink"
+        to={
+          "/submissionDetails?studentId=" +
+          studentId +
+          "&assignmentId=" +
+          assignmentID
+        }
+      >
+        <div className="assignmentCard">
+          <div className="cardHeader">
+            <div>
+              <strong>Student Name: </strong> {studentId}
+            </div>
+            <div>
+              <strong>Date Submitted: </strong>
+              {submissionDate}
+            </div>
           </div>
           <div>
-            <strong>Date Submitted: </strong>
-            {submissionDate}
+            <strong>Grade:</strong>
+            {grade}
           </div>
         </div>
-        <div>
-          <strong>Submission:</strong>
-        </div>
-        <div>{submission}</div>
-      </div>
+      </Link>
     </SubmissionStyles>
   );
 }
