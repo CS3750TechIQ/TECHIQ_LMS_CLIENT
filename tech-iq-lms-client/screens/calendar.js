@@ -1,6 +1,7 @@
 import React from "react";
 import Nav from "../components/navBar";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import { useQuery } from "react-query";
 import axios from "axios";
 import { useUser } from "../hooks/useUser"
@@ -33,13 +34,14 @@ export default function Calendar() {
   const [ user, setUser ] = useUser();
   const assignmentInfoQuery = useQuery([user?.username], async() => {
     return await getAllAssignments(user?.username, user?.userType)})
-
+  console.log(assignmentInfoQuery.data)
   const getInitialEvents = () => {
     const assignments= [];
     for(var i = 0; i <= assignmentInfoQuery.data?.length; i++){
       assignments.push({
         title: assignmentInfoQuery.data[i]?.assignment_title,
-        start: assignmentInfoQuery.data[i]?.due_date
+        start: assignmentInfoQuery.data[i]?.due_date,
+        url: "/assignmentSubmission?assignmentID=" + assignmentInfoQuery.data[i]?.assignmentID + "&userID=" + user?.studentId
       })
     }
     return assignments;
@@ -62,6 +64,7 @@ export default function Calendar() {
         nowIndicator={true}
         editable={true}
         initialEvents={getInitialEvents()}
+        
       />
     </CalendarStyles>
   );

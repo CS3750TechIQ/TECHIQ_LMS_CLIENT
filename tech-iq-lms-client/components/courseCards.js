@@ -93,7 +93,7 @@ const CourseCards = ({ number, title, description }) => {
         <div>
           <h3 className="courseName">
             {" "}
-            {user?.studentId}| {number} | {title}
+            {number} | {title}
           </h3>
 
           <p className="courseDesc"> {description}</p>
