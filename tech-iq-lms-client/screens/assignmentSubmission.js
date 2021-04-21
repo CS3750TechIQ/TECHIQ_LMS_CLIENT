@@ -62,6 +62,10 @@ function useQueryParameters() {
   return new URLSearchParams(useLocation().search);
 }
 
+function handleSubmit(e){
+  this.submissionTextBox.value="";
+}
+
 export default function AssignmentSubmission() {
   let query = useQueryParameters();
   const [courseNumber] = useState();
@@ -108,6 +112,7 @@ export default function AssignmentSubmission() {
     {
       onSuccess: (data) => {
         alert("Assignment successfully submitted.");
+        
       },
       onError: (err) => {
         alert("Error submitting assignment.");
@@ -122,34 +127,34 @@ export default function AssignmentSubmission() {
     return "Something went wrong...";
   }
 
-  console.log(assignment.data)
-  console.log(submissionInfoQuery.data)
 
-
+//submissionInfoQuery?.data?.______
   return (
     <AssignmentSubmissionStyles>
       <Nav />
       <div className="subBody">
-        <h3>{assignment.data.assignment_title}</h3>
+        <h3>Assignment: {assignment.data.assignment_title}</h3>
         <hr />
         <div className="dataTypeContainer">
           <div className="dataFields">
-            <label className="subTitle">Due </label>
+            <label className="subTitle">Due: </label>
             {Moment(assignment.due_date).format("lll")}
           </div>
           <span>
             <div className="dataFields">
-              <label className="subTitle">Grade </label>
+              <label className="subTitle">Grade: </label>
               {submissionInfoQuery?.data?.grade}
             </div>
           </span>
           <div class="dataFields">
-            <label className="subTitle">Points </label>
+            <label className="subTitle">Points: </label>
             {assignment.data.max_points}
           </div>
+          <div className="dataFields">
+              <label className="subTitle">Submission: </label>
+              {submissionInfoQuery?.data?.submission}
+            </div>
         </div>
-        <hr />
-        <div>{assignment.data.assignment_desc}</div>
         <hr />
         <div class="dataTypeContainer">
           <div>
@@ -166,6 +171,7 @@ export default function AssignmentSubmission() {
           </div>
           <textarea
             className="txtBox"
+            id="submissionTextBox"
             type="text"
             value={text}
             onChange={(e) => setText(e.target.value)}
@@ -182,14 +188,6 @@ export default function AssignmentSubmission() {
             Submit
           </button>
         </div>
-        <a
-          href="#"
-          onClick={() => {
-            props.setViewSubmitPage(false);
-          }}
-        >
-          Go Back to Assignments
-        </a>
       </div>
     </AssignmentSubmissionStyles>
   );
