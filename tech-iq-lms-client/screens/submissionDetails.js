@@ -43,21 +43,24 @@ export default function SubmissionDetails() {
   let query = useQueryParameters();
   const [studentId, setStudentId] = useState(query.get("studentId"));
   const [assignmentId, setAssignmentId] = useState(query.get("assignmentId"));
+  const [studentName, setStudentName] = useState(
+    query.get("firstName") + " " + query.get("lastName")
+  );
   const [grade, setGrade] = useState();
 
   const submissionInfoQuery = useQuery(
     ["submission", studentId, assignmentId],
     async () => {
-      const data = fetchSubmissionData(studentId, assignmentId);
+      const data = await fetchSubmissionData(studentId, assignmentId);
       return data;
     }
   );
 
   const submitGradeMutation = useMutation(async () => {
     await axios.put("http://localhost:50058/Account/GradeAssignment", {
-        grade,
-        studentId,
-        assignmentId
+      grade,
+      studentId,
+      assignmentId,
     });
   });
 
@@ -67,8 +70,6 @@ export default function SubmissionDetails() {
   if (submissionInfoQuery.isError) {
     return "Something went wrong while trying to get this assingment submission";
   }
-
-  console.log(submissionInfoQuery);
   return (
     <SubmissionStyles>
       <Nav />
@@ -76,7 +77,7 @@ export default function SubmissionDetails() {
       <div className="topInfo">
         <div>
           <h3>Student Name:</h3>
-          <div></div>
+          <div>{studentName}</div>
         </div>
         <div>
           <h3>Submission Date:</h3>

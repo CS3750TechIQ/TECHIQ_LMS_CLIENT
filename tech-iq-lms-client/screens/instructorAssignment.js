@@ -5,8 +5,21 @@ import { useQuery } from "react-query";
 import axios from "axios";
 // Components
 import Nav from "../components/navBar";
+import BarGraph from "../components/Bar";
 
-const AssignmentStyles = styled.div``;
+const AssignmentStyles = styled.div`
+  .submissionHeader {
+    padding: 1rem;
+    border-bottom: 1px solid #072f60;
+  }
+  .assignmentDetails {
+    margin: 1rem;
+  }
+
+  .submissions {
+    padding-bottom: 1rem;
+  }
+`;
 
 const SubmissionStyles = styled.div`
   .assignmentLink {
@@ -58,6 +71,16 @@ const fetchSubmissionInfo = async (assignmentId) => {
     });
 };
 
+async function fetchAnalytics(assignmentID) {
+  return await axios
+    .get(
+      "http://localhost:50058/Account/" +
+        assignmentID +
+        "/getAssignmentAnalytics"
+    )
+    .then((res) => res.data);
+}
+
 export default function InstructorAssignment() {
   let query = useQueryParameters();
   const [assignmentID, setAssignmentID] = useState(query.get("assignmentId"));
@@ -75,14 +98,25 @@ export default function InstructorAssignment() {
     }
   );
 
-  if (assignmentInfoQuery.isLoading) {
+  const analyticsInfoQuery = useQuery(["analytics", assignmentID], async () => {
+    return await fetchAnalytics(assignmentID);
+  });
+
+  if (
+    assignmentInfoQuery.isLoading ||
+    analyticsInfoQuery.isLoading ||
+    submissionInfoQuery.isLoading
+  ) {
     return "Loading...";
   }
 
-  if (assignmentInfoQuery.isError) {
+  if (
+    assignmentInfoQuery.isError ||
+    analyticsInfoQuery.isError ||
+    submissionInfoQuery.isError
+  ) {
     return "Something went wrong when trying to get this assignment.";
   }
-
   return (
     <AssignmentStyles>
       <Nav />
@@ -93,12 +127,23 @@ export default function InstructorAssignment() {
         <div>{assignmentInfoQuery.data.assignment_desc}</div>
         <h3>Due Date:</h3>
         <div>{assignmentInfoQuery.data.due_date}</div>
+        <BarGraph
+          label="Assignment Analytics"
+          dataValues={[
+            analyticsInfoQuery.data.firstPercentile.length,
+            analyticsInfoQuery.data.secondPercentile.length,
+            analyticsInfoQuery.data.thirdPercentile.length,
+            analyticsInfoQuery.data.fourthPercentile.length,
+          ]}
+        />
       </div>
-      <h2>Submissions</h2>
+      <h2 className="submissionHeader">Submissions</h2>
       <div className="submissions">
         {submissionInfoQuery?.data?.length > 0 ? (
           submissionInfoQuery?.data.map((p) => (
             <Submission
+              firstName={p.studentFirstName}
+              lastName={p.studentLastName}
               assignmentID={p.assignmentID}
               studentId={p.studentId}
               submission={p.submission}
@@ -115,6 +160,8 @@ export default function InstructorAssignment() {
 }
 
 function Submission({
+  firstName,
+  lastName,
   assignmentID,
   studentId,
   submission,
@@ -129,13 +176,17 @@ function Submission({
           "/submissionDetails?studentId=" +
           studentId +
           "&assignmentId=" +
-          assignmentID
+          assignmentID +
+          "&firstName=" +
+          firstName +
+          "&lastName=" +
+          lastName
         }
       >
         <div className="assignmentCard">
           <div className="cardHeader">
             <div>
-              <strong>Student Name: </strong> {studentId}
+              <strong>Student Name: </strong> {firstName + lastName}
             </div>
             <div>
               <strong>Date Submitted: </strong>
