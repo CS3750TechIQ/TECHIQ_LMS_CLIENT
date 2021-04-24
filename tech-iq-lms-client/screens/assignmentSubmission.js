@@ -51,7 +51,8 @@ async function getSubmissionInfo(assignmentID, studentId) {
   return await axios
     .get(
       "http://localhost:50058/Account/" +
-        assignmentID + "/" +
+        assignmentID +
+        "/" +
         studentId +
         "/GetStudentSubmission"
     )
@@ -62,10 +63,6 @@ function useQueryParameters() {
   return new URLSearchParams(useLocation().search);
 }
 
-function handleSubmit(e){
-  this.submissionTextBox.value="";
-}
-
 export default function AssignmentSubmission() {
   let query = useQueryParameters();
   const [courseNumber] = useState();
@@ -74,7 +71,7 @@ export default function AssignmentSubmission() {
   const [user, setUser] = useUser();
   const [assignmentID, setAssignmentID] = useState(query.get("assignmentID"));
   const [studentId, setStudentId] = useState(query.get("userID"));
-  console.log("userID" + studentId)
+
   const fileChanged = (e) => {
     const reader = new FileReader();
     reader.onload = () => {
@@ -104,7 +101,7 @@ export default function AssignmentSubmission() {
           studentId: user?.studentId,
           submission_file: selectedFile?.name,
           submission_date: new Date(),
-          submission: text
+          submission: text,
         }
       );
       return data;
@@ -112,23 +109,20 @@ export default function AssignmentSubmission() {
     {
       onSuccess: (data) => {
         alert("Assignment successfully submitted.");
-        
       },
       onError: (err) => {
         alert("Error submitting assignment.");
       },
     }
   );
-
   if (assignment.isLoading) {
     return "Loading...";
   }
   if (assignment.isError) {
     return "Something went wrong...";
   }
-
-
-//submissionInfoQuery?.data?.______
+  console.log(submissionInfoQuery.data);
+  //submissionInfoQuery?.data?.______
   return (
     <AssignmentSubmissionStyles>
       <Nav />
@@ -138,56 +132,84 @@ export default function AssignmentSubmission() {
         <div className="dataTypeContainer">
           <div className="dataFields">
             <label className="subTitle">Due: </label>
-            {Moment(assignment.due_date).format("lll")}
+            {Moment(assignment.due_date).format('LLL')}
+            {assignment.due_date}
           </div>
+          {submissionInfoQuery?.data?.submission_date ? (
+            <div>
+              <label className="subTitle">Submitted on: </label>
+              {Moment(submissionInfoQuery.submission_date).format('LLL')}
+            </div>
+          ) : null}
           <span>
             <div className="dataFields">
               <label className="subTitle">Grade: </label>
-              {submissionInfoQuery?.data?.grade}
+              {submissionInfoQuery?.data?.submission_date ? (
+                <div>{submissionInfoQuery.data.grade}</div>
+              ) : (
+                <AssignmentSubmissionStyles>
+                  <div>
+                    <label>Not yet graded</label>
+                  </div>
+                </AssignmentSubmissionStyles>
+              )}
             </div>
           </span>
           <div class="dataFields">
             <label className="subTitle">Points: </label>
             {assignment.data.max_points}
           </div>
-          <div className="dataFields">
-              <label className="subTitle">Submission: </label>
-              {submissionInfoQuery?.data?.submission}
+          {submissionInfoQuery?.data?.submission_date ? (
+            <div>
+              <div className="dataFields">
+                <label className="subTitle">Submission: </label>
+                {submissionInfoQuery?.data?.submission}
+              </div>
             </div>
+          ) : null}
         </div>
         <hr />
-        <div class="dataTypeContainer">
+        {submissionInfoQuery?.data?.submission_date ? (
           <div>
-            <label className="subTitle">Submit File </label>
+            <label className="subTitle">
+              You have submitted this assignment!
+            </label>
           </div>
-          <input
-            type="file"
-            accept="*"
-            onChange={(e) => setSelectedFile(e.target.files[0])}
-          />
+        ) : (
+          <AssignmentSubmissionStyles>
+            <div class="dataTypeContainer">
+              <div>
+                <label className="subTitle">Submit File </label>
+              </div>
+              <input
+                type="file"
+                accept="*"
+                onChange={(e) => setSelectedFile(e.target.files[0])}
+              />
+              <div>
+                <label className="subTitle">Enter text </label>
+              </div>
+              <textarea
+                className="txtBox"
+                id="submissionTextBox"
+                type="text"
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+              ></textarea>
+            </div>
 
-          <div>
-            <label className="subTitle">Enter text </label>
-          </div>
-          <textarea
-            className="txtBox"
-            id="submissionTextBox"
-            type="text"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-          ></textarea>
-        </div>
-
-        <div class="butoContainer">
-          <button
-            className="buto"
-            onClick={() => {
-              submitAssignment.mutate();
-            }}
-          >
-            Submit
-          </button>
-        </div>
+            <div class="butoContainer">
+              <button
+                className="buto"
+                onClick={() => {
+                  submitAssignment.mutate();
+                }}
+              >
+                Submit
+              </button>
+            </div>
+          </AssignmentSubmissionStyles>
+        )}
       </div>
     </AssignmentSubmissionStyles>
   );
