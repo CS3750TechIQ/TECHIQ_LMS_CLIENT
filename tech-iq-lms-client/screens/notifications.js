@@ -23,22 +23,29 @@ export default function Notifications() {
     }
   );
 
-  if(notificationsQuery.isLoading){
-    return "...Loading"
+  if (notificationsQuery.isLoading) {
+    return "...Loading";
   }
 
-  if(notificationsQuery.isError){
-    return "Something went wrong when trying to get your notifications"
+  if (notificationsQuery.isError) {
+    return "Something went wrong when trying to get your notifications";
   }
 
   return (
     <Styles>
       <Nav />
-      {
-        notificationsQuery.data.length > 0
-        ? notificationsQuery.data.map((p) => <NotificationCard title={p.assignment_title} description={p.assignment_desc}/>)
-        : <div>You have no notifications</div>
-      }
+      {notificationsQuery.data.length > 0 ? (
+        notificationsQuery.data.map((p) => (
+          <NotificationCard
+            title={p.assignment_title}
+            description={p.assignment_desc}
+            assignmentId={p.assignmentID}
+            userId={user.studentId}
+          />
+        ))
+      ) : (
+        <div>You have no notifications</div>
+      )}
     </Styles>
   );
 }

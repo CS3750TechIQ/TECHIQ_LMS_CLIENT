@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { BrowserRouter as Router, Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
@@ -18,14 +18,27 @@ const NotificationStyles = styled.div`
   }
 `;
 
-export default function NotificationCard({title, description}) {
+export default function NotificationCard({
+  title,
+  description,
+  assignmentId,
+  userId,
+}) {
   return (
     <NotificationStyles>
-      <Link className="assignmentLink">
-          <div className="assignmentCard">
-            <h3>{title}</h3>
-            <p>{description}</p>
-          </div>
+      <Link
+        className="assignmentLink"
+        to={
+          "/assignmentSubmission?assignmentID=" +
+          assignmentId +
+          "&userID=" +
+          userId
+        }
+      >
+        <div className="assignmentCard">
+          <h3>{title}</h3>
+          <p>{description}</p>
+        </div>
       </Link>
     </NotificationStyles>
   );
