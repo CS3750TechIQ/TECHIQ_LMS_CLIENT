@@ -121,40 +121,41 @@ export default function AssignmentSubmission() {
   if (assignment.isError) {
     return "Something went wrong...";
   }
-  console.log(submissionInfoQuery.data);
+
   //submissionInfoQuery?.data?.______
+
   return (
     <AssignmentSubmissionStyles>
       <Nav />
       <div className="subBody">
-        <h3>Assignment: {assignment.data.assignment_title}</h3>
+        <h3>{assignment?.data?.assignment_title} | {assignment?.data?.assignment_desc}</h3>
         <hr />
         <div className="dataTypeContainer">
           <div className="dataFields">
             <label className="subTitle">Due: </label>
-            {Moment(assignment.due_date).format('LLL')}
-            {assignment.due_date}
+            {Moment(assignment?.data?.due_date).format("LLL")}
           </div>
           {submissionInfoQuery?.data?.submission_date ? (
             <div>
               <label className="subTitle">Submitted on: </label>
-              {Moment(submissionInfoQuery.submission_date).format('LLL')}
+              {Moment(submissionInfoQuery.data.submission_date).format("LLL")}
             </div>
           ) : null}
-          <span>
-            <div className="dataFields">
-              <label className="subTitle">Grade: </label>
-              {submissionInfoQuery?.data?.submission_date ? (
-                <div>{submissionInfoQuery.data.grade}</div>
-              ) : (
-                <AssignmentSubmissionStyles>
-                  <div>
-                    <label>Not yet graded</label>
-                  </div>
-                </AssignmentSubmissionStyles>
-              )}
-            </div>
-          </span>
+          <div className="dataFields">
+            {submissionInfoQuery?.data?.submission_date ? (
+              <div>
+                <label className="subTitle">Grade: </label>
+                {submissionInfoQuery?.data?.grade}
+              </div>
+            ) : (
+              <AssignmentSubmissionStyles>
+                <div>
+                  <label className="subTitle">Grade: </label>
+                  <label>Not yet graded</label>
+                </div>
+              </AssignmentSubmissionStyles>
+            )}
+          </div>
           <div class="dataFields">
             <label className="subTitle">Points: </label>
             {assignment.data.max_points}

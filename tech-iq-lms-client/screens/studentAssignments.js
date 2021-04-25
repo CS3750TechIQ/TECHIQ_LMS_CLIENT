@@ -143,7 +143,7 @@ function Assignment(props) {
               props.setAssignment(props);
             }}
           >
-            Submit
+            Details
           </button>
         </Link>
       </td>
