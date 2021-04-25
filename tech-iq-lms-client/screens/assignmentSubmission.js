@@ -115,14 +115,13 @@ export default function AssignmentSubmission() {
       },
     }
   );
-  if (assignment.isLoading) {
+
+  if (assignment.isLoading || submissionInfoQuery.isLoading) {
     return "Loading...";
   }
-  if (assignment.isError) {
+  if (assignment.isError || submissionInfoQuery.isError) {
     return "Something went wrong...";
   }
-
-  //submissionInfoQuery?.data?.______
 
   return (
     <AssignmentSubmissionStyles>

@@ -129,6 +129,7 @@ const StudentAssignments = () => {
 };
 
 function Assignment(props) {
+  const [user, setUser] = useUser();
   return (
     <tr key={props}>
       <td>{props.assignment_title}</td>
@@ -136,7 +137,14 @@ function Assignment(props) {
       <td> {Moment(props.due_date).format("lll")}</td>
       <td>{props.max_points}</td>
       <td className="">
-        <Link to={"/assignmentSubmission?assignmentID=" + props.assignmentID + "&userID=" + props.studentId}>
+        <Link
+          to={
+            "/assignmentSubmission?assignmentID=" +
+            props.assignmentID +
+            "&userID=" +
+            user?.studentId
+          }
+        >
           <button
             type="button"
             onClick={() => {

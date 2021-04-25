@@ -75,6 +75,9 @@ export default function Nav() {
           <Link to="/calendar">
             <a>Calendar</a>
           </Link>
+          <Link to="/notifications">
+            <a>Notifications</a>
+          </Link>
           <Link to="/">
             <a
               onClick={() => {
