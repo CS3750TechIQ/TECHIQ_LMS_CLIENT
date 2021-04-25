@@ -218,6 +218,11 @@ const SignUpStyles = styled.div`
     }
   }
 `;
+
+async function deleteFlaggedNotifications(studentId) {
+  return await axios.delete("http://localhost:50058/Account/" + studentId + "/deleteFlaggedNotifications")
+}
+
 function Auth({ children }) {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -225,9 +230,12 @@ function Auth({ children }) {
   const [showSignUp, setShowSignUp] = useState(false)
   const signUpMutation = useMutation(async (email) => {
     const { data } = await axios.get("http://localhost:50058/Account/" + email + "/getUser")
+    if(data?.userType == "Student"){
+        await deleteFlaggedNotifications(data.studentId)
+    }
     return data
   }, {
-    onSuccess: data => {
+    onSuccess: async (data) => {
       setUser(data)
     },
     onError: err => {

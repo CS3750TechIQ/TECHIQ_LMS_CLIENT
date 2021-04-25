@@ -1,9 +1,10 @@
-import Nav from "../components/navBar";
+import React, { useState } from 'react';
 import styled from "styled-components";
 import { useUser } from "../hooks/useUser";
-import { useQuery } from "react-query";
-import NotificationCard from "../components/notificationCard";
+import { useQuery, useQueryClient } from "react-query";
 import axios from "axios";
+import NotificationCard from "../components/notificationCard";
+import Nav from "../components/navBar";
 
 const Styles = styled.div``;
 
@@ -13,13 +14,21 @@ async function fetchNotifications(studentId) {
     .then((res) => res.data);
 }
 
-export default function Notifications() {
-  const [user, setUser] = useUser();
+async function updateNotificationStatus(studentId) {
+  return await axios.put("http://localhost:50058/Account/" + studentId + "/updateViewedNotificationStatus")
+}
 
+export default function Notifications() {
+  const [user, setUser] = useUser();  
   const notificationsQuery = useQuery(
     ["notifications", user.studentId],
     async () => {
       return await fetchNotifications(user.studentId);
+    }, {
+      onSuccess: () => {
+        updateNotificationStatus(user.studentId);
+      },
+      refetchInterval: false
     }
   );
 
