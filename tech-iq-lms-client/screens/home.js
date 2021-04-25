@@ -21,11 +21,19 @@ const HomeStyles = styled.div`
     border-left: 1px solid #58cced;
   }
 
-  .courseCardLayout {
+  .courseCardLayoutStudent {
     display: flex;
     flex-wrap: wrap;
     padding: 1rem;
     width: 70%;
+    justify-content: space-between;
+  }
+
+  .courseCardLayoutInstructor {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 1rem;
+    width: 95%;
     justify-content: space-between;
   }
 `;
@@ -33,30 +41,32 @@ const HomeStyles = styled.div`
 const getStudentInfo = async (username) => {
   return await axios
     .get("http://localhost:50058/Account/" + username + "/getRegisteredCourses")
-    .then((res) => res.data)
+    .then((res) => res.data);
 };
 
 const getInstructorInfo = async (instructorId) => {
   return await axios
-    .get("http://localhost:50058/Account/" + instructorId + "/getInstructorCourses")
-    .then((res) => res.data)
-}
+    .get(
+      "http://localhost:50058/Account/" + instructorId + "/getInstructorCourses"
+    )
+    .then((res) => res.data);
+};
 
 export default function Home() {
-  const [ user, setUser ] = useUser();
+  const [user, setUser] = useUser();
 
   const userInfoQuery = useQuery(
     ["userInfo", user?.username],
     async () => {
-      if(user?.userType === 'Student')
+      if (user?.userType === "Student")
         return await getStudentInfo(user?.username);
-      else
-      {
-        console.log(user?.instructorId)
+      else {
+        console.log(user?.instructorId);
         return await getInstructorInfo(user?.instructorid);
       }
-    }, {
-      enabled: !!user?.username
+    },
+    {
+      enabled: !!user?.username,
     }
   );
 
@@ -71,17 +81,36 @@ export default function Home() {
   return (
     <HomeStyles>
       <Nav />
-      <div className="rightSideBar">
-        <List />
-      </div>
-      <div className="courseCardLayout">
-      {
-        userInfoQuery.data.length > 0
-        ? userInfoQuery.data.map((p) => <CourseCards number={p.course_number} title={p.course_name} description={p.description}/>) 
-        : null
-        
-      }
-      </div>
+      {user?.userType === "Student" ? (
+        <div>
+          <div className="rightSideBar">
+            <List />
+          </div>
+          <div className="courseCardLayoutStudent">
+            {userInfoQuery.data.length > 0
+              ? userInfoQuery.data.map((p) => (
+                  <CourseCards
+                    number={p.course_number}
+                    title={p.course_name}
+                    description={p.description}
+                  />
+                ))
+              : null}
+          </div>
+        </div>
+      ) : (
+        <div className="courseCardLayoutInstructor">
+          {userInfoQuery.data.length > 0
+            ? userInfoQuery.data.map((p) => (
+                <CourseCards
+                  number={p.course_number}
+                  title={p.course_name}
+                  description={p.description}
+                />
+              ))
+            : null}
+        </div>
+      )}
     </HomeStyles>
   );
 }
