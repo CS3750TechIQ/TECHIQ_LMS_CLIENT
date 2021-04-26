@@ -6,6 +6,8 @@ import { useQuery, useMutation } from "react-query";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useLocalStorage from "../hooks/useLocalStorage";
+import { useUser } from "../hooks/useUser";
+
 
 const RegisterCoursesStyles = styled.div`
   .addCourseContainer {
@@ -121,6 +123,8 @@ export default function RegisterCourses() {
   const [filterText, setFilterText] = useState("@");
   const [regCourse, setRegCourse] = useState([]);
   const [course, setCourse] = useState([]);
+  const [user] = useUser();
+
   function getCourses() {
     if (filterText === "") {
       axios
@@ -162,7 +166,7 @@ export default function RegisterCourses() {
             "http://localhost:50058/Account/RegisterCourse",
             {
             course_number: regCourse[i].course_number,
-            studentId: localUserData[0].studentId
+            studentId: user?.studentId
             }
         )
         }
@@ -176,7 +180,6 @@ export default function RegisterCourses() {
       
       onError: (err) => {
         console.error(err);
-        alert("something went wrong")
       },
       
     }
