@@ -197,7 +197,7 @@ export default function AssignmentSubmission() {
                 onChange={(e) => setSelectedFile(e.target.files[0])}
               />
               <div>
-                <label className="subTitle">Enter text </label>
+                <label className="subTitle">Enter text</label>
               </div>
               <textarea
                 rows={5}
