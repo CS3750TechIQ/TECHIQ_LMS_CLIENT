@@ -36,7 +36,9 @@ const AssignmentSubmissionStyles = styled.div`
   }
   .butoContainer {
     text-align: center;
+    margin-top: 5px;
   }
+
 `;
 
 async function getAssignmentInfo(assignmentID) {
@@ -198,6 +200,8 @@ export default function AssignmentSubmission() {
                 <label className="subTitle">Enter text </label>
               </div>
               <textarea
+                rows={5}
+                cols={50}
                 className="txtBox"
                 id="submissionTextBox"
                 type="text"
