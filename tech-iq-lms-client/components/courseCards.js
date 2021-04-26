@@ -70,8 +70,6 @@ const CardStyles = styled.div`
   }
 `;
 
-
-
 const CourseCards = ({ number, title, description }) => {
   const [user] = useUser();
 
@@ -95,21 +93,22 @@ const CourseCards = ({ number, title, description }) => {
             {" "}
             {number} | {title}
           </h3>
-
           <p className="courseDesc"> {description}</p>
         </div>
         <div className="center">
-          <a href="/notifications">
-            <BellIcon color="#072F5F" width="25" />
-          </a>
+        {user?.userType === "Student" ? (
           <Link to={"/studentAssignments?courseNumber=" + number}>
-              <button
-                type="button"
-                className="viewButton courseButton"
-              >
-                View{" "}
-              </button>
+            <button type="button" className="viewButton courseButton">
+              View{" "}
+            </button>
           </Link>
+        ) : (
+          <Link to={"/courses?course=" + number}>
+          <button type="button" className="viewButton courseButton">
+              View{" "}
+            </button>
+          </Link>
+        )}
           <button
             type="button"
             className="dropButton courseButton"

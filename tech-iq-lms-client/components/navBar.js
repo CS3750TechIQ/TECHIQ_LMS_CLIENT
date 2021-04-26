@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import BellIcon from "react-bell-icon";
 import Router from "next/router";
 import { useState } from "react";
 import { useQueryClient, useQuery } from "react-query";
@@ -68,16 +69,23 @@ export default function Nav() {
             </Link>
           )}
           {user?.userType === "Student" ? (
-            <Link to="/tuition">
-              <a>Tuition</a>
-            </Link>
+            <div>
+              <Link to="/tuition">
+                <a>Tuition</a>
+              </Link>
+            </div>
+          ) : null}
+          {user?.userType === "Student" ? (
+            <div>
+              <Link to="/notifications">
+                <a>Notifications</a>
+              </Link>
+            </div>
           ) : null}
           <Link to="/calendar">
             <a>Calendar</a>
           </Link>
-          <Link to="/notifications">
-            <a>Notifications</a>
-          </Link>
+
           <Link to="/">
             <a
               onClick={() => {

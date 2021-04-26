@@ -1,4 +1,4 @@
-import React, { useState, Component } from 'react';
+import React, { useState, Component } from "react";
 import dynamic from "next/dynamic";
 import styled from "styled-components";
 import { useQueryClient } from "react-query";
@@ -7,9 +7,8 @@ import Nav from "../components/navBar";
 import Button from "../components/button";
 import List from "../components/todolist";
 import CourseCards from "../components/courseCards";
-import useLocalStorage from '../hooks/useLocalStorage';
-
-
+import useLocalStorage from "../hooks/useLocalStorage";
+import { useUser } from "../hooks/useUser";
 
 const HomeStyles = styled.div`
   .rightSideBar {
@@ -20,7 +19,7 @@ const HomeStyles = styled.div`
     width: 20%;
     padding: 1rem;
     height: 100%;
-    border-left: 1px solid #58CCED;
+    border-left: 1px solid #58cced;
   }
 
   .courseCardLayout {
@@ -32,16 +31,17 @@ const HomeStyles = styled.div`
   }
 `;
 
-
 export default function Home(props) {
-
-  const userData = useLocalStorage('user')
+  const userData = useLocalStorage("user");
+  const [user] = useUser();
   return (
     <HomeStyles>
       <Nav />
-      <div className="rightSideBar">
-        <List />
-      </div>
+      {user?.userType === "Student" ? (
+        <div className="rightSideBar">
+          <List />
+        </div>
+      ) : null}
       <div className="courseCardLayout">
         <CourseCards />
         <CourseCards />
@@ -49,5 +49,5 @@ export default function Home(props) {
         <CourseCards />
       </div>
     </HomeStyles>
-  )
+  );
 }

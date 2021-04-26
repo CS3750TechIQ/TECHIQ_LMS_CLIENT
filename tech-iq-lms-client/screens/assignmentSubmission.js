@@ -127,7 +127,10 @@ export default function AssignmentSubmission() {
     <AssignmentSubmissionStyles>
       <Nav />
       <div className="subBody">
-        <h3>{assignment?.data?.assignment_title} | {assignment?.data?.assignment_desc}</h3>
+        <h3>
+          {assignment?.data?.assignment_title} |{" "}
+          {assignment?.data?.assignment_desc}
+        </h3>
         <hr />
         <div className="dataTypeContainer">
           <div className="dataFields">
@@ -139,7 +142,12 @@ export default function AssignmentSubmission() {
               <label className="subTitle">Submitted on: </label>
               {Moment(submissionInfoQuery.data.submission_date).format("LLL")}
             </div>
-          ) : null}
+          ) : (
+            <div>
+              <label className="subTitle">Submission: </label>
+              <label>Not yet submitted</label>
+            </div>
+          )}
           <div className="dataFields">
             {submissionInfoQuery?.data?.submission_date ? (
               <div>

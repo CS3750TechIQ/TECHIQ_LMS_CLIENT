@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { useQuery } from "react-query";
 import axios from "axios";
 import { useUser } from "../hooks/useUser";
+import {useMutation} from "react-query";
 
 const CourseStyles = styled.div`
   .addCourseContainer {
@@ -245,7 +246,9 @@ export default function Courses() {
 }
 
 function CourseListPage(props) {
+  
   const [user, setUser] = useUser();
+
 
   const instructorCourses = useQuery(
     ["courseList", user?.username],
@@ -337,10 +340,22 @@ function CourseList(props) {
 }
 
 function Course(props) {
+
   const viewCourseDetails = (courseNum) => {
     props.setSelectedCourseNum(courseNum);
     props.setViewingCourse(true);
   };
+
+  const deleteCourseMutation = useMutation(async () => {
+    const { data } = await axios.delete(
+      "http://localhost:50058/Account/" +
+        instructorId +
+        "/" +
+        number +
+        "/deleteCourse"
+    );
+    return data;
+  });
 
   return (
     <tr>
@@ -355,7 +370,12 @@ function Course(props) {
       <td>{props.capacity}</td>
       <td className="courseListButtonsP">
         <button className="courseListButtonsE">Edit</button>
-        <button className="courseListButtonsD">Delete</button>
+        <button 
+          className="courseListButtonsD"
+          onClick={() => deleteCourseMutation.mutate()}
+          >
+          Delete
+          </button>
         <Link to={"/courses?course=" + props.course_number}>
           <button
             className="detailsButton"
@@ -372,6 +392,7 @@ function Course(props) {
 }
 
 function CourseAssignments(props) {
+  
   const router = useRouter();
 
   const [newTitle, setNewTitle] = useState("");
