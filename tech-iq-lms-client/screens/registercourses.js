@@ -117,7 +117,6 @@ const RegisterCoursesStyles = styled.div`
 `;
 
 export default function RegisterCourses() {
-  const localUserData = useLocalStorage("user");
   const [filterText, setFilterText] = useState("@");
   const [regCourse, setRegCourse] = useState([]);
   const [course, setCourse] = useState([]);
@@ -165,7 +164,7 @@ export default function RegisterCourses() {
             {
             course_number: regCourse[i].course_number,
             credit_hours: regCourse[i].credit_hours,
-            studentId: localUserData[0].studentId
+            studentId: user.studentId
             }
         )
         console.log(data.status)

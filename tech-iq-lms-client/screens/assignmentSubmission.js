@@ -113,7 +113,7 @@ export default function AssignmentSubmission() {
         "http://localhost:50058/Account/SubmitAssignment",
         {
           course_number: assignment.data.course_number,
-          AssignmentID: assignment.data.assignmentID,
+          AssignmentID: assignmentID,
           studentId: user?.studentId,
           submission_file: selectedFile?.name,
           submission_date: new Date(),
@@ -133,8 +133,8 @@ export default function AssignmentSubmission() {
   );
 
   
-  const analyticsInfoQuery = useQuery(["analytics", assignment.data.assignmentID], async () => {
-    return await fetchAnalytics(assignment.data.assignmentID);
+  const analyticsInfoQuery = useQuery(["analytics", assignmentID], async () => {
+    return await fetchAnalytics(assignmentID);
   });
 
   if (assignment.isLoading || submissionInfoQuery.isLoading || analyticsInfoQuery.isLoading) {
