@@ -96,19 +96,19 @@ const CourseCards = ({ number, title, description }) => {
           <p className="courseDesc"> {description}</p>
         </div>
         <div className="center">
-        {user?.userType === "Student" ? (
-          <Link to={"/studentAssignments?courseNumber=" + number}>
-            <button type="button" className="viewButton courseButton">
-              View{" "}
-            </button>
-          </Link>
-        ) : (
-          <Link to={"/courses?course=" + number}>
-          <button type="button" className="viewButton courseButton">
-              View{" "}
-            </button>
-          </Link>
-        )}
+          {user?.userType === "Student" ? (
+            <Link to={"/studentAssignments?courseNumber=" + number}>
+              <button type="button" className="viewButton courseButton">
+                View{" "}
+              </button>
+            </Link>
+          ) : (
+            <Link to={"/courses?course=" + number}>
+              <button type="button" className="viewButton courseButton">
+                View{" "}
+              </button>
+            </Link>
+          )}
           <button
             type="button"
             className="dropButton courseButton"
