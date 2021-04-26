@@ -7,6 +7,7 @@ const TodoListStyles = styled.div`
   h3 {
     margin: 2px 0px 2px 0px;
     color: black;
+    margin-top: 25px;
   }
   .divContainer {
     margin: 8px;
@@ -18,6 +19,7 @@ const TodoListStyles = styled.div`
     max-height: 250px;
     overflow-y: auto;
     border-radius: 5px;
+    margin-top: 2px;
   }
   .labelMain {
     font-weight: bold;
@@ -37,10 +39,10 @@ const fetchAllAssignments = async (username) => {
         "/getAllRegisteredCoursesAssignments"
     )
     .then((res) => {
-      while(res.data.length > 5){
-        res.data.pop()
+      while (res.data.length > 5) {
+        res.data.pop();
       }
-      return res.data
+      return res.data;
     });
 };
 
