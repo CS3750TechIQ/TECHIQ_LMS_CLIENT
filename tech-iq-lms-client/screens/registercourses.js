@@ -5,9 +5,7 @@ import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "react-query";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import useLocalStorage from "../hooks/useLocalStorage";
 import { useUser } from "../hooks/useUser";
-
 
 const RegisterCoursesStyles = styled.div`
   .addCourseContainer {
@@ -156,35 +154,26 @@ export default function RegisterCourses() {
     await axios
       .get("http://localhost:50058/Account/@/filtercourse")
       .then((result) => {
-        debugger;
         setCourse(result.data);
       });
   }, []);
   const registerCourseMutation = useMutation(
     async () => {        
         for(let i = 0; i < regCourse.length; i++){
-        const { data } = await axios.put(
+        const data = await axios.put(
             "http://localhost:50058/Account/RegisterCourse",
             {
             course_number: regCourse[i].course_number,
-            studentId: user?.studentId
+            credit_hours: regCourse[i].credit_hours,
+            studentId: localUserData[0].studentId
             }
         )
+        console.log(data.status)
+        if(data.status == '200')
+        {          
+          location.reload()
         }
-        debugger;
-        return data
-    },
-    {
-      onSuccess: (data) => {
-        setRegCourse((oldArray) => [...oldArray, course[value]])
-      },
-      
-      onError: (err) => {
-        console.error(err);
-      },
-
-      
-      
+        }        
     }
   );
     return(

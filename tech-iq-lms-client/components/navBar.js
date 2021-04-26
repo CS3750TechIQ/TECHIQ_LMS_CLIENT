@@ -85,7 +85,13 @@ export default function Nav() {
           <Link to="/calendar">
             <a>Calendar</a>
           </Link>
-
+          {
+            user.userType == "Student"
+            ? ( <Link to="/notifications">
+              <a>Notifications</a>
+            </Link>
+            ) : null
+          }
           <Link to="/">
             <a
               onClick={() => {

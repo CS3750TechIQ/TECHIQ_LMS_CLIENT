@@ -62,6 +62,7 @@ export default function SubmissionDetails() {
       studentId,
       assignmentId,
     });
+    location.reload()
   });
 
   if (submissionInfoQuery.isLoading) {
