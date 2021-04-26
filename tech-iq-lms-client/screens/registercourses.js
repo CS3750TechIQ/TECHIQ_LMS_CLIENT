@@ -124,7 +124,6 @@ export default function RegisterCourses() {
   const [regCourse, setRegCourse] = useState([]);
   const [course, setCourse] = useState([]);
   const [user] = useUser();
-
   function getCourses() {
     if (filterText === "") {
       axios
@@ -142,6 +141,8 @@ export default function RegisterCourses() {
   }
 
   function addCourse(value) {
+    
+
     console.log(course[value].course_number);
     setRegCourse((oldArray) => [...oldArray, course[value]]);
   }
@@ -181,6 +182,8 @@ export default function RegisterCourses() {
       onError: (err) => {
         console.error(err);
       },
+
+      
       
     }
   );
@@ -226,7 +229,6 @@ export default function RegisterCourses() {
                             <th>Credit Hours</th>
                             <th>Instructor</th> {/* first and last of professor possible pulled from UserLMS table? */}
                             <th> Add </th>
-                            <th> Remove </th>
                         </tr>
                         {course.map(( course, index ) => {
                             return (
@@ -242,9 +244,6 @@ export default function RegisterCourses() {
                                 <td>{course.firstName} {course.lastName}</td>
                                 <td className="courseListButtonsP">
                                     <button type="button" className="courseListButtonsE" onClick={() => addCourse(index,this)}><FontAwesomeIcon icon= "plus" size="xl"/></button>                                   
-                                </td>
-                                <td className="courseListButtonsP">
-                                    <button type="button" className="btnRemoveCourse" onClick={() => removeCourse(index)}><FontAwesomeIcon icon= "minus" size="xl"/></button>                                   
                                 </td>
                             </tr>
                             );
@@ -264,6 +263,9 @@ export default function RegisterCourses() {
                                     <td>{regCourse.location}</td>
                                     <td>{regCourse.days}</td>
                                     <td>{regCourse.max_capacity}</td>
+                                    <td className="courseListButtonsP">
+                                    <button type="button" className="btnRemoveCourse" onClick={() => removeCourse(index)}><FontAwesomeIcon icon= "minus" size="xl"/></button>                                   
+                                    </td>
                                     {/* <td>{regCourse.firstName}</td>
                                     <td>{regCourse.lastName}</td> */}
                                 </tr>
