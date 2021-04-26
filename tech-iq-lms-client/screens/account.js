@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { SocialIcon } from "react-social-icons";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Nav from "../components/navBar";
 import { useMutation, useQuery } from "react-query";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -174,10 +174,9 @@ export default function Account() {
   const [githubLink, setGithubLink] = useState("");
   const [linkedInLink, setLinkedInLink] = useState("");
   const [twitterLink, setTwitterLink] = useState("");
-  const [profileImage, setProfileImage] = useState(
-    "https://lh3.googleusercontent.com/proxy/CQrbom5H7ldcxHPzgrbcedYPJa8q3RESpTdBEPtiWgYD6aX-YEzHUek4M2XoNaCvFA5ZjAoVvu-xnYIBL6_DUkKowzEdlSckP2M"
-  );
-
+  const [profileImage, setProfileImage] = useState("");
+  const [displayImage, setDisplayImage] = useState("");
+  
   const userInfoQuery = useQuery(["userInfo", user?.username], async () => {
     const data = await getUserInfo(user?.username);
     setUserBio(data?.bio ?? "");
@@ -190,20 +189,50 @@ export default function Account() {
     return data;
   });
 
-  const imageHandler = (e) => {
+  const fileSelectedHandler = event => {
+    debugger;
+    setProfileImage(event.target.files[0]);
+    console.log(event.target.files[0]);
+
+    readImageData(event.target.files[0]);
+  }
+
+  function readImageData(imageData) {
     const reader = new FileReader();
     reader.onload = () => {
       if (reader.readyState === 2) {
-        debugger;
-        setProfileImage(reader.result);
+        setDisplayImage(reader.result);
+        console.log(displayImage);
+
       }
     };
-    reader.readAsDataURL(e.target.files[0]);
-  };
+    reader.readAsDataURL(imageData);
+  }
+
+  useEffect(async () => {
+    await axios
+      .get("http://localhost:50058/Account/"+ user.studentId +"/GetProfileImage")
+      .then((result) => {
+        debugger;
+        if(result.data.imgURL === null){
+          setDisplayImage("https://lh3.googleusercontent.com/proxy/wph-j8oHGLHePJkX8ArsiGLb7X6AEJY6I6Dj2K83QQQQztfh2aDX915HRhIn1F1EDJ9TXViWm3vfoEqBZtu4r53LFYmt9WNsZ6sQND6M2Q");
+        }else{
+          setDisplayImage(result.data.imgURL);
+        }
+      });
+  }, []);
 
   //Update DB Mutation
   const updateUserInfoMutation = useMutation(
-    async () => {
+    async () => { 
+      debugger;
+        const {imgData} = await axios.put("http://localhost:50058/Account/profileImage",
+        {
+          studentId: user.studentId,
+          imgURL: displayImage
+        }
+        )
+
       const { data } = await axios.put(
         "http://localhost:50058/Account/UpdateUserBio",
         {
@@ -211,6 +240,7 @@ export default function Account() {
           phone: userPhone,
           firstName,
           lastName,
+          
           githubLink:
             githubLink !== "" && githubLink !== null
               ? githubLink
@@ -226,7 +256,7 @@ export default function Account() {
           userName,
         }
       );
-      return data;
+      return data, imgData;
     },
     {
       onSuccess: (data) => {
@@ -268,6 +298,7 @@ export default function Account() {
   if (userInfoQuery.isError) {
     return "There was an error getting user info.";
   }
+  
 
   return (
     <AccountStyles>
@@ -275,21 +306,21 @@ export default function Account() {
       <div className="accountContainer">
         <div className="topSection">
           <div className="userImage">
-            <img src={profileImage} alt="" id="img" className="userImage" />
+            <img src={displayImage} alt="" id="img" className="userImage" />
           </div>
           <div className="imageContainer">
             <span>
               <input
-                class="inputFile"
+                className="inputFile"
                 type="file"
                 id="file"
                 name="image"
                 accept="*"
-                onChange={imageHandler}
+                onChange={fileSelectedHandler}
               />
             </span>
-            <label class="inputLabel allFont" htmlFor="file">
-              <FontAwesomeIcon className="allFont" icon="upload" size="xl" />{" "}
+            <label className="inputLabel allFont" htmlFor="file">
+              <FontAwesomeIcon className="allFont" icon="upload" size="xs" />{" "}
               Upload Image
             </label>
           </div>
