@@ -6,6 +6,7 @@ import axios from "axios";
 import { useUser } from "../hooks/useUser";
 import Moment from "moment";
 import { BrowserRouter as Router, Link, useLocation } from "react-router-dom";
+import BarGraph from "../components/Bar";
 
 const AssignmentSubmissionStyles = styled.div`
   .subTitle {
@@ -39,6 +40,9 @@ const AssignmentSubmissionStyles = styled.div`
     margin-top: 5px;
   }
 
+  .analytics{
+    text-align: center;
+  }
 `;
 
 async function getAssignmentInfo(assignmentID) {
@@ -63,6 +67,16 @@ async function getSubmissionInfo(assignmentID, studentId) {
 
 function useQueryParameters() {
   return new URLSearchParams(useLocation().search);
+}
+
+async function fetchAnalytics(assignmentID) {
+  return await axios
+    .get(
+      "http://localhost:50058/Account/" +
+        assignmentID +
+        "/getAssignmentAnalytics"
+    )
+    .then((res) => res.data);
 }
 
 export default function AssignmentSubmission() {
@@ -118,10 +132,15 @@ export default function AssignmentSubmission() {
     }
   );
 
-  if (assignment.isLoading || submissionInfoQuery.isLoading) {
+  
+  const analyticsInfoQuery = useQuery(["analytics", assignment.data.assignmentID], async () => {
+    return await fetchAnalytics(assignment.data.assignmentID);
+  });
+
+  if (assignment.isLoading || submissionInfoQuery.isLoading || analyticsInfoQuery.isLoading) {
     return "Loading...";
   }
-  if (assignment.isError || submissionInfoQuery.isError) {
+  if (assignment.isError || submissionInfoQuery.isError || analyticsInfoQuery.isError) {
     return "Something went wrong...";
   }
 
@@ -184,6 +203,18 @@ export default function AssignmentSubmission() {
             <label className="subTitle">
               You have submitted this assignment!
             </label>
+            <div className="analytics">
+              <h3>Class results</h3>
+              <BarGraph
+                label="Assignment Analytics"
+                dataValues={[
+                  analyticsInfoQuery.data.firstPercentile.length,
+                  analyticsInfoQuery.data.secondPercentile.length,
+                  analyticsInfoQuery.data.thirdPercentile.length,
+                  analyticsInfoQuery.data.fourthPercentile.length,
+                ]}
+              />
+            </div>
           </div>
         ) : (
           <AssignmentSubmissionStyles>
