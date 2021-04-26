@@ -1,13 +1,14 @@
 import styled from "styled-components";
 import { useQuery } from "react-query";
 import { useUser } from "../hooks/useUser";
+import Moment from "moment";
 import axios from "axios";
 
 const TodoListStyles = styled.div`
   h3 {
     margin: 2px 0px 2px 0px;
     color: black;
-    margin-top: 25px;
+    margin-top: 23px;
   }
   .divContainer {
     margin: 8px;
@@ -86,7 +87,7 @@ function ToDoItem({ courseNumber, assignmentName, dueDate }) {
     <TodoItemStyles>
       <h3>{courseNumber}</h3>
       <div>Assignment: {assignmentName}</div>
-      <div>Due: {dueDate}</div>
+      <div>Due: {Moment(dueDate).format("LLL")}</div>
     </TodoItemStyles>
   );
 }
