@@ -15,11 +15,10 @@ const TodoListStyles = styled.div`
     color: black;
   }
   .listContainer {
-    border: 2px solid gray;
+    border-bottom: 1px solid gray;
     color: gray;
     max-height: 250px;
     overflow-y: auto;
-    border-radius: 5px;
     margin-top: 2px;
   }
   .labelMain {

@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import BellIcon from "react-bell-icon";
 import { Link } from "react-router-dom";
 import { useUser } from "../hooks/useUser";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import axios from "axios";
 
 const CardStyles = styled.div`
+  margin: 1rem;
   .card {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     transition: 0.3s;

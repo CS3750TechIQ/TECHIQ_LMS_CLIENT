@@ -13,7 +13,7 @@ const HomeStyles = styled.div`
   .rightSideBar {
     position: absolute;
     display: flex;
-    top: 82px;
+    top: 110px;
     right: 0;
     width: 20%;
     padding: 1rem;
