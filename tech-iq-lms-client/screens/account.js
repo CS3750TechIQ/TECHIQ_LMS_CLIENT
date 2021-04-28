@@ -164,6 +164,7 @@ const getUserInfo = async (username) => {
 export default function Account() {
   //Get Local user info cache
   const [user, setUser] = useUser();
+  const [userId, setUserId] = useState(user.userType === "Student" ? user.studentId : user.instructorid)
   const [userBioText, setUserBio] = useState(user?.userBio);
   //Set initial state
   const [isEditing, setIsEditing] = useState(false);
@@ -190,7 +191,6 @@ export default function Account() {
   });
 
   const fileSelectedHandler = event => {
-    debugger;
     setProfileImage(event.target.files[0]);
     console.log(event.target.files[0]);
 
@@ -210,10 +210,10 @@ export default function Account() {
   }
 
   useEffect(async () => {
+    console.log("userID " + userId)
     await axios
-      .get("http://localhost:50058/Account/"+ user.studentId +"/GetProfileImage")
+      .get("http://localhost:50058/Account/"+ userId +"/GetProfileImage")
       .then((result) => {
-        debugger;
         if(result.data.fileURL === null){
           setDisplayImage("https://lh3.googleusercontent.com/proxy/wph-j8oHGLHePJkX8ArsiGLb7X6AEJY6I6Dj2K83QQQQztfh2aDX915HRhIn1F1EDJ9TXViWm3vfoEqBZtu4r53LFYmt9WNsZ6sQND6M2Q");
         }else{
@@ -225,10 +225,9 @@ export default function Account() {
   //Update DB Mutation
   const updateUserInfoMutation = useMutation(
     async () => { 
-      debugger;
         const {imgData} = await axios.put("http://localhost:50058/Account/profileImage",
         {
-          studentId: user.studentId,
+          userId: userId,
           fileURL: displayImage
         }
         )
