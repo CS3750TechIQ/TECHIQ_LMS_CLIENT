@@ -214,7 +214,7 @@ export default function Account() {
       .get("http://localhost:50058/Account/"+ user.studentId +"/GetProfileImage")
       .then((result) => {
         debugger;
-        if(result.data.imgURL === null){
+        if(result.data.fileURL === null){
           setDisplayImage("https://lh3.googleusercontent.com/proxy/wph-j8oHGLHePJkX8ArsiGLb7X6AEJY6I6Dj2K83QQQQztfh2aDX915HRhIn1F1EDJ9TXViWm3vfoEqBZtu4r53LFYmt9WNsZ6sQND6M2Q");
         }else{
           setDisplayImage(result.data.fileURL);
