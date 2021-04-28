@@ -87,13 +87,19 @@ export default function AssignmentSubmission() {
   const [user, setUser] = useUser();
   const [assignmentID, setAssignmentID] = useState(query.get("assignmentID"));
   const [studentId, setStudentId] = useState(query.get("userID"));
+  const [fileAPI, setFileAPI] = useState();
+
 
   const fileChanged = (e) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      setSelectedFile(reader.result);
-    };
-    reader.readAsText(e.target.files[0]);
+    let fileData = {
+      lastModified: e.lastModified,
+      lastModifiedDate: e.lastModifiedDate,
+      name: e.name,
+      size: e.size,
+      type: e.type,
+      webkitRelativePath: e.webkitRelativePath,
+    }
+    setSelectedFile(JSON.stringify(fileData));
   };
 
   const assignment = useQuery(["assignmentInfo", assignmentID], async () => {
@@ -120,8 +126,24 @@ export default function AssignmentSubmission() {
           submission: text,
         }
       );
+      const data2 = await axios.put(
+        "http://localhost:50058/Account/fileSubmission",
+        {
+          studentId: user.studentId,
+          fileData: selectedFile,
+          course_number: assignment.data.course_number,
+          assignment_title: assignment.data.assignment_title,
+          AssignmentID: assignmentID,
+          studentId: user?.studentId,
+          submission_file: selectedFile?.name,
+          submission_date: new Date(),
+          textSubmission: text,
+        }
+      );
       return data;
+
     },
+    
     {
       onSuccess: (data) => {
         alert("Assignment successfully submitted.");
@@ -130,12 +152,13 @@ export default function AssignmentSubmission() {
         alert("Error submitting assignment.");
       },
     }
+    
   );
 
   
   const analyticsInfoQuery = useQuery(["analytics", assignmentID], async () => {
     return await fetchAnalytics(assignmentID);
-  });
+  }); 
 
   if (assignment.isLoading || submissionInfoQuery.isLoading || analyticsInfoQuery.isLoading) {
     return "Loading...";
@@ -225,7 +248,7 @@ export default function AssignmentSubmission() {
               <input
                 type="file"
                 accept="*"
-                onChange={(e) => setSelectedFile(e.target.files[0])}
+                onChange={(e) => fileChanged(e.target.files[0])}
               />
               <div>
                 <label className="subTitle">Enter text</label>

@@ -217,7 +217,7 @@ export default function Account() {
         if(result.data.imgURL === null){
           setDisplayImage("https://lh3.googleusercontent.com/proxy/wph-j8oHGLHePJkX8ArsiGLb7X6AEJY6I6Dj2K83QQQQztfh2aDX915HRhIn1F1EDJ9TXViWm3vfoEqBZtu4r53LFYmt9WNsZ6sQND6M2Q");
         }else{
-          setDisplayImage(result.data.imgURL);
+          setDisplayImage(result.data.fileURL);
         }
       });
   }, []);
@@ -229,7 +229,7 @@ export default function Account() {
         const {imgData} = await axios.put("http://localhost:50058/Account/profileImage",
         {
           studentId: user.studentId,
-          imgURL: displayImage
+          fileURL: displayImage
         }
         )
 
@@ -320,7 +320,7 @@ export default function Account() {
               />
             </span>
             <label className="inputLabel allFont" htmlFor="file">
-              <FontAwesomeIcon className="allFont" icon="upload" size="xs" />{" "}
+              <FontAwesomeIcon className="allFont" icon="upload" />{" "}
               Upload Image
             </label>
           </div>
