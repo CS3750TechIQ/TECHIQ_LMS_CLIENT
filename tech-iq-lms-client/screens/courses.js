@@ -369,13 +369,7 @@ function Course(props) {
       <td>{props.days}</td>
       <td>{props.capacity}</td>
       <td className="courseListButtonsP">
-        <button className="courseListButtonsE">Edit</button>
-        <button 
-          className="courseListButtonsD"
-          onClick={() => deleteCourseMutation.mutate()}
-          >
-          Delete
-          </button>
+
         <Link to={"/courses?course=" + props.course_number}>
           <button
             className="detailsButton"
